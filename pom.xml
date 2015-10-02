@@ -9,5 +9,6 @@
     <name>My Spring Boot</name>
     <modules>
         <module>BookmarkRestServiceTutorial</module>
+        <module>RestTutorial</module>
     </modules>
 </project>
