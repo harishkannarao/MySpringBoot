@@ -12,6 +12,9 @@
     <artifactId>RestTutorial</artifactId>
     <packaging>pom</packaging>
     <name>Rest Tutorial</name>
+    <modules>
+        <module>RestService</module>
+    </modules>
 
     <properties>
         <spring.boot.version>1.2.6.RELEASE</spring.boot.version>
