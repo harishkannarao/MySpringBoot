@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <name>Rest Tutorial</name>
     <modules>
+        <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
     </modules>
 
