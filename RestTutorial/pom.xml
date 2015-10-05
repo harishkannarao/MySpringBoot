@@ -15,6 +15,7 @@
     <modules>
         <module>RestService</module>
         <module>RestConsumer</module>
+        <module>RestServiceAndConsumer</module>
     </modules>
 
     <properties>
