@@ -11,9 +11,7 @@ public class QuoteController {
     private ThirdPartyRestQuoteClient thirdPartyRestQuoteClient;
 
     @Autowired
-    public QuoteController(
-            @Qualifier("myThirdPartyRestQuoteClientImpl")
-            ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {
+    public QuoteController(@Qualifier("myThirdPartyRestQuoteClientImpl")ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {
         this.thirdPartyRestQuoteClient = thirdPartyRestQuoteClient;
     }
 
