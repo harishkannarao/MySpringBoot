@@ -1,15 +1,24 @@
 package hello;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class QuoteController {
-    RestTemplate restTemplate = new RestTemplate();
+
+    private ThirdPartyRestQuoteClient thirdPartyRestQuoteClient;
+
+    @Autowired
+    public QuoteController(
+            @Qualifier("myThirdPartyRestQuoteClientImpl")
+            ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {
+        this.thirdPartyRestQuoteClient = thirdPartyRestQuoteClient;
+    }
 
     @RequestMapping("/quote")
     public Quote getQuote() {
-        return restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+        return thirdPartyRestQuoteClient.getQuote();
     }
 }
