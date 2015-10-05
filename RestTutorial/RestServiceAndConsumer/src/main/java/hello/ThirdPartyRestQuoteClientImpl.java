@@ -9,13 +9,17 @@ import org.springframework.web.client.RestTemplate;
 @Qualifier("myThirdPartyRestQuoteClientImpl")
 public class ThirdPartyRestQuoteClientImpl implements ThirdPartyRestQuoteClient {
     private RestTemplate restTemplate;
+    private String thirdPartyRestQuoteServiceUrl;
 
     @Autowired
-    public ThirdPartyRestQuoteClientImpl(@Qualifier("myRestTemplate") RestTemplate restTemplate) {
+    public ThirdPartyRestQuoteClientImpl(
+            @Qualifier("myRestTemplate") RestTemplate restTemplate,
+            @org.springframework.beans.factory.annotation.Value("${quoteService.url}")String thirdPartyRestQuoteServiceUrl) {
         this.restTemplate = restTemplate;
+        this.thirdPartyRestQuoteServiceUrl = thirdPartyRestQuoteServiceUrl;
     }
 
     public Quote getQuote() {
-        return restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+        return restTemplate.getForObject(thirdPartyRestQuoteServiceUrl, Quote.class);
     }
 }
