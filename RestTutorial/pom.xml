@@ -15,6 +15,7 @@
     <modules>
         <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
+        <module>RestServiceAndConsumerFunctionalTest</module>
     </modules>
 
     <properties>
@@ -34,26 +35,6 @@
             </plugins>
         </pluginManagement>
 
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>springloaded</artifactId>
-                        <version>${spring.loaded.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 
     <dependencyManagement>
@@ -73,6 +54,18 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>RestServiceAndConsumer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>ThirdPartyRestServiceStub</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
