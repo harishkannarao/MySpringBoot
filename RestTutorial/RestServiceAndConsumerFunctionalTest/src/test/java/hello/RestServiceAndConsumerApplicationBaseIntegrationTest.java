@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
         "server.port=0",
         "management.port=0"
 })
-public class RestServiceAndConsumerApplicationBaseSupport {
+public abstract class RestServiceAndConsumerApplicationBaseIntegrationTest {
     @Autowired
     protected EmbeddedWebApplicationContext server;
 
