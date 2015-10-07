@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class GreetingControllerIT extends RestServiceAndConsumerApplicationBaseIntegrationTest {
 
-    public static final String greetingEndpointStringFormat = "http://localhost:%s/greeting";
+    public static final String greetingEndpointStringFormat = "http://localhost:%s/greeting/get";
     public static final String greetingWithNameEndpointStringFormat = greetingEndpointStringFormat + "?name={name}";
 
     @Test
