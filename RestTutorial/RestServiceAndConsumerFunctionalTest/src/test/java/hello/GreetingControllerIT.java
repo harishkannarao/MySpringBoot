@@ -8,7 +8,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class GreetingControllerIT extends RestServiceAndConsumerApplicationBaseIntegrationTest {
+public class GreetingControllerIT extends BaseIntegrationTestWithRestServiceAndConsumerApplication {
 
     public static final String greetingEndpointStringFormat = "http://localhost:%s/greeting/get";
     public static final String greetingWithNameEndpointStringFormat = greetingEndpointStringFormat + "?name={name}";

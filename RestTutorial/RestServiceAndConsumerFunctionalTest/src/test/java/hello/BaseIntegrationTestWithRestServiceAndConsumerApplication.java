@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
         "server.port=0",
         "management.port=0"
 })
-public abstract class RestServiceAndConsumerApplicationBaseIntegrationTest {
+public abstract class BaseIntegrationTestWithRestServiceAndConsumerApplication {
     @Autowired
     protected EmbeddedWebApplicationContext server;
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")

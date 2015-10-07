@@ -19,6 +19,10 @@ public class ThirdPartyRestQuoteClientImpl implements ThirdPartyRestQuoteClient 
         this.thirdPartyRestQuoteServiceUrl = thirdPartyRestQuoteServiceUrl;
     }
 
+    public void setThirdPartyRestQuoteServiceUrl(String thirdPartyRestQuoteServiceUrl) {
+        this.thirdPartyRestQuoteServiceUrl = thirdPartyRestQuoteServiceUrl;
+    }
+
     public Quote getQuote() {
         return restTemplate.getForObject(thirdPartyRestQuoteServiceUrl, Quote.class);
     }
