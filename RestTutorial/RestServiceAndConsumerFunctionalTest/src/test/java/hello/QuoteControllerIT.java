@@ -33,11 +33,9 @@ public class QuoteControllerIT extends BaseIntegrationTestWithRestServiceAndCons
 
     @Test
     public void getQuote_shouldReturnQuoteDetails_fromThirdPartyRestService() {
-        Quote expectedQuoteFromThirdPartyService = new Quote();
-        expectedQuoteFromThirdPartyService.setType("some type");
-        expectedQuoteFromThirdPartyService.setValue(new Value());
-        expectedQuoteFromThirdPartyService.getValue().setId(2L);
-        expectedQuoteFromThirdPartyService.getValue().setQuote("some quote");
+        Quote expectedQuoteFromThirdPartyService = QuoteBuilder.newBuilder().setType("some type")
+                .setValue(ValueBuilder.newBuilder().setId(2L).setQuote("some quote"))
+                .build();
         when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
         Quote result = restTemplate.getForObject(getQuoteEndpointString(), Quote.class);
