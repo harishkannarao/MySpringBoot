@@ -8,12 +8,12 @@ public class ThirdPartyRestQuoteController {
 
     @RequestMapping("/thirdparty/quote")
     public Quote getQuote() {
-        Quote dummyQuote = new Quote();
-        dummyQuote.setType("success");
-        Value dummyValue = new Value();
-        dummyValue.setId(1L);
-        dummyValue.setQuote("Working with Spring Boot is like pair-programming with the Spring developers.");
-        dummyQuote.setValue(dummyValue);
-        return dummyQuote;
+        return QuoteBuilder.newBuilder()
+                .setType("success")
+                .setValue(ValueBuilder.newBuilder()
+                        .setQuote("Working with Spring Boot is like pair-programming with the Spring developers.")
+                        .setId(1L)
+                )
+                .build();
     }
 }
