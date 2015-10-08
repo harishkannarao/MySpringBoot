@@ -9,5 +9,6 @@
     <name>My Spring Boot</name>
     <modules>
         <module>RestTutorial</module>
+        <module>RelationalDataAccess</module>
     </modules>
 </project>
