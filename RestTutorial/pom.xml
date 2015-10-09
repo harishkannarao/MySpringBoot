@@ -16,11 +16,13 @@
         <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
+        <module>RestServiceAndJdbc</module>
     </modules>
 
     <properties>
         <spring.boot.version>1.2.6.RELEASE</spring.boot.version>
         <spring.loaded.version>1.2.4.RELEASE</spring.loaded.version>
+        <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -62,6 +64,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <!-- Import dependency management from Spring Test -->
                 <groupId>org.springframework.boot</groupId>
@@ -69,6 +72,12 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.driver.version}</version>
             </dependency>
 
             <dependency>
