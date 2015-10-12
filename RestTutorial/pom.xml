@@ -16,6 +16,7 @@
         <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
+        <module>RestServiceAndJdbcDbFixtures</module>
         <module>RestServiceAndJdbc</module>
         <module>RestServiceAndJdbcFunctionalTest</module>
     </modules>
@@ -96,6 +97,12 @@
             <dependency>
                 <groupId>com.harishkannarao.spring</groupId>
                 <artifactId>RestServiceAndJdbc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>RestServiceAndJdbcDbFixtures</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
