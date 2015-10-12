@@ -17,6 +17,7 @@
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndJdbc</module>
+        <module>RestServiceAndJdbcFunctionalTest</module>
     </modules>
 
     <properties>
@@ -89,6 +90,12 @@
             <dependency>
                 <groupId>com.harishkannarao.spring</groupId>
                 <artifactId>ThirdPartyRestServiceStub</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>RestServiceAndJdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
