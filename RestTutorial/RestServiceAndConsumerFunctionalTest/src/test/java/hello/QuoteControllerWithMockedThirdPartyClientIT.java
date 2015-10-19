@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class QuoteControllerIT extends BaseIntegrationTestWithRestServiceAndConsumerApplication {
+public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegrationTestWithRestServiceAndConsumerApplication {
     public static final String quoteEndpointStringFormat = "http://localhost:%s/quote";
 
     @Configuration
