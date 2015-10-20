@@ -16,6 +16,7 @@
         <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
+        <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
         <module>RestServiceAndJdbcDbFixtures</module>
         <module>RestServiceAndJdbc</module>
         <module>RestServiceAndJdbcFunctionalTest</module>
