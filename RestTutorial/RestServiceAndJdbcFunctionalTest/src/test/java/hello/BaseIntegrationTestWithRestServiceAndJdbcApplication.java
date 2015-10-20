@@ -40,7 +40,7 @@ public abstract class BaseIntegrationTestWithRestServiceAndJdbcApplication {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(wac).build();
-        dbFixturesPopulator.createSchema();
+        dbFixturesPopulator.initSchema();
         dbFixturesPopulator.resetData();
     }
 
