@@ -1,5 +1,6 @@
 package hello.steps;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -18,6 +19,7 @@ public class GreetingSteps extends BaseStep {
 
     public static final String greetingEndpointStringFormat = "http://localhost:%s/greeting/get";
     public static final String greetingWithNameEndpointStringFormat = greetingEndpointStringFormat + "?name={name}";
+    public static final String thirdPartyQuoteEndpointStringFormat = "http://localhost:%s/thirdparty/quote";
 
     private String getGreetingEndpointString() {
         return String.format(greetingEndpointStringFormat, port);
@@ -25,6 +27,11 @@ public class GreetingSteps extends BaseStep {
 
     private String getGreetingWithNameEndpointString() {
         return String.format(greetingWithNameEndpointStringFormat, port);
+    }
+
+    @Before
+    public void setup() {
+        thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(String.format(thirdPartyQuoteEndpointStringFormat, port));
     }
 
     @Given("^GreetingEndpoint: I do not set the name$")
