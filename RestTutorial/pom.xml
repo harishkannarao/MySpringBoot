@@ -17,6 +17,7 @@
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
+        <module>RestServiceAndConsumerBddTest</module>
         <module>RestServiceAndJdbcDbFixtures</module>
         <module>RestServiceAndJdbc</module>
         <module>RestServiceAndJdbcFunctionalTest</module>
@@ -25,6 +26,7 @@
     <properties>
         <spring.boot.version>1.2.6.RELEASE</spring.boot.version>
         <spring.loaded.version>1.2.4.RELEASE</spring.loaded.version>
+        <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
         <java.version>1.8</java.version>
     </properties>
@@ -75,6 +77,34 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>${cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-java8</artifactId>
+                <version>${cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>${cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-spring</artifactId>
+                <version>${cucumber.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
