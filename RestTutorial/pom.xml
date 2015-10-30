@@ -18,6 +18,7 @@
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
         <module>RestServiceAndConsumerBddTest</module>
+        <module>RestServiceAndConsumerBddTestWithMocks</module>
         <module>RestServiceAndJdbcDbFixtures</module>
         <module>RestServiceAndJdbc</module>
         <module>RestServiceAndJdbcFunctionalTest</module>

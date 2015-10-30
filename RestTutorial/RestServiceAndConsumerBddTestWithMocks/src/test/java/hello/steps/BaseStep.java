@@ -1,5 +1,6 @@
 package hello.steps;
 
+import hello.QuoteController;
 import hello.RestServiceAndConsumerApplication;
 import hello.ThirdPartyRestQuoteClientImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,7 @@ public abstract class BaseStep {
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")
     protected int port;
     @Autowired
-    @Qualifier("myThirdPartyRestQuoteClientImpl")
-    protected ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
+    protected QuoteController quoteController;
     protected RestTemplate restTemplate = getRestTemplate();
 
     private RestTemplate getRestTemplate() {
