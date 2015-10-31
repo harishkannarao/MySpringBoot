@@ -4,10 +4,8 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import hello.Quote;
-import hello.QuoteBuilder;
-import hello.ThirdPartyRestQuoteClient;
-import hello.ValueBuilder;
+import hello.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +15,12 @@ import static org.mockito.Mockito.when;
 public class QuoteWithMockedThirdPartySteps extends BaseStep {
     private ResponseEntity<Quote> response;
     private ThirdPartyRestQuoteClient mockedThirdPartyRestQuoteClient;
-    public static final String quoteEndpointStringFormat = "http://localhost:%s/quote";
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}")
+    private String quoteEndpointStringFormat;
+    @Autowired
+    private QuoteController quoteController;
+
 
     @Before
     public void setup() {

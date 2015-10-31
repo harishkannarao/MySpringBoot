@@ -1,10 +1,10 @@
 package hello.steps;
 
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import hello.Greeting;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -17,8 +17,12 @@ public class GreetingSteps extends BaseStep {
     private String name;
     private ResponseEntity<Greeting> response;
 
-    public static final String greetingEndpointStringFormat = "http://localhost:%s/greeting/get";
-    public static final String greetingWithNameEndpointStringFormat = greetingEndpointStringFormat + "?name={name}";
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${greetingEndpointStringFormat}")
+    public String greetingEndpointStringFormat;
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointStringFormat}")
+    public String greetingWithNameEndpointStringFormat;
 
     private String getGreetingEndpointString() {
         return String.format(greetingEndpointStringFormat, port);

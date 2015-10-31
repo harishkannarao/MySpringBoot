@@ -16,7 +16,9 @@ import org.springframework.web.client.RestTemplate;
         "management.port=0"
 })
 public abstract class BaseIntegrationWithTestConfiguration {
-    public static final String thirdPartyQuoteEndpointStringFormat = "http://localhost:%s/thirdparty/quote";
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${thirdPartyQuoteEndpointStringFormat}")
+    public String thirdPartyQuoteEndpointStringFormat;
 
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")
     protected int port;
