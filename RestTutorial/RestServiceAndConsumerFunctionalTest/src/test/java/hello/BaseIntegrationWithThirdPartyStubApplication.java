@@ -8,12 +8,12 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {ThirdPartyRestServiceStubApplication.class})
+@SpringApplicationConfiguration(classes = {TestConfigurationThirdPartyRestServiceStubApplication.class})
 @WebIntegrationTest({
         "server.port=0",
         "management.port=0"
 })
-public abstract class BaseIntegrationWithThirdPartyRestServiceStubApplication {
+public abstract class BaseIntegrationWithThirdPartyStubApplication {
     @Autowired
     protected EmbeddedWebApplicationContext server;
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")

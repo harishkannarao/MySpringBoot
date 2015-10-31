@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.junit.Assert.assertEquals;
 
-public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPartyRestServiceStubApplication {
+public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPartyStubApplication {
 
     public static final String thirdPartyQuoteEndpointStringFormat = "http://localhost:%s/thirdparty/quote";
 
