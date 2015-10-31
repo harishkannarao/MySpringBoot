@@ -1,10 +1,7 @@
 package hello;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +12,9 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @Import({RestServiceAndConsumerApplication.class})
+@PropertySources({
+        @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
+})
 public class TestConfigurationRestServiceAndConsumerApplication {
     @Bean
     @Qualifier("myThirdPartyRestQuoteClientImpl")

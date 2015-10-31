@@ -9,7 +9,9 @@ import static org.junit.Assert.assertEquals;
 
 public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPartyStubApplication {
 
-    public static final String thirdPartyQuoteEndpointStringFormat = "http://localhost:%s/thirdparty/quote";
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${thirdPartyQuoteEndpointStringFormat}")
+    public String thirdPartyQuoteEndpointStringFormat;
 
     @Autowired
     @Qualifier("myThirdPartyRestQuoteClientImpl")

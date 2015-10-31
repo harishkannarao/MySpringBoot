@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -19,36 +20,23 @@ import java.util.List;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {RestServiceAndJdbcDbFixturesApplication.class, RestServiceAndJdbcApplication.class})
+@SpringApplicationConfiguration(classes = {TestConfigurationJdbc.class})
 @WebIntegrationTest({
         "server.port=0",
         "management.port=0"
 })
-public abstract class BaseIntegrationTestWithRestServiceAndJdbcApplication {
-    @Autowired
-    protected EmbeddedWebApplicationContext server;
+public abstract class BaseIntegrationJdbc {
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")
     protected int port;
-    protected RestTemplate restTemplate = getRestTemplate();
-    protected MockMvc mockMvc;
     @Autowired
-    protected WebApplicationContext wac;
+    @Qualifier("myTestRestTemplate")
+    protected RestTemplate restTemplate;
     @Autowired
     protected DbFixturesPopulator dbFixturesPopulator;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = webAppContextSetup(wac).build();
         dbFixturesPopulator.initSchema();
         dbFixturesPopulator.resetData();
-    }
-
-    protected RestTemplate getRestTemplate() {
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-        interceptors.add(new JsonHeaderInterceptor());
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(interceptors);
-        return restTemplate;
     }
 }

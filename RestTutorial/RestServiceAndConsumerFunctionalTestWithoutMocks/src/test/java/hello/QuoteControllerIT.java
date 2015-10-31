@@ -1,11 +1,14 @@
 package hello;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 
 public class QuoteControllerIT extends BaseIntegrationWithTestConfiguration {
-    public static final String quoteEndpointStringFormat = "http://localhost:%s/quote";
+    @Autowired
+    @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}")
+    public String quoteEndpointStringFormat;
 
     private String getQuoteEndpointString() {
         return String.format(quoteEndpointStringFormat, port);
