@@ -4,11 +4,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import hello.Greeting;
+import hello.client.GreetingTestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,21 +14,8 @@ import static org.junit.Assert.assertNotNull;
 public class GreetingSteps extends BaseStep {
     private String name;
     private ResponseEntity<Greeting> response;
-
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${greetingEndpointStringFormat}")
-    public String greetingEndpointStringFormat;
-    @Autowired
-    @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointStringFormat}")
-    public String greetingWithNameEndpointStringFormat;
-
-    private String getGreetingEndpointString() {
-        return String.format(greetingEndpointStringFormat, port);
-    }
-
-    private String getGreetingWithNameEndpointString() {
-        return String.format(greetingWithNameEndpointStringFormat, port);
-    }
+    private GreetingTestClient greetingTestClient;
 
     @Given("^GreetingEndpoint: I do not set the name$")
     public void setNameAsNull() {
@@ -45,11 +30,9 @@ public class GreetingSteps extends BaseStep {
     @And("^GreetingEndpoint: I make a GET request$")
     public void makeGetRequest() {
         if (name == null) {
-            response = restTemplate.getForEntity(getGreetingEndpointString(), Greeting.class);
+            response = greetingTestClient.getGreeting();
         } else {
-            Map<String, String> queryParams = new HashMap<String, String>();
-            queryParams.put("name", "Harish");
-            response = restTemplate.getForEntity(getGreetingWithNameEndpointString(), Greeting.class, queryParams);
+            response = greetingTestClient.getGreetingWithName(name);
         }
     }
 

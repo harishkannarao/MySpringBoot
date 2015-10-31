@@ -5,6 +5,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import hello.*;
+import hello.client.QuoteTestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -16,8 +17,7 @@ public class QuoteWithMockedThirdPartySteps extends BaseStep {
     private ResponseEntity<Quote> response;
     private ThirdPartyRestQuoteClient mockedThirdPartyRestQuoteClient;
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}")
-    private String quoteEndpointStringFormat;
+    private QuoteTestClient quoteTestClient;
     @Autowired
     private QuoteController quoteController;
 
@@ -26,10 +26,6 @@ public class QuoteWithMockedThirdPartySteps extends BaseStep {
     public void setup() {
         mockedThirdPartyRestQuoteClient = mock(ThirdPartyRestQuoteClient.class);
         quoteController.setThirdPartyRestQuoteClient(mockedThirdPartyRestQuoteClient);
-    }
-
-    private String getQuoteEndpointString() {
-        return String.format(quoteEndpointStringFormat, port);
     }
 
     @Given("^QuoteEndpointWithMockedThirdParty: I setup third party rest quote client to return a quote$")
@@ -42,7 +38,7 @@ public class QuoteWithMockedThirdPartySteps extends BaseStep {
 
     @Given("^QuoteEndpointWithMockedThirdParty: I make a GET request$")
     public void callQuoteEndpoint() {
-        response = restTemplate.getForEntity(getQuoteEndpointString(), Quote.class);
+        response = quoteTestClient.getQuote();
     }
 
     @Then("^QuoteEndpointWithMockedThirdParty: I should see the type as \"(.*)\"$")

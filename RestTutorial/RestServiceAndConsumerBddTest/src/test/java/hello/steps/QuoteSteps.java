@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import hello.Quote;
 import hello.ThirdPartyRestQuoteClientImpl;
+import hello.client.QuoteTestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,7 @@ public class QuoteSteps extends BaseStep {
     private ResponseEntity<Quote> response;
 
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}")
-    private String quoteEndpointStringFormat;
+    private QuoteTestClient quoteTestClient;
     @Autowired
     @org.springframework.beans.factory.annotation.Value("${thirdPartyQuoteEndpointStringFormat}")
     private String thirdPartyQuoteEndpointStringFormat;
@@ -25,19 +25,14 @@ public class QuoteSteps extends BaseStep {
     @Qualifier("myThirdPartyRestQuoteClientImpl")
     private ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
 
-
     @Before
     public void setup() {
         thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(String.format(thirdPartyQuoteEndpointStringFormat, port));
     }
 
-    private String getQuoteEndpointString() {
-        return String.format(quoteEndpointStringFormat, port);
-    }
-
     @Given("^QuoteEndpoint: I make a GET request$")
     public void callQuoteEndpoint() {
-        response = restTemplate.getForEntity(getQuoteEndpointString(), Quote.class);
+        response = quoteTestClient.getQuote();
     }
 
     @Then("^QuoteEndpoint: I should see the type as \"(.*)\"$")

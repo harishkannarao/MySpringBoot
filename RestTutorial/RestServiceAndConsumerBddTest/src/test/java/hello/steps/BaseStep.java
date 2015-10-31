@@ -17,9 +17,7 @@ public abstract class BaseStep {
 
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")
     protected int port;
-    @Autowired
-    @Qualifier("myTestRestTemplate")
-    protected RestTemplate restTemplate;
+
 
 }
 
