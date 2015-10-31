@@ -8,7 +8,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {RestServiceAndConsumerApplication.class})
+@SpringApplicationConfiguration(classes = {ThirdPartyRestServiceStubApplication.class})
 @WebIntegrationTest({
         "server.port=0",
         "management.port=0"

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {RestServiceAndConsumerApplication.class, RestServiceAndConsumerApplication.class})
+@SpringApplicationConfiguration(classes = {RestServiceAndConsumerApplication.class, ThirdPartyRestServiceStubApplication.class})
 @WebIntegrationTest({
         "server.port=0",
         "management.port=0"
