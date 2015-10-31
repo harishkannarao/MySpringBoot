@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class QuoteControllerIT extends BaseIntegrationTestWithRestServiceAndConsumerAndStubbedServiceApplications{
+public class QuoteControllerIT extends BaseIntegrationWithTestConfiguration {
     public static final String quoteEndpointStringFormat = "http://localhost:%s/quote";
 
     private String getQuoteEndpointString() {
