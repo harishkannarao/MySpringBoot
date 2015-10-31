@@ -5,10 +5,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import hello.Quote;
-import hello.ThirdPartyRestQuoteClientImpl;
 import hello.client.QuoteTestClient;
+import hello.helper.TestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.Assert.assertEquals;
@@ -19,15 +18,11 @@ public class QuoteSteps extends BaseStep {
     @Autowired
     private QuoteTestClient quoteTestClient;
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${thirdPartyQuoteEndpointStringFormat}")
-    private String thirdPartyQuoteEndpointStringFormat;
-    @Autowired
-    @Qualifier("myThirdPartyRestQuoteClientImpl")
-    private ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
+    private TestHelper testHelper;
 
     @Before
     public void setup() {
-        thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(String.format(thirdPartyQuoteEndpointStringFormat, port));
+        testHelper.configureThirdPartyRestQuoteClientUrl();
     }
 
     @Given("^QuoteEndpoint: I make a GET request$")
