@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "server.port=0",
         "management.port=0"
 })
-public abstract class BaseIntegrationTestWithThirdPartyRestServiceStubApplication {
+public abstract class BaseIntegrationWithThirdPartyRestServiceStubApplication {
     @Autowired
     protected EmbeddedWebApplicationContext server;
     @org.springframework.beans.factory.annotation.Value("${local.server.port}")

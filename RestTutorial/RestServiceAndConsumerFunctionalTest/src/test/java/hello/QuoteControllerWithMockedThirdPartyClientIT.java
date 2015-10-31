@@ -3,28 +3,15 @@ package hello;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegrationTestWithRestServiceAndConsumerApplication {
+public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration {
     public static final String quoteEndpointStringFormat = "http://localhost:%s/quote";
 
-    @Configuration
-    public static class TestConfiguration {
-        @Bean
-        @Qualifier("myThirdPartyRestQuoteClientImpl")
-        @Primary
-        public ThirdPartyRestQuoteClient thirdPartyRestQuoteClient() {
-            return mock(ThirdPartyRestQuoteClient.class);
-        }
-    }
-
     @Autowired
+    @Qualifier("myThirdPartyRestQuoteClientImpl")
     ThirdPartyRestQuoteClient mockThirdPartyRestQuoteClient;
 
     private String getQuoteEndpointString() {
