@@ -1,6 +1,7 @@
 package hello.config;
 
 import hello.RestServiceAndConsumerApplication;
+import hello.ThirdPartyRestQuoteClient;
 import hello.client.JsonHeaderInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,12 +12,21 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+
 @Configuration
 @Import({RestServiceAndConsumerApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
 })
 public class TestConfiguration {
+
+    @Bean
+    @Qualifier("myThirdPartyRestQuoteClientImpl")
+    @Primary
+    public ThirdPartyRestQuoteClient overrideThirdPartyRestQuoteClientWithMockForTesting() {
+        return mock(ThirdPartyRestQuoteClient.class);
+    }
 
     @Autowired
     private JsonHeaderInterceptor jsonHeaderInterceptor;

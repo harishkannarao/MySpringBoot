@@ -10,10 +10,6 @@ public class QuoteController {
 
     private ThirdPartyRestQuoteClient thirdPartyRestQuoteClient;
 
-    public void setThirdPartyRestQuoteClient(ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {
-        this.thirdPartyRestQuoteClient = thirdPartyRestQuoteClient;
-    }
-
     @Autowired
     public QuoteController(@Qualifier("myThirdPartyRestQuoteClientImpl")ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {
         this.thirdPartyRestQuoteClient = thirdPartyRestQuoteClient;

@@ -14,7 +14,7 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
 
     @Autowired
     @Qualifier("myThirdPartyRestQuoteClientImpl")
-    ThirdPartyRestQuoteClient mockThirdPartyRestQuoteClient;
+    private ThirdPartyRestQuoteClient mockThirdPartyRestQuoteClient;
 
     private String getQuoteEndpointString() {
         return String.format(quoteEndpointStringFormat, port);

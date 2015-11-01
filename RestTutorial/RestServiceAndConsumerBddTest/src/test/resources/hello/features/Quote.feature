@@ -1,5 +1,8 @@
 Feature: Quotes Feature
 
+  Background:
+    Given I configure the thirdparty client urls
+
   Scenario: should return quote details from third party service
     Given QuoteEndpoint: I make a GET request
     Then QuoteEndpoint: I should see the type as "success"
