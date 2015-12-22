@@ -60,5 +60,11 @@
             <artifactId>ThirdPartyRestServiceStub</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.harishkannarao.spring</groupId>
+            <artifactId>TestConfig</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

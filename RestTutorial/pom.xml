@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <name>Rest Tutorial</name>
     <modules>
+        <module>TestConfig</module>
         <module>ThirdPartyRestServiceStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
@@ -136,6 +137,13 @@
                 <groupId>com.harishkannarao.spring</groupId>
                 <artifactId>RestServiceAndJdbcDbFixtures</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>TestConfig</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
