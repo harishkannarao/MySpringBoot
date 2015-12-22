@@ -23,7 +23,7 @@ mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,se
 ### Run an application with properties overriden by external properties file with spring boot maven plugin
 mvn spring-boot:run -Drun.arguments="--spring.config.location={{absolute or relative path of property file}}"
 
-e.g *mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"*
+**In Windows/Unix/Linux e.g** *mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"*
 
 ### Run an application with spring boot generated jar
 java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
@@ -32,4 +32,4 @@ java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1
 java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
 
 ### Run an application with properties overriden by external properties file with spring boot generated jar
-java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
+**In Windows/Unix/Linux:** java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
