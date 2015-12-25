@@ -1,4 +1,4 @@
-###Spring Boot Plugin goodies
+### Spring Boot Plugin goodies
 Debugging With suspend mode:
 **mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"**
 
@@ -9,7 +9,7 @@ Pass command line arguments for spring boot application (override property value
 **mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"**
 
 
-###Java Commands to run application
+### Java Commands to run application
 Start application with default property values:
 **java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar**
 
