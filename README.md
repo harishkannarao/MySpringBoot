@@ -12,24 +12,43 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Postgresql database should be setup and run in localhost:5432. Setup guide is available in the following [google doc] (https://docs.google.com/document/d/1INfxu8PEwMnzdDk_fli2WasbFk9rKRw3yZl3SfVDCFM/edit)
   
 ### Running full build
-mvn clean install
+
+    mvn clean install
 
 ### Run an application with spring boot maven plugin
-mvn spring-boot:run
+
+    mvn spring-boot:run
 
 ### Run an application in debug mode with spring boot maven plugin
-mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 
-### Run an application with properties overriden by external properties file with spring boot maven plugin
-mvn spring-boot:run -Drun.arguments="--spring.config.location={{absolute or relative path of property file}}"
+    mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
 
-**In Windows/Unix/Linux e.g** *mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"*
+### Run an application with properties overridden by external properties file with spring boot maven plugin
+
+    mvn spring-boot:run -Drun.arguments="--spring.config.location={{absolute or relative path of property file}}"
+
+**In Windows/Unix/Linux e.g**
+
+    mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"
+
+### Run an application with properties overridden by command line with spring boot maven plugin
+
+    mvn spring-boot:run -Drun.arguments="--server.port=9000,--quoteService.url=http://gturnquist-quoters.cfapps.io/api/random"
+
 
 ### Run an application with spring boot generated jar
-java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
+
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
 
 ### Run an application in debug mode with spring boot generated jar
-java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
 
-### Run an application with properties overriden by external properties file with spring boot generated jar
-**In Windows/Unix/Linux:** java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
+
+### Run an application with properties overridden by external properties file with spring boot generated jar
+**In Windows/Unix/Linux:**
+
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
+
+### Run an application with properties overridden through command line with spring boot generated jar
+
+    java -jar ./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
