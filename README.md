@@ -35,6 +35,14 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 
     mvn spring-boot:run -Drun.arguments="--server.port=9000,--quoteService.url=http://gturnquist-quoters.cfapps.io/api/random"
 
+### Run an application with properties overridden by environment variables with spring boot maven plugin
+
+Set the environment variable as **SERVER_PORT=9000**
+
+Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
+
+    mvn spring-boot:run
+
 
 ### Run an application with spring boot generated jar
 
@@ -52,3 +60,11 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 ### Run an application with properties overridden through command line with spring boot generated jar
 
     java -jar ./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
+
+### Run an application with properties overridden through environment variable with spring boot generated jar
+
+Set the environment variable as **SERVER_PORT=9000**
+
+Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
+
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"

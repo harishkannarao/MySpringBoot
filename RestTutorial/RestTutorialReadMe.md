@@ -11,6 +11,14 @@ Run with overridden default property value through command line (multiple values
 
     mvn spring-boot:run -Drun.arguments="--server.port=9000,--quoteService.url=http://gturnquist-quoters.cfapps.io/api/random"
 
+Run with overridden default property value through environment variable:
+
+Set the environment variable as **SERVER_PORT=9000**
+
+Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
+
+    mvn spring-boot:run
+
 Debugging with suspend mode:
 
     mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
@@ -28,9 +36,17 @@ Start application with external properties file (override the default applicatio
 
     java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --spring.config.location=./external-config/rest-service-and-consumer-external-config-live.properties
 
-Start application with overridden default property value through command line
+Start application with overridden default property value through command line:
 
     java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
+
+Start application with overridden default property value through environment variable:
+
+Set the environment variable as **SERVER_PORT=9000**
+
+Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
+
+    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar
 
 Debug application with suspend mode:
 
