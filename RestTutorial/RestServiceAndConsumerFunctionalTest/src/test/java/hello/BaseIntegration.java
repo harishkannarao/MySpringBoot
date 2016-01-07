@@ -30,6 +30,9 @@ public abstract class BaseIntegration {
     @Autowired
     @Qualifier("myTestRestTemplate")
     protected RestTemplate restTemplate;
+    @Autowired
+    @Qualifier("myTestHtmlRestTemplate")
+    protected RestTemplate htmlRestTemplate;
     protected MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;

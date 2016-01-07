@@ -33,4 +33,14 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         return restTemplate;
     }
 
+    @Bean
+    @Qualifier("myTestHtmlRestTemplate")
+    public RestTemplate getMyTestHtmlRestTemplate() {
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
+        interceptors.add(new HtmlHeaderInterceptor());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setInterceptors(interceptors);
+        return restTemplate;
+    }
+
 }
