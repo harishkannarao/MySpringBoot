@@ -30,15 +30,15 @@ Debugging without suspend mode:
 ### Java Commands to run application
 Start application with default property values:
 
-    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar
+    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar
 
 Start application with external properties file (override the default application.properties):
 
-    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --spring.config.location=./external-config/rest-service-and-consumer-external-config-live.properties
+    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar --spring.config.location=./external-config/rest-service-and-consumer-external-config-live.properties
 
 Start application with overridden default property value through command line:
 
-    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
+    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
 
 Start application with overridden default property value through environment variable:
 
@@ -46,12 +46,12 @@ Set the environment variable as **SERVER_PORT=9000**
 
 Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
 
-    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar
+    java -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar
 
 Debug application with suspend mode:
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar
 
 Debug application without suspend:
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar ./RestServiceAndConsumer/target/RestServiceAndConsumer.jar

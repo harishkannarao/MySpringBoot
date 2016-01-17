@@ -46,20 +46,20 @@ Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfa
 
 ### Run an application with spring boot generated jar
 
-    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
 
 ### Run an application in debug mode with spring boot generated jar
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
 
 ### Run an application with properties overridden by external properties file with spring boot generated jar
 **In Windows/Unix/Linux:**
 
-    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer.jar" --spring.config.location="./RestTutorial/external-config/rest-service-and-consumer-external-config-live.properties"
 
 ### Run an application with properties overridden through command line with spring boot generated jar
 
-    java -jar ./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
+    java -jar ./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
 
 ### Run an application with properties overridden through environment variable with spring boot generated jar
 
@@ -67,4 +67,4 @@ Set the environment variable as **SERVER_PORT=9000**
 
 Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
 
-    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer-1.0.0-SNAPSHOT.jar"
+    java -jar "./RestTutorial/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
