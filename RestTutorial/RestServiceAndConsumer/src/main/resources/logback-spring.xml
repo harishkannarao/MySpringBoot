@@ -15,13 +15,6 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <file>${LOG_FILE}</file>
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
-        </rollingPolicy>
-        <triggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>${myappFileSize}</MaxFileSize>
-        </triggeringPolicy>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
             <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
