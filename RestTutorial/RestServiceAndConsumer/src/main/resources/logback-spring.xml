@@ -8,6 +8,7 @@
     <!-- reading a custom property value from the property file -->
     <springProperty scope="context" name="myappFileSize" source="logging.myapp.filesize"/>
     <springProperty scope="context" name="myappConsoleFilter" source="logging.myapp.console.appender.filter.level"/>
+    <springProperty scope="context" name="myappFileHistory" source="logging.myapp.filehistory.days"/>
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -20,11 +21,11 @@
             <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- or whenever the file size reaches 100MB -->
+                <!-- or whenever the file size reaches the below -->
                 <maxFileSize>${myappFileSize}</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <!-- keep days' worth of history -->
+            <maxHistory>${myappFileHistory}</maxHistory>
         </rollingPolicy>
     </appender>
 
