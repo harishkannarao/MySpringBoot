@@ -1,6 +1,5 @@
 package hello;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,17 +9,8 @@ import static org.junit.Assert.assertEquals;
 public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPartyStubApplication {
 
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${thirdPartyQuoteEndpointStringFormat}")
-    public String thirdPartyQuoteEndpointStringFormat;
-
-    @Autowired
     @Qualifier("myThirdPartyRestQuoteClientImpl")
     private ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
-
-    @Before
-    public void setUp() {
-        thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(thirdPartyQuoteEndpointStringFormat);
-    }
 
     @Test
     public void getQuote_shouldGetQuote_fromThirdPartyStubService() {
