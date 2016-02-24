@@ -13,11 +13,8 @@ public class HelloPageIT extends BaseIntegration {
 
     @Test
     public void shouldGetIndexPage() {
-        String pageContent = htmlRestTemplate.getForObject(getHelloPageEndpointString(), String.class);
+        String pageContent = htmlRestTemplate.getForObject(helloPageEndpointStringFormat, String.class);
         assertTrue(pageContent.contains("Message: Hello Harish"));
     }
 
-    private String getHelloPageEndpointString() {
-        return String.format(helloPageEndpointStringFormat, port);
-    }
 }

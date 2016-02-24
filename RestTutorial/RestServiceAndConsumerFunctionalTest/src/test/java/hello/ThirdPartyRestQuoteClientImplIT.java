@@ -17,13 +17,9 @@ public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPar
     @Qualifier("myThirdPartyRestQuoteClientImpl")
     private ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
 
-    private String getThirdPartyQuoteEndpointString() {
-        return String.format(thirdPartyQuoteEndpointStringFormat, port);
-    }
-
     @Before
     public void setUp() {
-        thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(getThirdPartyQuoteEndpointString());
+        thirdPartyRestQuoteClientImpl.setThirdPartyRestQuoteServiceUrl(thirdPartyQuoteEndpointStringFormat);
     }
 
     @Test

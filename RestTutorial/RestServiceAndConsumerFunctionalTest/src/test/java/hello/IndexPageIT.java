@@ -13,11 +13,7 @@ public class IndexPageIT extends BaseIntegration {
 
     @Test
     public void shouldGetIndexPage() {
-        String pageContent = htmlRestTemplate.getForObject(getIndexPageEndpointString(), String.class);
+        String pageContent = htmlRestTemplate.getForObject(indexPageEndpointStringFormat, String.class);
         assertEquals("<b>Hello World !!!</b>", pageContent);
-    }
-
-    private String getIndexPageEndpointString() {
-        return String.format(indexPageEndpointStringFormat, port);
     }
 }

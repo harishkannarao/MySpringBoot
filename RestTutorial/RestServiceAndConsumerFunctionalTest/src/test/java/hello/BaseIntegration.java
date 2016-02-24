@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,15 +17,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {TestConfigurationRestServiceAndConsumerApplication.class})
 @WebIntegrationTest({
-        "server.port=0",
-        "management.port=0"
+        "server.port=8180",
+        "management.port=8181"
 })
 public abstract class BaseIntegration {
-    @Autowired
-    protected EmbeddedWebApplicationContext server;
-    @org.springframework.beans.factory.annotation.Value("${local.server.port}")
-    protected int port;
-
     @Autowired
     @Qualifier("myTestRestTemplate")
     protected RestTemplate restTemplate;

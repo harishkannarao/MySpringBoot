@@ -20,7 +20,7 @@ public class GreetingControllerIT extends BaseIntegration {
 
     @Test
     public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
-        Greeting result = restTemplate.getForObject(getGreetingEndpointString(), Greeting.class);
+        Greeting result = restTemplate.getForObject(greetingEndpointStringFormat, Greeting.class);
         assertNotNull(result.getId());
         assertEquals("Hello, World!", result.getContent());
     }
@@ -29,17 +29,9 @@ public class GreetingControllerIT extends BaseIntegration {
     public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
         Map<String, String> queryParams = new HashMap<String, String>();
         queryParams.put("name", "Harish");
-        Greeting result = restTemplate.getForObject(getGreetingWithNameEndpointString(), Greeting.class, queryParams);
+        Greeting result = restTemplate.getForObject(greetingWithNameEndpointStringFormat, Greeting.class, queryParams);
         assertNotNull(result.getId());
         assertEquals("Hello, Harish!", result.getContent());
-    }
-
-    private String getGreetingEndpointString() {
-        return String.format(greetingEndpointStringFormat, port);
-    }
-
-    private String getGreetingWithNameEndpointString() {
-        return String.format(greetingWithNameEndpointStringFormat, port);
     }
 
 }

@@ -16,10 +16,6 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
     @Qualifier("myThirdPartyRestQuoteClientImpl")
     private ThirdPartyRestQuoteClient mockThirdPartyRestQuoteClient;
 
-    private String getQuoteEndpointString() {
-        return String.format(quoteEndpointStringFormat, port);
-    }
-
     @Test
     public void getQuote_shouldReturnQuoteDetails_fromThirdPartyRestService() {
         Quote expectedQuoteFromThirdPartyService = QuoteBuilder.newBuilder().setType("some type")
@@ -27,7 +23,7 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
                 .build();
         when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
-        Quote result = restTemplate.getForObject(getQuoteEndpointString(), Quote.class);
+        Quote result = restTemplate.getForObject(quoteEndpointStringFormat, Quote.class);
         assertEquals("some type", result.getType());
         assertEquals("some quote", result.getValue().getQuote());
         assertEquals(new Long(2L), result.getValue().getId());
