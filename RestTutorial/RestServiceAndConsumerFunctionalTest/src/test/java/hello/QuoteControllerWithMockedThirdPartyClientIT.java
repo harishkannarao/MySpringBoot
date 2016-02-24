@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 
 public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration {
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}")
-    public String quoteEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${quoteEndpointUrl}")
+    public String quoteEndpointUrl;
 
     @Autowired
     @Qualifier("myThirdPartyRestQuoteClientImpl")
@@ -23,7 +23,7 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
                 .build();
         when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
-        Quote result = restTemplate.getForObject(quoteEndpointStringFormat, Quote.class);
+        Quote result = restTemplate.getForObject(quoteEndpointUrl, Quote.class);
         assertEquals("some type", result.getType());
         assertEquals("some quote", result.getValue().getQuote());
         assertEquals(new Long(2L), result.getValue().getId());

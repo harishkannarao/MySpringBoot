@@ -9,18 +9,18 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class QuoteTestClient {
-    private String quoteEndpointStringFormat;
+    private String quoteEndpointUrl;
     private RestTemplate restTemplate;
 
     @Autowired
     public QuoteTestClient(
-            @org.springframework.beans.factory.annotation.Value("${quoteEndpointStringFormat}") String quoteEndpointStringFormat,
+            @org.springframework.beans.factory.annotation.Value("${quoteEndpointUrl}") String quoteEndpointUrl,
             @Qualifier("myTestRestTemplate") RestTemplate restTemplate) {
-        this.quoteEndpointStringFormat = quoteEndpointStringFormat;
+        this.quoteEndpointUrl = quoteEndpointUrl;
         this.restTemplate = restTemplate;
     }
 
     public ResponseEntity<Quote> getQuote() {
-        return restTemplate.getForEntity(quoteEndpointStringFormat, Quote.class);
+        return restTemplate.getForEntity(quoteEndpointUrl, Quote.class);
     }
 }

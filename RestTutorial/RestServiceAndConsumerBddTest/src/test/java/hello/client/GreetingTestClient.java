@@ -12,26 +12,26 @@ import java.util.Map;
 
 @Component
 public class GreetingTestClient {
-    private String greetingEndpointStringFormat;
-    private String greetingWithNameEndpointStringFormat;
+    private String greetingEndpointUrl;
+    private String greetingWithNameEndpointUrl;
     private RestTemplate restTemplate;
 
     @Autowired
-    public GreetingTestClient(@org.springframework.beans.factory.annotation.Value("${greetingEndpointStringFormat}") String greetingEndpointStringFormat,
-                              @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointStringFormat}") String greetingWithNameEndpointStringFormat,
+    public GreetingTestClient(@org.springframework.beans.factory.annotation.Value("${greetingEndpointUrl}") String greetingEndpointUrl,
+                              @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointUrl}") String greetingWithNameEndpointUrl,
                               @Qualifier("myTestRestTemplate") RestTemplate restTemplate) {
-        this.greetingEndpointStringFormat = greetingEndpointStringFormat;
-        this.greetingWithNameEndpointStringFormat = greetingWithNameEndpointStringFormat;
+        this.greetingEndpointUrl = greetingEndpointUrl;
+        this.greetingWithNameEndpointUrl = greetingWithNameEndpointUrl;
         this.restTemplate = restTemplate;
     }
 
     public ResponseEntity<Greeting> getGreeting() {
-        return restTemplate.getForEntity(greetingEndpointStringFormat, Greeting.class);
+        return restTemplate.getForEntity(greetingEndpointUrl, Greeting.class);
     }
 
     public ResponseEntity<Greeting> getGreetingWithName(String name) {
         Map<String, String> queryParams = new HashMap<String, String>();
         queryParams.put("name", "Harish");
-        return restTemplate.getForEntity(greetingWithNameEndpointStringFormat, Greeting.class, queryParams);
+        return restTemplate.getForEntity(greetingWithNameEndpointUrl, Greeting.class, queryParams);
     }
 }

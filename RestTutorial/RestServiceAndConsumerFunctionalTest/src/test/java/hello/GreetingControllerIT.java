@@ -12,15 +12,15 @@ import static org.junit.Assert.assertNotNull;
 public class GreetingControllerIT extends BaseIntegration {
 
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${greetingEndpointStringFormat}")
-    public String greetingEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${greetingEndpointUrl}")
+    public String greetingEndpointUrl;
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointStringFormat}")
-    public String greetingWithNameEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointUrl}")
+    public String greetingWithNameEndpointUrl;
 
     @Test
     public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
-        Greeting result = restTemplate.getForObject(greetingEndpointStringFormat, Greeting.class);
+        Greeting result = restTemplate.getForObject(greetingEndpointUrl, Greeting.class);
         assertNotNull(result.getId());
         assertEquals("Hello, World!", result.getContent());
     }
@@ -29,7 +29,7 @@ public class GreetingControllerIT extends BaseIntegration {
     public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
         Map<String, String> queryParams = new HashMap<String, String>();
         queryParams.put("name", "Harish");
-        Greeting result = restTemplate.getForObject(greetingWithNameEndpointStringFormat, Greeting.class, queryParams);
+        Greeting result = restTemplate.getForObject(greetingWithNameEndpointUrl, Greeting.class, queryParams);
         assertNotNull(result.getId());
         assertEquals("Hello, Harish!", result.getContent());
     }

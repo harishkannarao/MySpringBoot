@@ -8,12 +8,12 @@ import static org.junit.Assert.assertTrue;
 public class HelloPageIT extends BaseIntegration {
 
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${helloPageEndpointStringFormat}")
-    public String helloPageEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${helloPageEndpointUrl}")
+    public String helloPageEndpointUrl;
 
     @Test
     public void shouldGetIndexPage() {
-        String pageContent = htmlRestTemplate.getForObject(helloPageEndpointStringFormat, String.class);
+        String pageContent = htmlRestTemplate.getForObject(helloPageEndpointUrl, String.class);
         assertTrue(pageContent.contains("Message: Hello Harish"));
     }
 

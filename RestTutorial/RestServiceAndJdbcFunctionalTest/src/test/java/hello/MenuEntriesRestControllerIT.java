@@ -10,12 +10,12 @@ import static org.junit.Assert.assertEquals;
 
 public class MenuEntriesRestControllerIT extends BaseIntegrationJdbc {
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${allMenuEntriesEndpointStringFormat}")
-    public String allMenuEntriesEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${allMenuEntriesEndpointUrl}")
+    public String allMenuEntriesEndpointUrl;
 
     @Test
     public void getAllMenuEntries_shouldReturnAllMenuEntries_fromDatabase() {
-        String[] menuEntriesArray = restTemplate.getForObject(allMenuEntriesEndpointStringFormat, String[].class);
+        String[] menuEntriesArray = restTemplate.getForObject(allMenuEntriesEndpointUrl, String[].class);
         List<String> menuEntries = Arrays.asList(menuEntriesArray);
         assertEquals(3, menuEntries.size());
     }

@@ -8,12 +8,12 @@ import static org.junit.Assert.assertEquals;
 public class IndexPageIT extends BaseIntegration {
 
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${indexPageEndpointStringFormat}")
-    public String indexPageEndpointStringFormat;
+    @org.springframework.beans.factory.annotation.Value("${indexPageEndpointUrl}")
+    public String indexPageEndpointUrl;
 
     @Test
     public void shouldGetIndexPage() {
-        String pageContent = htmlRestTemplate.getForObject(indexPageEndpointStringFormat, String.class);
+        String pageContent = htmlRestTemplate.getForObject(indexPageEndpointUrl, String.class);
         assertEquals("<b>Hello World !!!</b>", pageContent);
     }
 }
