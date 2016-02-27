@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
     <name>Rest Tutorial</name>
     <modules>
-        <module>TestConfig</module>
-        <module>ThirdPartyRestServiceStub</module>
+        <module>RestTestConfig</module>
+        <module>RestServiceThirdPartyStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
@@ -141,7 +141,7 @@
 
             <dependency>
                 <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>TestConfig</artifactId>
+                <artifactId>RestTestConfig</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>

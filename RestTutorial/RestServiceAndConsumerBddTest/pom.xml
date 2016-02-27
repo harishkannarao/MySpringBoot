@@ -88,7 +88,7 @@
 
         <dependency>
             <groupId>com.harishkannarao.spring</groupId>
-            <artifactId>TestConfig</artifactId>
+            <artifactId>RestTestConfig</artifactId>
             <scope>test</scope>
         </dependency>
 

@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>RestServiceAndJdbcDbFixtures</artifactId>
-    <name>Relational Service And Jdbc Db Fixtures</name>
+    <name>Rest Service And Jdbc Db Fixtures</name>
     <packaging>jar</packaging>
 
     <build>

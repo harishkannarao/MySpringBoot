@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ThirdPartyRestServiceStub</artifactId>
-    <name>Third Party Rest Service Stub</name>
+    <artifactId>RestServiceThirdPartyStub</artifactId>
+    <name>Rest Service Third Party Stub</name>
     <packaging>jar</packaging>
 
     <build>
