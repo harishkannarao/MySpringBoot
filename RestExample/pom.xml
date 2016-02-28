@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>RestTutorial</artifactId>
+    <artifactId>RestExample</artifactId>
     <packaging>pom</packaging>
-    <name>Rest Tutorial</name>
+    <name>Rest Example</name>
     <modules>
-        <module>RestTestConfig</module>
+        <module>RestServiceTestConfig</module>
         <module>RestServiceThirdPartyStub</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
@@ -141,7 +141,7 @@
 
             <dependency>
                 <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>RestTestConfig</artifactId>
+                <artifactId>RestServiceTestConfig</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>

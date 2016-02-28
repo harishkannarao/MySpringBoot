@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.harishkannarao.spring</groupId>
-        <artifactId>RestTutorial</artifactId>
+        <artifactId>RestExample</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>RestTestConfig</artifactId>
+    <artifactId>RestServiceTestConfig</artifactId>
+    <name>Rest Service Test Config</name>
 
 
 </project>

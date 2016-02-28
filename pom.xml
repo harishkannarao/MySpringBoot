@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>My Spring Boot</name>
     <modules>
-        <module>RestTutorial</module>
+        <module>RestExample</module>
     </modules>
 
     <build>

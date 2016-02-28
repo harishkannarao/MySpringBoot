@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.harishkannarao.spring</groupId>
-        <artifactId>RestTutorial</artifactId>
+        <artifactId>RestExample</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>RestServiceAndConsumerBddTestWithMocks</artifactId>
-    <name>Rest Service And Consumer Bdd Test With Mocks</name>
+    <artifactId>RestServiceAndConsumerBddTest</artifactId>
+    <name>Rest Service And Consumer Bdd Test</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -88,10 +88,9 @@
 
         <dependency>
             <groupId>com.harishkannarao.spring</groupId>
-            <artifactId>RestTestConfig</artifactId>
+            <artifactId>RestServiceTestConfig</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
-
 </project>

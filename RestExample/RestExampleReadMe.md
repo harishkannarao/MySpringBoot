@@ -5,7 +5,7 @@ Run with default properties:
 
 Run with external properties file (override the default application.properties):
 
-    mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"
+    mvn spring-boot:run -Drun.arguments="--spring.config.location=./external-config/rest-service-and-consumer-external-config-live.properties"
 
 Run with overridden default property value through command line (multiple values to be comma separated):
 
