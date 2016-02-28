@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@Import({RestServiceAndJdbcDbFixturesApplication.class, RestServiceAndJdbcApplication.class})
+@Import({JdbcApplicationDbFixtures.class, JdbcApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
 })
-public class TestConfigurationJdbc {
+public class TestConfigurationJdbcApplication {
 
     @Autowired
     private JsonHeaderInterceptor jsonHeaderInterceptor;

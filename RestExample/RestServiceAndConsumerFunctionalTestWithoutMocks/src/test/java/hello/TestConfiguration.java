@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@Import({RestServiceAndConsumerApplication.class, ThirdPartyRestServiceStubApplication.class})
+@Import({RestServiceAndConsumerApplication.class, RestServiceThirdPartyStubApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
 })

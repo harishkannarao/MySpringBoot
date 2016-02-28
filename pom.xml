@@ -10,6 +10,7 @@
     <modules>
         <module>RestExample</module>
         <module>JdbcExample</module>
+        <module>PropertiesExample</module>
     </modules>
 
     <properties>

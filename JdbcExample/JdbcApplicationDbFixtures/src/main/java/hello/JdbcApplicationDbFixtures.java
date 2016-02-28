@@ -6,10 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RestServiceAndJdbcDbFixturesApplication implements CommandLineRunner {
+public class JdbcApplicationDbFixtures implements CommandLineRunner {
 
     public static void main(String args[]) {
-        SpringApplication.run(RestServiceAndJdbcDbFixturesApplication.class, args);
+        SpringApplication.run(JdbcApplicationDbFixtures.class, args);
     }
 
     @Autowired

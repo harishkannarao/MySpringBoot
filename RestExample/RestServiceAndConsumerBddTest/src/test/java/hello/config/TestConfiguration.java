@@ -1,7 +1,7 @@
 package hello.config;
 
 import hello.RestServiceAndConsumerApplication;
-import hello.ThirdPartyRestServiceStubApplication;
+import hello.RestServiceThirdPartyStubApplication;
 import hello.client.JsonHeaderInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@Import({RestServiceAndConsumerApplication.class, ThirdPartyRestServiceStubApplication.class})
+@Import({RestServiceAndConsumerApplication.class, RestServiceThirdPartyStubApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
 })

@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TestConfigurationJdbc.class})
+@SpringApplicationConfiguration(classes = {TestConfigurationJdbcApplication.class})
 @WebIntegrationTest({
         "server.port=8180",
         "management.port=8181"
