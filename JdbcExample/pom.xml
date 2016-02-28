@@ -9,38 +9,35 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>RestExample</artifactId>
-    <packaging>pom</packaging>
-    <name>Rest Example</name>
+    <artifactId>JdbcExample</artifactId>
+    <name>Jdbc Example</name>
     <modules>
-        <module>RestServiceTestConfig</module>
-        <module>RestServiceThirdPartyStub</module>
-        <module>RestServiceAndConsumer</module>
-        <module>RestServiceAndConsumerFunctionalTest</module>
-        <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
-        <module>RestServiceAndConsumerBddTest</module>
-        <module>RestServiceAndConsumerBddTestWithMocks</module>
+        <module>JdbcApplicationTestConfig</module>
+        <module>JdbcApplicationDbFixtures</module>
+        <module>JdbcApplication</module>
+        <module>JdbcApplicationFunctionalTest</module>
     </modules>
+    <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>RestServiceAndConsumer</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>RestServiceThirdPartyStub</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>RestServiceTestConfig</artifactId>
+                <artifactId>JdbcApplicationTestConfig</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>JdbcApplicationDbFixtures</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.harishkannarao.spring</groupId>
+                <artifactId>JdbcApplication</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

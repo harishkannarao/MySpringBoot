@@ -3,25 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>RestExample</artifactId>
+        <artifactId>JdbcExample</artifactId>
         <groupId>com.harishkannarao.spring</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>RestServiceAndJdbc</artifactId>
-    <name>Rest Service And Jdbc</name>
+    <artifactId>JdbcApplicationDbFixtures</artifactId>
+    <name>Jdbc Application Db Fixtures</name>
     <packaging>jar</packaging>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.springframework</groupId>
@@ -37,28 +33,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <dotGitDirectory>${project.basedir}/../../.git</dotGitDirectory>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
-                    <format>properties</format>
-                    <skipPoms>true</skipPoms>
-                    <injectAllReactorProjects>false</injectAllReactorProjects>
-                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
-                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
         </plugins>
 
     </build>
@@ -66,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

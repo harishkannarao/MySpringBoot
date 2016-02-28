@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>com.harishkannarao.spring</groupId>
-            <artifactId>ThirdPartyRestServiceStub</artifactId>
+            <artifactId>RestServiceThirdPartyStub</artifactId>
             <scope>test</scope>
         </dependency>
 
