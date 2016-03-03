@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {TestConfigurationPropertiesApplication.class})
 @WebIntegrationTest({
-        "server.port=${DEFAULT_PROPERTIES_PORT:8280}",
-        "management.port=${DEFAULT_PROPERTIES_MANAGEMENT_PORT:8281}",
+        "server.port=${RANDOM_PORT_1:8280}",
+        "management.port=${RANDOM_PORT_2:8281}",
         "properties.endpoint.url=http://localhost:${server.port}"
 })
 public abstract class BaseIntegrationWithDefaultProperties {

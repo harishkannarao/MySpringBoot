@@ -17,8 +17,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {TestConfigurationRestServiceAndConsumerApplication.class})
 @WebIntegrationTest({
-        "server.port=8180",
-        "management.port=8181"
+        "server.port=${RANDOM_PORT_3:8180}",
+        "management.port=${RANDOM_PORT_4:8181}"
 })
 public abstract class BaseIntegration {
     @Autowired
