@@ -11,6 +11,7 @@
         <module>RestExample</module>
         <module>JdbcExample</module>
         <module>PropertiesExample</module>
+        <module>WarExample</module>
     </modules>
 
     <properties>
@@ -34,6 +35,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
                     <version>2.6</version>
                 </plugin>
 
@@ -83,6 +90,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
 
             <plugin>
