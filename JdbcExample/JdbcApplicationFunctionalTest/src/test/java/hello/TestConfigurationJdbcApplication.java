@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@Import({JdbcApplicationDbFixtures.class, JdbcApplication.class})
+@Import({JdbcApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
 })
