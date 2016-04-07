@@ -10,6 +10,15 @@
     <script src="../js/custom/controllers.js"></script>
 </head>
 <body>
-    <div ng-view autoscroll class="view-frame"></div>
+    <!-- BEGIN: Pre-Bootstrap Loading Screen. -->
+    <div ng-if="false">
+        <p>
+            This will show until the application is bootstrapped.
+            Then, the ngIf directive will immediately rip it out of
+            the page.
+        </p>
+    </div>
+    <!-- END: Pre-Bootstrap Loading Screen. -->
+    <div id="angular-view-div" ng-if="true" ng-view autoscroll class="view-frame"></div>
 </body>
 </html>
