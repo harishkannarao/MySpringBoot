@@ -24,7 +24,6 @@ public class WarExampleApplication extends SpringBootServletInitializer {
 	private static Properties getPropertiesForWar() {
 		List<String> configLocations = new ArrayList<>();
 		configLocations.add("classpath:/war-default-config/");
-		configLocations.add("classpath:war-example-external-config/");
 		String warExampleConfigLocation = System.getenv("WAR_EXAMPLE_CONFIG_LOCATION");
 		if(warExampleConfigLocation != null){
 			String formattedWarExampleConfigLocation = String.format("file:%s/", warExampleConfigLocation);
