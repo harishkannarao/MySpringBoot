@@ -14,7 +14,7 @@ public class RedirectController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity redirectToIndexPage(HttpEntity requestEntity) {
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Location", "/app/index.html");
+		responseHeaders.set("Location", "app/index.html");
 		return new ResponseEntity(responseHeaders, HttpStatus.SEE_OTHER);
 	}
 

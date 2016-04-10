@@ -14,9 +14,19 @@ public class WarPropertiesController {
     private final WarProperties warProperties;
 
     @Autowired
-    public WarPropertiesController(@Value("${custom.message}") String message) {
+    public WarPropertiesController(
+            @Value("${custom.message1}") String message1,
+            @Value("${custom.message2}") String message2,
+            @Value("${custom.message3}") String message3,
+            @Value("${custom.message4}") String message4,
+            @Value("${custom.message5}") String message5
+    ) {
         WarProperties warProperties = new WarProperties();
-        warProperties.setMessage(message);
+        warProperties.setMessage1(message1);
+        warProperties.setMessage2(message2);
+        warProperties.setMessage3(message3);
+        warProperties.setMessage4(message4);
+        warProperties.setMessage5(message5);
         this.warProperties = warProperties;
     }
 

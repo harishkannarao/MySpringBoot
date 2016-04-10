@@ -40,7 +40,7 @@ angular.element(document).ready(function () {
 
         var propertiesRequest = {
             method: 'GET',
-            url: '/properties',
+            url: '../properties',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
