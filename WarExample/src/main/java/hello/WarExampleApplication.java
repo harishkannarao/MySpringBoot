@@ -26,13 +26,17 @@ public class WarExampleApplication extends SpringBootServletInitializer {
 		configLocations.add("classpath:/war-default-config/");
 		String warExampleConfigLocation = System.getenv("WAR_EXAMPLE_CONFIG_LOCATION");
 		if(warExampleConfigLocation != null){
-			String formattedWarExampleConfigLocation = String.format("file:%s/", warExampleConfigLocation);
-			configLocations.add(formattedWarExampleConfigLocation);
+			StringBuilder configLocationBuilder = new StringBuilder("file:");
+			configLocationBuilder.append(warExampleConfigLocation);
+			if(!warExampleConfigLocation.endsWith("/")) {
+				configLocationBuilder.append("/");
+			}
+			configLocations.add(configLocationBuilder.toString());
 		}
-		String spingConfigValues = StringUtils.collectionToCommaDelimitedString(configLocations);
+		String springConfigValues = StringUtils.collectionToCommaDelimitedString(configLocations);
 
 		Properties props = new Properties();
-		props.put("spring.config.location", spingConfigValues);
+		props.put("spring.config.location", springConfigValues);
 		return props;
 	}
 
@@ -56,11 +60,15 @@ public class WarExampleApplication extends SpringBootServletInitializer {
 		configLocations.add("classpath:/spring-boot-default-config/");
 		String warExampleConfigLocation = System.getenv("WAR_EXAMPLE_CONFIG_LOCATION");
 		if(warExampleConfigLocation != null){
-			String formattedWarExampleConfigLocation = String.format("file:%s/", warExampleConfigLocation);
-			configLocations.add(formattedWarExampleConfigLocation);
+			StringBuilder configLocationBuilder = new StringBuilder("file:");
+			configLocationBuilder.append(warExampleConfigLocation);
+			if(!warExampleConfigLocation.endsWith("/")) {
+				configLocationBuilder.append("/");
+			}
+			configLocations.add(configLocationBuilder.toString());
 		}
-		String spingConfigValues = StringUtils.collectionToCommaDelimitedString(configLocations);
-		return String.format("--spring.config.location=%s", spingConfigValues);
+		String springConfigValues = StringUtils.collectionToCommaDelimitedString(configLocations);
+		return String.format("--spring.config.location=%s", springConfigValues);
 	}
 
 }
