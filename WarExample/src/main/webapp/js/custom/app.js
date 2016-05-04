@@ -30,11 +30,14 @@ springBootAngularWarApp.provider('configData', function () {
    }];
 });
 
+/*
 angular.element(document).ready(function () {
 
-    fetchData().then(bootstrapApplication);
+    function bootstrapApplication() {
+        angular.bootstrap(document, ['springBootAngularWarApp']);
+    }
 
-    function fetchData() {
+    function fetchDataAndBootStrap() {
         var initInjector = angular.injector(["ng"]);
         var $http = initInjector.get("$http");
 
@@ -47,17 +50,18 @@ angular.element(document).ready(function () {
             },
             data: {}
         }
-        return $http(propertiesRequest).success(function(data) {
-              angular.module('springBootAngularWarApp').config(['configDataProvider', function (configDataProvider) {
+        $http(propertiesRequest).then(function successCallback(data) {
+            angular.module('springBootAngularWarApp').config(['configDataProvider', function (configDataProvider) {
                 configDataProvider.setConfig(data);
-              }]);
+            }]);
+            bootstrapApplication();
         });
     }
 
-    function bootstrapApplication() {
-        angular.bootstrap(document, ['springBootAngularWarApp']);
-    }
+    fetchDataAndBootStrap();
 
 });
+
+*/
 
 
