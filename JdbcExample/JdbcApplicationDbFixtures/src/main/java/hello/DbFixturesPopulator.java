@@ -13,8 +13,6 @@ import javax.sql.DataSource;
 public class DbFixturesPopulator {
     private static final Logger log = LoggerFactory.getLogger(DbFixturesPopulator.class);
 
-    private static boolean SCHEMA_INITIALIZED = false;
-
     private DataSource dataSource;
 
     @Autowired
@@ -28,16 +26,6 @@ public class DbFixturesPopulator {
         populator.addScripts(
                 new ClassPathResource("/dbscripts/create-test-schema.sql"));
         populator.execute(this.dataSource);
-    }
-
-    public void initSchema() {
-        if (!SCHEMA_INITIALIZED) {
-            log.info("Initializing schema in database");
-            createSchema();
-            SCHEMA_INITIALIZED=true;
-        } else {
-            log.info("Database schema is already initialized");
-        }
     }
 
     public void insertData() {

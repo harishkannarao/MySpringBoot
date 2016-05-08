@@ -13,7 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @SpringApplicationConfiguration(classes = {TestConfigurationJdbcApplication.class})
 @WebIntegrationTest({
         "server.port=8180",
-        "management.port=8181"
+        "management.port=8181",
+        "spring.datasource.schema=classpath:/dbscripts/create-test-schema.sql",
+        "spring.datasource.data=classpath:/dbscripts/delete-test-data.sql,classpath:/dbscripts/create-test-data.sql"
 })
 public abstract class BaseIntegrationJdbc {
     @Autowired
@@ -24,7 +26,6 @@ public abstract class BaseIntegrationJdbc {
 
     @Before
     public void setup() {
-        dbFixturesPopulator.initSchema();
         dbFixturesPopulator.resetData();
     }
 }

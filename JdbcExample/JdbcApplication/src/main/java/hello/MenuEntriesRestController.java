@@ -2,7 +2,6 @@ package hello;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,7 @@ public class MenuEntriesRestController {
     private MenuEntriesDao menuEntriesDao;
 
     @Autowired
-    public MenuEntriesRestController(@Qualifier("myMenuEntriesDao")@Lazy MenuEntriesDao menuEntriesDao) {
+    public MenuEntriesRestController(@Qualifier("myMenuEntriesDao") MenuEntriesDao menuEntriesDao) {
         this.menuEntriesDao = menuEntriesDao;
     }
 
