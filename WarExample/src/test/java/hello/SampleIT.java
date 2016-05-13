@@ -35,7 +35,10 @@ public class SampleIT extends AbstractBaseIT{
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement angularViewElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("angular-view-div")));
         assertTrue(angularViewElement.isDisplayed());
-        WebElement message3 = driver.findElement(By.id("message3"));
-        assertEquals("Message 3", message3.getText());
+        assertEquals("Message1 from spring-boot-default-config/application.properties", driver.findElement(By.id("message1")).getText());
+        assertEquals("Message2 from spring-boot-default-config/application.properties", driver.findElement(By.id("message2")).getText());
+        assertEquals("Message3 from spring-boot-default-config/application.properties", driver.findElement(By.id("message3")).getText());
+        assertEquals("Message4 from spring-boot-default-config/application.properties", driver.findElement(By.id("message4")).getText());
+        assertEquals("Message5 from spring-boot-default-config/application.properties", driver.findElement(By.id("message5")).getText());
     }
 }
