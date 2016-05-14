@@ -2,7 +2,6 @@ package hello;
 
 import hello.pageobjects.BasePage;
 import hello.pageobjects.HomePage;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +15,7 @@ public class BasePageIT extends AbstractBaseIT{
     private HomePage homePage;
 
     @Test
-    @Ignore
-    public void shouldRedirectToIndexPageFromBasePage() throws Exception {
+    public void shouldRedirectToHomePageFromBasePage() throws Exception {
         basePage.navigate();
         assertTrue(homePage.isOnPage());
     }

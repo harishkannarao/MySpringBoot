@@ -10,15 +10,11 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-//@EnableAutoConfiguration
-//@ComponentScan
 @Import({WarExampleApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/local-test-config.properties")
@@ -31,18 +27,6 @@ public class TestConfigurationWarExampleApplication {
     @Autowired
     @Value("${warExampleTestDriver}")
     private String warExampleTestDriver;
-
-    @Bean
-    public BasePage getBasePage() {
-        BasePage basePage = new BasePage(getWebDriver(), "http://localhost:8185/");
-        return basePage;
-    }
-
-    @Bean
-    public HomePage getHomePage() {
-        HomePage homePage = new HomePage(getWebDriver());
-        return homePage;
-    }
 
     @Bean(destroyMethod = "quit")
     public WebDriver getWebDriver() {
@@ -64,10 +48,4 @@ public class TestConfigurationWarExampleApplication {
 
         return driver;
     }
-
-    //To resolve ${} in @Value
-    /*@Bean
-    public static PropertySourcesPlaceholderConfigurer getPropertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }*/
 }
