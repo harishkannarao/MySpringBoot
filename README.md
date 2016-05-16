@@ -5,6 +5,7 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Java Version: Oracle Java 1.8.0_31 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
 * Postgresql Database Version: 9.4.4
+* PhantomJS Browser: 2.1.1 (Execute **_phantomjs --version_** in command line after installation)
 * Git Client: Any latest version (Execute **_git --version_** in command line after installation)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
