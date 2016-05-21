@@ -25,7 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         if(requireSsl) {
             http.requiresChannel().anyRequest().requiresSecure();
-            http.portMapper().http(httpPort).mapsTo(httpsPort);
+            boolean isDefaultPorts = (httpPort == 80 && httpsPort == 443);
+            if(!isDefaultPorts) {
+                http.portMapper().http(httpPort).mapsTo(httpsPort);
+            }
         }
     }
 }
