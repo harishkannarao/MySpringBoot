@@ -10,7 +10,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @WebIntegrationTest({
         "server.port=${RANDOM_PORT_1:8182}",
         "management.port=${RANDOM_PORT_2:8183}",
-        "quoteService.url=http://localhost:${server.port}/thirdparty/quote"
+        "quoteService.url=http://localhost:${server.port}/thirdparty/quote",
+        "thirdparty.ping.url=http://localhost:${server.port}/thirdparty/ping"
 })
 public abstract class BaseIntegrationWithThirdPartyStubApplication {
 }

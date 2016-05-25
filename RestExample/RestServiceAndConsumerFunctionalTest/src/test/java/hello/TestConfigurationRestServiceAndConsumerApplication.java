@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @Import({RestServiceAndConsumerApplication.class})
@@ -21,6 +22,15 @@ public class TestConfigurationRestServiceAndConsumerApplication {
     @Primary
     public ThirdPartyRestQuoteClient overrideThirdPartyRestQuoteClientWithMockForTesting() {
         return mock(ThirdPartyRestQuoteClient.class);
+    }
+
+    @Bean
+    @Qualifier("myThirdPartyPingRestClientImpl")
+    @Primary
+    public ThirdPartyPingRestClient overrideThirdPartyPingRestClientWithMockForTesting() {
+        ThirdPartyPingRestClient mockedThirdPartyPingRestClient = mock(ThirdPartyPingRestClient.class);
+        when(mockedThirdPartyPingRestClient.getPingStatus()).thenReturn("healthy");
+        return mockedThirdPartyPingRestClient;
     }
 
     @Bean

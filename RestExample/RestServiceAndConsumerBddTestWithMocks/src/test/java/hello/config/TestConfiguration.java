@@ -1,6 +1,7 @@
 package hello.config;
 
 import hello.RestServiceAndConsumerApplication;
+import hello.ThirdPartyPingRestClient;
 import hello.ThirdPartyRestQuoteClient;
 import hello.client.JsonHeaderInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @Import({RestServiceAndConsumerApplication.class})
@@ -26,6 +28,15 @@ public class TestConfiguration {
     @Primary
     public ThirdPartyRestQuoteClient overrideThirdPartyRestQuoteClientWithMockForTesting() {
         return mock(ThirdPartyRestQuoteClient.class);
+    }
+
+    @Bean
+    @Qualifier("myThirdPartyPingRestClientImpl")
+    @Primary
+    public ThirdPartyPingRestClient overrideThirdPartyPingRestClientWithMockForTesting() {
+        ThirdPartyPingRestClient mockedThirdPartyPingRestClient = mock(ThirdPartyPingRestClient.class);
+        when(mockedThirdPartyPingRestClient.getPingStatus()).thenReturn("healthy");
+        return mockedThirdPartyPingRestClient;
     }
 
     @Autowired
