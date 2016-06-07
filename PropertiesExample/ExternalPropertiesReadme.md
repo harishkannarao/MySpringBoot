@@ -3,11 +3,11 @@ This document explains how to use the external properties file or override the d
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample.jar --spring.config.location=./external-config/production.properties
+    java -jar ./target/PropertiesExample.jar --spring.config.location=./external-config/production.properties --logging.config=./external-config/logback-spring.xml
 
 ### Running with Maven plugin
 
-    mvn spring-boot:run -Drun.arguments="--spring.config.location=./external-config/production.properties"
+    mvn spring-boot:run -Drun.arguments="--spring.config.location=./external-config/production.properties,--logging.config=./external-config/logback-spring.xml"
 
 ### Check the overridden values:
 
