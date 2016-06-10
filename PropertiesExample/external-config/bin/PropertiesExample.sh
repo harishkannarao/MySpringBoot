@@ -1,8 +1,10 @@
 #!/bin/bash
-JARFile="../target/PropertiesExample.jar"
-PIDFile="./pid/PropertiesExampleProduction.pid"
+JARFile="../../target/PropertiesExample.jar"
+PIDFile="../pid/PropertiesExampleProduction.pid"
+PROPERTIESFile="../conf/production.properties"
+LOGGINGConfFile="../conf/logback-spring.xml"
 JVM_OPTS="-Xmx2g"
-SPRING_OPTS="--spring.config.location=./production.properties --logging.config=./logback-spring.xml --spring.pid.file=$PIDFile"
+SPRING_OPTS="--spring.config.location=$PROPERTIESFile --logging.config=$LOGGINGConfFile --spring.pid.file=$PIDFile"
 
 function check_if_process_is_running {
  PID=$(print_process)
