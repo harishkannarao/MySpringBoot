@@ -3,19 +3,18 @@
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
-    <!-- reading a custom property value from the property file -->
-    <springProperty scope="context" name="logFileDir" source="logging.myapp.file.dir"/>
-    <springProperty scope="context" name="logFileName" source="logging.myapp.file.name"/>
+    <!-- reading a custom property value from the spring environment properties -->
+    <springProperty scope="context" name="logFileLocation" source="logging.myapp.file.location"/>
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
-        <file>${logFileDir}/${logFileName}</file>
+        <file>${logFileLocation}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${logFileName}-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+            <fileNamePattern>${logFileLocation}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- or whenever the file size reaches the below -->
