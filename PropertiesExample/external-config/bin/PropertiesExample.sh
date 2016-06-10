@@ -1,9 +1,10 @@
 #!/bin/bash
-JARFile="../../target/PropertiesExample.jar"
-PIDFile="../pid/PropertiesExampleProduction.pid"
-PROPERTIESFile="../conf/production.properties"
-LOGGINGConfFile="../conf/logback-spring.xml"
-LOGGINGFileLocation="../log/PropertiesExample"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+JARFile="$SCRIPT_DIR/../../target/PropertiesExample.jar"
+PIDFile="$SCRIPT_DIR/../pid/PropertiesExampleProduction.pid"
+PROPERTIESFile="$SCRIPT_DIR/../conf/production.properties"
+LOGGINGConfFile="$SCRIPT_DIR/../conf/logback-spring.xml"
+LOGGINGFileLocation="$SCRIPT_DIR/../log/PropertiesExample"
 JVM_OPTS="-Xmx2g"
 SPRING_OPTS="--spring.config.location=$PROPERTIESFile --logging.config=$LOGGINGConfFile --logging.myapp.file.location=$LOGGINGFileLocation --spring.pid.file=$PIDFile"
 
