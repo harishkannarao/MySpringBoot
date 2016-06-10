@@ -1,19 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 JARFile="../target/PropertiesExample.jar"
 PIDFile="./pid/PropertiesExampleProduction.pid"
 JVM_OPTS="-Xmx2g"
 SPRING_OPTS="--spring.config.location=./production.properties --logging.config=./logback-spring.xml --spring.pid.file=$PIDFile"
 
-function check_if_pid_file_exists {
-    if [ ! -f $PIDFile ]
-    then
- echo "PID file not found: $PIDFile"
-        exit 1
-    fi
-}
-
 function check_if_process_is_running {
- if ps -p $(print_process) > /dev/null
+ PID=$(print_process)
+ if [ '' ==  "$PID" ]
+ then
+    return 1
+ fi
+ if ps -p $PID > /dev/null
  then
      return 0
  else
@@ -24,7 +21,7 @@ function check_if_process_is_running {
 function print_process {
     if [ ! -f $PIDFile ]
     then
-        echo 0
+        echo ''
     else
         echo $(<"$PIDFile")
     fi
@@ -32,7 +29,6 @@ function print_process {
 
 case "$1" in
   status)
-    #check_if_pid_file_exists
     if check_if_process_is_running
     then
       echo $(print_process)" is running"
@@ -41,7 +37,6 @@ case "$1" in
     fi
     ;;
   stop)
-    #check_if_pid_file_exists
     if ! check_if_process_is_running
     then
       echo "Process $(print_process) already stopped"
