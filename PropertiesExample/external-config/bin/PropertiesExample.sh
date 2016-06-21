@@ -80,6 +80,10 @@ case "$1" in
       echo "Process $(print_process) already running"
       exit 1
     fi
+    if [ -n "$2" ]
+    then
+        JARFile=$2
+    fi
     nohup java $JVM_OPTS -jar $JARFile $SPRING_OPTS > /dev/null &
     echo "Process started"
     ;;
@@ -92,7 +96,10 @@ case "$1" in
     $0 start
     ;;
   *)
-    echo "Usage: $0 {start|stop|restart|status}"
+    echo "Usage: $0 {start|stop|restart|status} [jarFile]"
+    echo "Example of start with default jar: $0 start"
+    echo "Example of start with overidden jar: $0 start \"/opt/PropertiesExample-2.0.jar\""
+    echo "Example of Stop: $0 stop"
     exit 1
 esac
 
