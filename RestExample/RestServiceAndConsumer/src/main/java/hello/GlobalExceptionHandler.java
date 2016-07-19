@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
+    @ResponseBody
     public ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
@@ -20,6 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
+    @ResponseBody
     public ResponseEntity<ErrorResponse> handleRuntimeException(HttpServletRequest request, Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
@@ -27,6 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {MyCustomCheckedException.class, MyCustomRuntimeException.class})
+    @ResponseBody
     public ResponseEntity<ErrorResponse> handleCustomException(HttpServletRequest request, Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
