@@ -11,10 +11,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class GreetingControllerIT extends BaseIntegration {
 
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${greetingEndpointUrl}")
     public String greetingEndpointUrl;
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointUrl}")
     public String greetingWithNameEndpointUrl;
 

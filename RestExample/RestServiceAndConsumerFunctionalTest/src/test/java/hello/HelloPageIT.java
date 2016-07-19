@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 public class HelloPageIT extends BaseIntegration {
 
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${helloPageEndpointUrl}")
     public String helloPageEndpointUrl;
 

@@ -1,5 +1,6 @@
 package hello;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -24,6 +25,9 @@ public abstract class BaseIntegration {
     @Autowired
     @Qualifier("myTestRestTemplate")
     protected RestTemplate restTemplate;
+    @Autowired
+    @Qualifier("myTestObjectMapper")
+    protected ObjectMapper objectMapper;
     @Autowired
     @Qualifier("myTestHtmlRestTemplate")
     protected RestTemplate htmlRestTemplate;

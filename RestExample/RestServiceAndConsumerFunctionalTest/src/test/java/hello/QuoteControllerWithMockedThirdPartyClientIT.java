@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration {
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${quoteEndpointUrl}")
     public String quoteEndpointUrl;
 

@@ -1,5 +1,6 @@
 package hello;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -41,6 +42,12 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(interceptors);
         return restTemplate;
+    }
+
+    @Bean
+    @Qualifier("myTestObjectMapper")
+    public ObjectMapper getMyTestObjectMapper() {
+        return new ObjectMapper();
     }
 
     @Bean

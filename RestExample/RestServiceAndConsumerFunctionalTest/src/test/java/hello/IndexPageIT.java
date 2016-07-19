@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 public class IndexPageIT extends BaseIntegration {
 
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${indexPageEndpointUrl}")
     public String indexPageEndpointUrl;
 

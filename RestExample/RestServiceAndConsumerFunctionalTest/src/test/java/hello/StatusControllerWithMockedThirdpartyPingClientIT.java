@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertEquals;
 
 public class StatusControllerWithMockedThirdpartyPingClientIT extends BaseIntegration {
-    @Autowired
     @org.springframework.beans.factory.annotation.Value("${statusEndpointUrl}")
     public String statusEndpointUrl;
 
