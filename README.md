@@ -82,6 +82,10 @@ docker create --name springboot-jdbc-postgres -e POSTGRES_PASSWORD=superpassword
 ```
 docker start springboot-jdbc-postgres
 ```
+#### Check PostgreSql Database Container Logs
+```
+docker logs -t -f  springboot-jdbc-postgres
+```
 #### Stop PostgreSql Database Container
 ```
 docker stop springboot-jdbc-postgres
