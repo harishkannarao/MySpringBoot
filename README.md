@@ -76,7 +76,7 @@ Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfa
 ### Docker Commands
 #### Create PostgreSql Database Container (one off setup)
 ```
-docker create --name springboot-jdbc-postgres -e POSTGRES_PASSWORD=superpassword -e POSTGRES_USER=postgres -p 5432:5432 postgres:9.4.8
+docker create --name springboot-jdbc-postgres -e POSTGRES_PASSWORD=superpassword -e POSTGRES_USER=myuser -p 5432:5432 postgres:9.4.8
 ```
 #### Start PostgreSql Database Container
 ```
