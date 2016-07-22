@@ -48,4 +48,15 @@ public class GlobalExceptionHandler {
         }
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(value = {EvilHeaderRequestInterceptor.EvilHeaderException.class})
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleEvilHeaderException(HttpServletRequest request, Exception e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        if(EvilHeaderRequestInterceptor.EvilHeaderException.class.isAssignableFrom(e.getClass())) {
+            EvilHeaderRequestInterceptor.EvilHeaderException evilHeaderException = (EvilHeaderRequestInterceptor.EvilHeaderException) e;
+            errorResponse.setDescription(evilHeaderException.getDescription());
+        }
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }
