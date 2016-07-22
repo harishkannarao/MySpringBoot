@@ -4,13 +4,16 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 ### Required Software and Tools
 * Java Version: Oracle Java 1.8.0_31 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
-* Postgresql Database Version: 9.4.4
+* Docker Version: 1.12.0-rc4, build e4a0dbc, experimental (Execute **_docker --version_** in command line after installation)
 * PhantomJS Browser: 2.1.1 (Execute **_phantomjs --version_** in command line after installation)
 * Git Client: Any latest version (Execute **_git --version_** in command line after installation)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
 ### Pre-requisite to run the build
-* Postgresql database should be setup and run in localhost:5432. Setup guide is available in the following [google doc] (https://docs.google.com/document/d/1INfxu8PEwMnzdDk_fli2WasbFk9rKRw3yZl3SfVDCFM/edit)
+Postgresql database should be setup and run in localhost:5432
+Before running the build, execute the following two commands under **Docker Commands** heading in this readme file
+* Create PostgreSql Database Container
+* Start PostgreSql Database Container
   
 ### Running full build
 
@@ -69,3 +72,33 @@ Set the environment variable as **SERVER_PORT=9000**
 Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
 
     java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
+    
+### Docker Commands
+#### Create PostgreSql Database Container (one off setup)
+```
+docker create --name springboot-jdbc-postgres -e POSTGRES_PASSWORD=superpassword -e POSTGRES_USER=postgres -p 5432:5432 postgres:9.4.8
+```
+#### Start PostgreSql Database Container
+```
+docker start springboot-jdbc-postgres
+```
+#### Stop PostgreSql Database Container
+```
+docker stop springboot-jdbc-postgres
+```
+#### List Containers
+```
+docker ps -al
+```
+#### List Images
+```
+docker images
+```
+#### Remove PostgreSql Database Container
+```
+docker rm springboot-jdbc-postgres
+```
+#### Remove PostgreSql Image
+```
+docker rmi -f postgres:9.4.8
+```
