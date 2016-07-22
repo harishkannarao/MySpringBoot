@@ -1,4 +1,4 @@
-package hello;
+package hello.jdbc.domain;
 
 public class Customer {
     private long id;

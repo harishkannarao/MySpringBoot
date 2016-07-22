@@ -1,5 +1,6 @@
-package hello;
+package hello.jdbc.dao;
 
+import hello.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Qualifier("myCustomerService")
-public class CustomerService {
+@Qualifier("myCustomerDao")
+public class CustomerDao {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public CustomerService(JdbcTemplate jdbcTemplate) {
+    public CustomerDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

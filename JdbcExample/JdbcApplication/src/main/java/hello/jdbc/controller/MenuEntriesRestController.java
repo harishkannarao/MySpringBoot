@@ -1,5 +1,6 @@
-package hello;
+package hello.jdbc.controller;
 
+import hello.jdbc.dao.MenuEntriesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;

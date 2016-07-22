@@ -1,5 +1,7 @@
-package hello;
+package hello.jdbc.controller;
 
+import hello.jdbc.domain.Customer;
+import hello.jdbc.dao.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -12,15 +14,15 @@ import java.util.List;
 @RequestMapping(value = "/customers", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CustomersRestController {
 
-    private CustomerService customerService;
+    private CustomerDao customerDao;
 
     @Autowired
-    public CustomersRestController(@Qualifier("myCustomerService")CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomersRestController(@Qualifier("myCustomerDao")CustomerDao customerDao) {
+        this.customerDao = customerDao;
     }
 
     @RequestMapping
     public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+        return customerDao.getAllCustomers();
     }
 }

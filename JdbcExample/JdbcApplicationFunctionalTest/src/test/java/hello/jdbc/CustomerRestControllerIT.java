@@ -1,5 +1,6 @@
-package hello;
+package hello.jdbc;
 
+import hello.jdbc.domain.Customer;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
