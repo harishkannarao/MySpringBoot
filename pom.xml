@@ -8,9 +8,9 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>My Spring Boot</name>
     <modules>
+        <module>PropertiesExample</module>
         <module>JdbcExample</module>
         <module>RestExample</module>
-        <module>PropertiesExample</module>
         <module>WarExample</module>
     </modules>
 
