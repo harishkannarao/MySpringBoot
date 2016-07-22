@@ -9,12 +9,6 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Git Client: Any latest version (Execute **_git --version_** in command line after installation)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
-### Pre-requisite to run the build
-Postgresql database should be setup and run in localhost:5432
-Before running the build, execute the following two commands under **Docker Commands** heading in this readme file
-* Create PostgreSql Database Container
-* Start PostgreSql Database Container
-  
 ### Running full build
 
     mvn clean install
@@ -76,7 +70,7 @@ Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfa
 ### Docker Commands
 #### Create PostgreSql Database Container (one off setup)
 ```
-docker create --name springboot-jdbc-postgres -e POSTGRES_PASSWORD=superpassword -e POSTGRES_USER=myuser -p 5432:5432 postgres:9.4.8
+docker create --name springboot-jdbc-postgres -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=superpassword -p 5432:5432 postgres:9.4.8
 ```
 #### Start PostgreSql Database Container
 ```
@@ -92,7 +86,7 @@ docker stop springboot-jdbc-postgres
 ```
 #### List Containers
 ```
-docker ps -al
+docker ps -a
 ```
 #### List Images
 ```
