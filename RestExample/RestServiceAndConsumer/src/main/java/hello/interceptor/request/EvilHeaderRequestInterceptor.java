@@ -1,5 +1,6 @@
-package hello;
+package hello.interceptor.request;
 
+import hello.exception.EvilHeaderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -38,19 +39,6 @@ public class EvilHeaderRequestInterceptor extends HandlerInterceptorAdapter {
             throw new EvilHeaderException(messageBuilder.toString());
         }
         return true;
-    }
-
-    public static class EvilHeaderException extends Exception {
-        private final String description;
-
-        public EvilHeaderException(String description) {
-            super(description);
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
     }
 
 }

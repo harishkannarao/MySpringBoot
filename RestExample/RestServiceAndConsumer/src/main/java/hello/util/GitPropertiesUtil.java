@@ -1,4 +1,6 @@
-package hello;
+package hello.util;
+
+import hello.domain.GitProperties;
 
 import java.io.IOException;
 import java.util.Properties;

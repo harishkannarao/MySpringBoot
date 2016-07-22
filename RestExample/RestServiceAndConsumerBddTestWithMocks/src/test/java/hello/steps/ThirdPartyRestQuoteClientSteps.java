@@ -1,10 +1,10 @@
 package hello.steps;
 
 import cucumber.api.java.en.Given;
-import hello.Quote;
-import hello.QuoteBuilder;
-import hello.ThirdPartyRestQuoteClient;
-import hello.ValueBuilder;
+import hello.domain.Quote;
+import hello.domain.QuoteBuilder;
+import hello.client.ThirdPartyRestQuoteClient;
+import hello.domain.ValueBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

@@ -1,4 +1,4 @@
-package hello;
+package hello.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,5 +1,7 @@
-package hello;
+package hello.controller;
 
+import hello.util.GitPropertiesUtil;
+import hello.domain.GitProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

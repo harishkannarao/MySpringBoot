@@ -1,5 +1,6 @@
-package hello;
+package hello.controller;
 
+import hello.domain.Greeting;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,5 +1,6 @@
-package hello;
+package hello.client;
 
+import hello.domain.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

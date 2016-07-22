@@ -1,8 +1,8 @@
 package hello.config;
 
 import hello.RestServiceAndConsumerApplication;
-import hello.ThirdPartyPingRestClient;
-import hello.ThirdPartyRestQuoteClient;
+import hello.client.ThirdPartyPingRestClient;
+import hello.client.ThirdPartyRestQuoteClient;
 import hello.client.JsonHeaderInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

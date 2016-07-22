@@ -1,4 +1,4 @@
-package hello;
+package hello.domain;
 
 public class GitProperties {
     private String gitCommitId;

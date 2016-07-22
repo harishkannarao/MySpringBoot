@@ -1,5 +1,6 @@
 package hello;
 
+import hello.domain.Greeting;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import static hello.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
+import static hello.interceptor.response.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

@@ -1,5 +1,6 @@
 package hello;
 
+import hello.domain.ErrorResponse;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -8,7 +9,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
-import static hello.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
+import static hello.interceptor.response.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

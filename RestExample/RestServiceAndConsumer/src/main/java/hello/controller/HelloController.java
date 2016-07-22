@@ -1,4 +1,4 @@
-package hello;
+package hello.controller;
 
 import java.util.Date;
 import java.util.Map;

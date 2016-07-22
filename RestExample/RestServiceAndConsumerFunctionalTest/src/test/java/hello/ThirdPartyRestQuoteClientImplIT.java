@@ -1,5 +1,6 @@
 package hello;
 
+import hello.client.ThirdPartyRestQuoteClientImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,7 +15,7 @@ public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPar
 
     @Test
     public void getQuote_shouldGetQuote_fromThirdPartyStubService() {
-        Quote result = thirdPartyRestQuoteClientImpl.getQuote();
+        hello.domain.Quote result = thirdPartyRestQuoteClientImpl.getQuote();
         assertEquals("success", result.getType());
         assertEquals("Working with Spring Boot is like pair-programming with the Spring developers.", result.getValue().getQuote());
         assertEquals(new Long(1L), result.getValue().getId());

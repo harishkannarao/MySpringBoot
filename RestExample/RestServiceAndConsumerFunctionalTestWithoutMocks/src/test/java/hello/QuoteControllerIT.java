@@ -12,7 +12,7 @@ public class QuoteControllerIT extends BaseIntegrationWithTestConfiguration {
 
     @Test
     public void getQuote_shouldReturnQuoteDetails_fromThirdPartyRestService() {
-        Quote result = restTemplate.getForObject(quoteEndpointUrl, Quote.class);
+        hello.domain.Quote result = restTemplate.getForObject(quoteEndpointUrl, hello.domain.Quote.class);
         assertEquals("success", result.getType());
         assertEquals("Working with Spring Boot is like pair-programming with the Spring developers.", result.getValue().getQuote());
         assertEquals(new Long(1L), result.getValue().getId());

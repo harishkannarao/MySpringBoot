@@ -1,6 +1,8 @@
 package hello;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hello.client.ThirdPartyPingRestClient;
+import hello.client.ThirdPartyRestQuoteClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

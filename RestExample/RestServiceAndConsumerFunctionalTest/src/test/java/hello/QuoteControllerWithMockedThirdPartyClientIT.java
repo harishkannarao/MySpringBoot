@@ -1,5 +1,6 @@
 package hello;
 
+import hello.client.ThirdPartyRestQuoteClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,12 +18,12 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
 
     @Test
     public void getQuote_shouldReturnQuoteDetails_fromThirdPartyRestService() {
-        Quote expectedQuoteFromThirdPartyService = QuoteBuilder.newBuilder().setType("some type")
-                .setValue(ValueBuilder.newBuilder().setId(2L).setQuote("some quote"))
+        hello.domain.Quote expectedQuoteFromThirdPartyService = hello.domain.QuoteBuilder.newBuilder().setType("some type")
+                .setValue(hello.domain.ValueBuilder.newBuilder().setId(2L).setQuote("some quote"))
                 .build();
         when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
-        Quote result = restTemplate.getForObject(quoteEndpointUrl, Quote.class);
+        hello.domain.Quote result = restTemplate.getForObject(quoteEndpointUrl, hello.domain.Quote.class);
         assertEquals("some type", result.getType());
         assertEquals("some quote", result.getValue().getQuote());
         assertEquals(new Long(2L), result.getValue().getId());

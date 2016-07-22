@@ -3,7 +3,7 @@ package hello.steps;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import hello.Quote;
+import hello.domain.Quote;
 import hello.client.QuoteTestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

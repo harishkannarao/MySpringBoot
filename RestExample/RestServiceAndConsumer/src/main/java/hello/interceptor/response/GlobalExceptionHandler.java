@@ -1,7 +1,9 @@
-package hello;
+package hello.interceptor.response;
 
-import hello.ExceptionSimulationController.MyCustomCheckedException;
-import hello.ExceptionSimulationController.MyCustomRuntimeException;
+import hello.exception.EvilHeaderException;
+import hello.exception.MyCustomCheckedException;
+import hello.exception.MyCustomRuntimeException;
+import hello.domain.ErrorResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -49,12 +51,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = {EvilHeaderRequestInterceptor.EvilHeaderException.class})
+    @ExceptionHandler(value = {EvilHeaderException.class})
     @ResponseBody
     public ResponseEntity<ErrorResponse> handleEvilHeaderException(HttpServletRequest request, Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        if(EvilHeaderRequestInterceptor.EvilHeaderException.class.isAssignableFrom(e.getClass())) {
-            EvilHeaderRequestInterceptor.EvilHeaderException evilHeaderException = (EvilHeaderRequestInterceptor.EvilHeaderException) e;
+        if(EvilHeaderException.class.isAssignableFrom(e.getClass())) {
+            EvilHeaderException evilHeaderException = (EvilHeaderException) e;
             errorResponse.setDescription(evilHeaderException.getDescription());
         }
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

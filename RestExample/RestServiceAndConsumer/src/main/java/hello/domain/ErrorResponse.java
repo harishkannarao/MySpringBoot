@@ -1,4 +1,4 @@
-package hello;
+package hello.domain;
 
 public class ErrorResponse {
     private String message;

@@ -1,5 +1,6 @@
 package hello;
 
+import hello.domain.ErrorResponse;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -7,7 +8,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
-import static hello.EvilHeaderRequestInterceptor.EVIL_HEADER_NAME;
+import static hello.interceptor.request.EvilHeaderRequestInterceptor.EVIL_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
