@@ -59,6 +59,13 @@
                     </images>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <argLine>-DsomethingElse=something -Dpostgresql.db.port=${postgresql.db.port}</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
