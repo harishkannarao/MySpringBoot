@@ -36,6 +36,8 @@
                 </executions>
                 <configuration>
                     <skip>${skipDocker}</skip>
+                    <showLogs>true</showLogs>
+                    <logDate>ISO8601</logDate>
                     <images>
                         <image>
                             <alias>postgres-database</alias>
@@ -49,7 +51,7 @@
                                     <port>${postgresql.db.port}:5432</port>
                                 </ports>
                                 <wait>
-                                    <log>database system is ready to accept connections</log>
+                                    <log>PostgreSQL init process complete; ready for start up</log>
                                     <time>20000</time>
                                 </wait>
                             </run>
