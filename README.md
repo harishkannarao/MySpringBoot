@@ -84,6 +84,11 @@ docker logs -t -f  springboot-jdbc-postgres
 ```
 docker stop springboot-jdbc-postgres
 ```
+#### Connect to PostgreSql Database
+```
+docker run -it --rm --link springboot-jdbc-postgres:springboot-jdbc-postgres-link postgres:9.4.8 psql --host springboot-jdbc-postgres-link --username myuser --dbname myuser --port 5432
+```
+Type '\q' to quit the terminal and container
 #### List Containers
 ```
 docker ps -a
