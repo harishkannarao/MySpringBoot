@@ -52,7 +52,7 @@
                                 </ports>
                                 <wait>
                                     <log>PostgreSQL init process complete; ready for start up</log>
-                                    <time>20000</time>
+                                    <time>90000</time>
                                 </wait>
                             </run>
                         </image>
