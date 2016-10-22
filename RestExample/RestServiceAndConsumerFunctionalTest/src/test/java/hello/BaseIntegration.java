@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -28,12 +29,11 @@ public abstract class BaseIntegration {
     @Autowired
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
-    @Autowired
-    @Qualifier("myTestHtmlRestTemplate")
-    protected RestTemplate htmlRestTemplate;
     protected MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
+    @Autowired
+    protected WebDriver webDriver;
 
     @Before
     public void setup() {

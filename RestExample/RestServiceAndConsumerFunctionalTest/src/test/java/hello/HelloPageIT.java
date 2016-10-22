@@ -1,9 +1,11 @@
 package hello;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openqa.selenium.By;
 
-import static org.junit.Assert.assertTrue;
+import java.time.LocalDate;
+
+import static org.junit.Assert.assertEquals;
 
 public class HelloPageIT extends BaseIntegration {
 
@@ -12,8 +14,12 @@ public class HelloPageIT extends BaseIntegration {
 
     @Test
     public void shouldGetIndexPage() {
-        String pageContent = htmlRestTemplate.getForObject(helloPageEndpointUrl, String.class);
-        assertTrue(pageContent.contains("Message: Hello Harish"));
+        webDriver.navigate().to(helloPageEndpointUrl);
+        String date = webDriver.findElement(By.id("date")).getText();
+        String message = webDriver.findElement(By.id("message")).getText();
+
+        assertEquals(LocalDate.now().toString(), date);
+        assertEquals("Hello Harish", message);
     }
 
 }
