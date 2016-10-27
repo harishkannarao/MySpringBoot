@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @Configuration
 @Import({RestServiceAndConsumerApplication.class})
 @PropertySources({
-        @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
+        @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })
 public class TestConfiguration {
 

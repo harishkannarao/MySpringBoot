@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySources;
 @Configuration
 @Import({RestServiceThirdPartyStubApplication.class})
 @PropertySources({
-        @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
+        @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })
 public class TestConfigurationThirdPartyRestServiceStubApplication {
 }

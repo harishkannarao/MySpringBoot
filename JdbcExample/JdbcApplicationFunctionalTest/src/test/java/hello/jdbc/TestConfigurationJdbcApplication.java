@@ -13,7 +13,7 @@ import java.util.List;
 @Configuration
 @Import({JdbcApplication.class})
 @PropertySources({
-        @PropertySource("classpath:properties/${TEST_ENV:local}-test-config.properties")
+        @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })
 public class TestConfigurationJdbcApplication {
 
