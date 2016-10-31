@@ -15,7 +15,7 @@
     </modules>
 
     <properties>
-        <spring.boot.version>1.3.5.RELEASE</spring.boot.version>
+        <spring.boot.version>1.4.1.RELEASE</spring.boot.version>
         <spring.loaded.version>1.2.6.RELEASE</spring.loaded.version>
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
@@ -76,6 +76,9 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <classifier>exec</classifier>
+                    </configuration>
                     <version>${spring.boot.version}</version>
                 </plugin>
 
@@ -131,6 +134,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
