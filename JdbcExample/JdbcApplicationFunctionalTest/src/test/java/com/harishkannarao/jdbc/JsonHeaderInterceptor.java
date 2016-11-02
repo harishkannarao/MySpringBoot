@@ -1,4 +1,4 @@
-package hello.jdbc;
+package com.harishkannarao.jdbc;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;

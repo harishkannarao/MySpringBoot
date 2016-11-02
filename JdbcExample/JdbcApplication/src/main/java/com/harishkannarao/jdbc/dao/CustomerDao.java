@@ -1,6 +1,6 @@
-package hello.jdbc.dao;
+package com.harishkannarao.jdbc.dao;
 
-import hello.jdbc.domain.Customer;
+import com.harishkannarao.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;

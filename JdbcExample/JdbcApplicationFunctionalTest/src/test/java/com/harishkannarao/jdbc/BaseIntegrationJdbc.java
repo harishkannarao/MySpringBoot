@@ -1,6 +1,6 @@
-package hello.jdbc;
+package com.harishkannarao.jdbc;
 
-import hello.jdbc.fixtures.DbFixturesPopulator;
+import com.harishkannarao.jdbc_fixtures.DbFixturesPopulator;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

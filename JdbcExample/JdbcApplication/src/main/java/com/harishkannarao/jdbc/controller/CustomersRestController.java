@@ -1,7 +1,7 @@
-package hello.jdbc.controller;
+package com.harishkannarao.jdbc.controller;
 
-import hello.jdbc.domain.Customer;
-import hello.jdbc.dao.CustomerDao;
+import com.harishkannarao.jdbc.domain.Customer;
+import com.harishkannarao.jdbc.dao.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;

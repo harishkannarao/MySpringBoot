@@ -1,12 +1,13 @@
-package hello.jdbc;
+package com.harishkannarao.jdbc;
 
-import hello.JdbcApplication;
+import com.harishkannarao.jdbc_fixtures.DbFixturesPopulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class TestConfigurationJdbcApplication {
     @Autowired
     private JsonHeaderInterceptor jsonHeaderInterceptor;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
     @Qualifier("myTestRestTemplate")
     public RestTemplate getMyTestRestTemplate() {
@@ -28,5 +32,10 @@ public class TestConfigurationJdbcApplication {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(interceptors);
         return restTemplate;
+    }
+
+    @Bean
+    public DbFixturesPopulator getDbFixturesPopulator() {
+        return new DbFixturesPopulator(dataSource);
     }
 }

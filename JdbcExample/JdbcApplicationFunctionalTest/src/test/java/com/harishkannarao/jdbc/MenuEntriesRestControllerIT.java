@@ -1,4 +1,4 @@
-package hello.jdbc;
+package com.harishkannarao.jdbc;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
