@@ -1,4 +1,4 @@
-package hello;
+package com.harishkannarao.war;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;

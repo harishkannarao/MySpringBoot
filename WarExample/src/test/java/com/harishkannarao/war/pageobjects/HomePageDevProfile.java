@@ -1,4 +1,4 @@
-package hello.pageobjects;
+package com.harishkannarao.war.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -1,4 +1,4 @@
-package hello;
+package com.harishkannarao.war;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

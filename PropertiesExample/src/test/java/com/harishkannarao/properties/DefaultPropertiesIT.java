@@ -1,4 +1,4 @@
-package hello;
+package com.harishkannarao.properties;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;

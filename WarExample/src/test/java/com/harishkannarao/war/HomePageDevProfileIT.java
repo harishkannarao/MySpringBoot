@@ -1,6 +1,6 @@
-package hello;
+package com.harishkannarao.war;
 
-import hello.pageobjects.HomePageDevProfile;
+import com.harishkannarao.war.pageobjects.HomePageDevProfile;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

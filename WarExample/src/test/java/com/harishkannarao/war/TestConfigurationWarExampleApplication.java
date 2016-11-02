@@ -1,5 +1,6 @@
-package hello;
+package com.harishkannarao.war;
 
+import com.harishkannarao.war.WarExampleApplication;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;

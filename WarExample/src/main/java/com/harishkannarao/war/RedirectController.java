@@ -1,4 +1,4 @@
-package hello;
+package com.harishkannarao.war;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
