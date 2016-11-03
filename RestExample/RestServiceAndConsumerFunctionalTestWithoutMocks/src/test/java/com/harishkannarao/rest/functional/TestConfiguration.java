@@ -1,7 +1,6 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.RestServiceAndConsumerApplication;
-import com.harishkannarao.stub.RestServiceThirdPartyStubApplication;
 import com.harishkannarao.rest.client.ThirdPartyPingRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Configuration
-@Import({RestServiceAndConsumerApplication.class, RestServiceThirdPartyStubApplication.class})
+@Import({RestServiceAndConsumerApplication.class})
 @PropertySources({
         @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })

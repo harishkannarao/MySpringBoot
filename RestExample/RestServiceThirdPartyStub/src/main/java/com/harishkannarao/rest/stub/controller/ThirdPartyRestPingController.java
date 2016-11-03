@@ -1,4 +1,4 @@
-package com.harishkannarao.stub;
+package com.harishkannarao.rest.stub.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

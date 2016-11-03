@@ -1,10 +1,15 @@
-package com.harishkannarao.stub;
+package com.harishkannarao.stub_application;
 
+import com.harishkannarao.rest.stub.SupportConfigurationClassForAutoScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackageClasses = {
+                SupportConfigurationClassForAutoScan.class
+        }
+)
 public class RestServiceThirdPartyStubApplication {
     private static ConfigurableApplicationContext configurableApplicationContext;
 

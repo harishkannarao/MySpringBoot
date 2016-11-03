@@ -1,4 +1,4 @@
-package com.harishkannarao.stub;
+package com.harishkannarao.rest.stub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

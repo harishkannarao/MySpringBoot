@@ -1,21 +1,17 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.client.ThirdPartyRestQuoteClientImpl;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.junit.Assert.assertEquals;
 
-public class ThirdPartyRestQuoteClientImplIT extends BaseIntegrationWithThirdPartyStubApplication {
+public class ThirdPartyRestQuoteClientImplIT extends BaseIntegration {
 
     @Autowired
-    @Qualifier("myThirdPartyRestQuoteClientImpl")
     private ThirdPartyRestQuoteClientImpl thirdPartyRestQuoteClientImpl;
 
     @Test
-    @Ignore
     public void getQuote_shouldGetQuote_fromThirdPartyStubService() {
         com.harishkannarao.rest.domain.Quote result = thirdPartyRestQuoteClientImpl.getQuote();
         assertEquals("success", result.getType());
