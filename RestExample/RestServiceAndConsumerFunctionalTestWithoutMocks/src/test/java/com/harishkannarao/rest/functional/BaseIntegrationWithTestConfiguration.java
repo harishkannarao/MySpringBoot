@@ -1,5 +1,6 @@
 package com.harishkannarao.rest.functional;
 
+import com.harishkannarao.rest.RestServiceAndConsumerApplication;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,7 +12,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
-        classes = {TestConfiguration.class},
+        classes = {
+                RestServiceAndConsumerApplication.class,
+                TestConfigurationFunctionalTestsWithoutMocks.class
+        },
         webEnvironment = DEFINED_PORT,
         properties = {
                 "server.port=8180",

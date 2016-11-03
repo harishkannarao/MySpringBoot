@@ -1,10 +1,13 @@
 package com.harishkannarao.rest.functional;
 
-import com.harishkannarao.rest.RestServiceAndConsumerApplication;
 import com.harishkannarao.rest.client.ThirdPartyPingRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.*;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,12 +17,11 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Configuration
-@Import({RestServiceAndConsumerApplication.class})
+@TestConfiguration
 @PropertySources({
         @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })
-public class TestConfiguration {
+public class TestConfigurationFunctionalTestsWithoutMocks {
 
     @Autowired
     private JsonHeaderInterceptor jsonHeaderInterceptor;

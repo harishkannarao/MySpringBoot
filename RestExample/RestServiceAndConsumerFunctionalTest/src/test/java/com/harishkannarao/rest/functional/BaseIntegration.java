@@ -1,6 +1,7 @@
 package com.harishkannarao.rest.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.harishkannarao.rest.RestServiceAndConsumerApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +19,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
-        classes = {TestConfigurationRestServiceAndConsumerApplication.class},
+        classes = {
+                RestServiceAndConsumerApplication.class,
+                TestConfigurationRestServiceAndConsumerApplication.class
+        },
         webEnvironment = DEFINED_PORT,
         properties = {
                 "server.port=${RANDOM_PORT_3:8180}",

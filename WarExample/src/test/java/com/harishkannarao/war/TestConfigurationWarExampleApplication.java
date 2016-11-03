@@ -1,6 +1,5 @@
 package com.harishkannarao.war;
 
-import com.harishkannarao.war.WarExampleApplication;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -9,12 +8,14 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 import java.util.concurrent.TimeUnit;
 
-@Configuration
-@Import({WarExampleApplication.class})
+@TestConfiguration
 @PropertySources({
         @PropertySource("classpath:properties/local-test-config.properties")
 })

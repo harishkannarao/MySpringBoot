@@ -2,6 +2,7 @@ package com.harishkannarao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
@@ -9,8 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
-@Import({JdbcApplication.class})
+@TestConfiguration
 @PropertySources({
         @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })

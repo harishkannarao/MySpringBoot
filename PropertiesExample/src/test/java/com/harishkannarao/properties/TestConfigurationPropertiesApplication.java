@@ -2,17 +2,15 @@ package com.harishkannarao.properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
-@Import({PropertiesApplication.class})
+@TestConfiguration
 public class TestConfigurationPropertiesApplication {
     @Autowired
     private JsonHeaderInterceptor jsonHeaderInterceptor;

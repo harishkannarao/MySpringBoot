@@ -13,14 +13,18 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
-        classes = {TestConfigurationJdbcApplication.class},
+        classes = {
+                JdbcApplication.class,
+                TestConfigurationJdbcApplication.class
+        },
         webEnvironment = DEFINED_PORT,
         properties = {
                 "server.port=8180",
                 "management.port=8181",
                 "spring.datasource.schema=classpath:/dbscripts/create-test-schema.sql",
                 "spring.datasource.data=classpath:/dbscripts/delete-test-data.sql,classpath:/dbscripts/create-test-data.sql"
-        })
+        }
+)
 public abstract class BaseIntegrationJdbc {
     @Autowired
     @Qualifier("myTestRestTemplate")

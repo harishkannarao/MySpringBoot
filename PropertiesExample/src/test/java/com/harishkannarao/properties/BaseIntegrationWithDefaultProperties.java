@@ -11,7 +11,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
-        classes = {TestConfigurationPropertiesApplication.class},
+        classes = {
+                PropertiesApplication.class,
+                TestConfigurationPropertiesApplication.class
+        },
         webEnvironment = DEFINED_PORT,
         properties = {
                 "server.port=${RANDOM_PORT_1:8280}",
