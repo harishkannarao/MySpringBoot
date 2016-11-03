@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc_fixtures;
 
+import com.harishkannarao.jdbc.fixtures.DbFixturesPopulator;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

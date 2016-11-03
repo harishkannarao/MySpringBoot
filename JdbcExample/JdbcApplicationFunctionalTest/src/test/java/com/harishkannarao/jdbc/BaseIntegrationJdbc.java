@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc;
 
-import com.harishkannarao.jdbc_fixtures.DbFixturesPopulator;
+import com.harishkannarao.jdbc.fixtures.DbFixturesPopulator;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
