@@ -3,7 +3,7 @@ This document explains how to use the command line parameters to override defaul
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample.jar --server.port=8281 --custom.property1=production.value
+    java -jar ./target/PropertiesExample-exec.jar --server.port=8281 --custom.property1=production.value
 
 ### Running with Maven plugin
 

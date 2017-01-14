@@ -10,7 +10,7 @@ For example, to set spring.config.location property, use SPRING_CONFIG_LOCATION 
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample.jar
+    java -jar ./target/PropertiesExample-exec.jar
 
 ### Running with Maven plugin
 

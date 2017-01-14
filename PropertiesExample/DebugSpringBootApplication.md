@@ -7,11 +7,11 @@ This document explains the commands to debug spring boot application using:
 
 #### With Suspend Mode:
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./target/PropertiesExample.jar
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./target/PropertiesExample-exec.jar
 
 #### Without Suspend Mode:
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar ./target/PropertiesExample.jar
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar ./target/PropertiesExample-exec.jar
 
 ## Debugging with Maven plugin
 
