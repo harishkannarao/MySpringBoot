@@ -44,20 +44,20 @@ Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfa
 
 ### Run an application with spring boot generated jar
 
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
+    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
 
 ### Run an application in debug mode with spring boot generated jar
 
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
+    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
 
 ### Run an application with properties overridden by external properties file with spring boot generated jar
 **In Windows/Unix/Linux:**
 
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar" --spring.config.location="./RestExample/external-config/rest-service-and-consumer-external-config-live.properties"
+    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar" --spring.config.location="./RestExample/external-config/rest-service-and-consumer-external-config-live.properties"
 
 ### Run an application with properties overridden through command line with spring boot generated jar
 
-    java -jar ./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
+    java -jar ./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
 
 ### Run an application with properties overridden through environment variable with spring boot generated jar
 
@@ -65,7 +65,7 @@ Set the environment variable as **SERVER_PORT=9000**
 
 Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
 
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer.jar"
+    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
     
 ### Docker Commands
 #### Create PostgreSql Database Container (one off setup)
