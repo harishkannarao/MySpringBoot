@@ -10,7 +10,7 @@ SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 JARFile="$SCRIPT_DIR/../../target/PropertiesExample.jar"
 PIDFile="$SCRIPT_DIR/../pid/PropertiesExampleProduction.pid"
-PROPERTIESFile="$SCRIPT_DIR/../conf/production.properties"
+PROPERTIESFile="$SCRIPT_DIR/../conf/production.yml"
 LOGGINGConfFile="$SCRIPT_DIR/../conf/logback-spring.xml"
 LOGGINGFileLocation="$SCRIPT_DIR/../log/PropertiesExample"
 JVM_OPTS="-Xmx2g"

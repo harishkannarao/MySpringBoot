@@ -1,0 +1,15 @@
+spring:
+  main:
+    banner:
+      mode: off
+
+server:
+  port: 8281
+
+custom:
+  property1: production.value
+
+logging:
+  myapp:
+    file:
+      location: ./external-config/log/PropertiesExample
