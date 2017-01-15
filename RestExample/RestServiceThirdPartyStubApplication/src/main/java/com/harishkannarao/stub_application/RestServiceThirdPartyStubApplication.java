@@ -11,13 +11,8 @@ import org.springframework.context.ConfigurableApplicationContext;
         }
 )
 public class RestServiceThirdPartyStubApplication {
-    private static ConfigurableApplicationContext configurableApplicationContext;
 
     public static void main(String[] args) {
-        configurableApplicationContext = SpringApplication.run(RestServiceThirdPartyStubApplication.class, args);
-    }
-
-    public static ConfigurableApplicationContext getConfigurableApplicationContext() {
-        return configurableApplicationContext;
+        SpringApplication.run(RestServiceThirdPartyStubApplication.class, args);
     }
 }

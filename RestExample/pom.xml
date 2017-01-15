@@ -15,6 +15,7 @@
     <modules>
         <module>RestServiceTestConfig</module>
         <module>RestServiceThirdPartyStub</module>
+        <module>RestServiceThirdPartyStubApplication</module>
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
