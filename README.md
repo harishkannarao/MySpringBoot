@@ -10,62 +10,8 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
 ### Running full build
-
-    mvn clean install
-
-### Run an application with spring boot maven plugin
-
-    mvn spring-boot:run
-
-### Run an application in debug mode with spring boot maven plugin
-
-    mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
-
-### Run an application with properties overridden by external properties file with spring boot maven plugin
-
-    mvn spring-boot:run -Drun.arguments="--spring.config.location={{absolute or relative path of property file}}"
-
-**In Windows/Unix/Linux e.g**
-
-    mvn spring-boot:run -Drun.arguments="--spring.config.location=../external-config/rest-service-and-consumer-external-config-live.properties"
-
-### Run an application with properties overridden by command line with spring boot maven plugin
-
-    mvn spring-boot:run -Drun.arguments="--server.port=9000,--quoteService.url=http://gturnquist-quoters.cfapps.io/api/random"
-
-### Run an application with properties overridden by environment variables with spring boot maven plugin
-
-Set the environment variable as **SERVER_PORT=9000**
-
-Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
-
-    mvn spring-boot:run
-
-
-### Run an application with spring boot generated jar
-
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
-
-### Run an application in debug mode with spring boot generated jar
-
-    java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
-
-### Run an application with properties overridden by external properties file with spring boot generated jar
-**In Windows/Unix/Linux:**
-
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar" --spring.config.location="./RestExample/external-config/rest-service-and-consumer-external-config-live.properties"
-
-### Run an application with properties overridden through command line with spring boot generated jar
-
-    java -jar ./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar --server.port=9000 --quoteService.url=http://gturnquist-quoters.cfapps.io/api/random
-
-### Run an application with properties overridden through environment variable with spring boot generated jar
-
-Set the environment variable as **SERVER_PORT=9000**
-
-Set the environment variable as **QUOTESERVICE_URL=http://gturnquist-quoters.cfapps.io/api/random**
-
-    java -jar "./RestExample/RestServiceAndConsumer/target/RestServiceAndConsumer-exec.jar"
+* Start Postgresql database through docker (steps given below)
+* Execute **mvn clean install**
     
 ### Docker Commands
 #### Create PostgreSql Database Container (one off setup)
@@ -89,19 +35,3 @@ docker stop springboot-jdbc-postgres
 docker run -it --rm --link springboot-jdbc-postgres:springboot-jdbc-postgres-link postgres:9.4.8 psql --host springboot-jdbc-postgres-link --username myuser --dbname myuser --port 5432
 ```
 Type '\q' to quit the terminal and container
-#### List Containers
-```
-docker ps -a
-```
-#### List Images
-```
-docker images
-```
-#### Remove PostgreSql Database Container
-```
-docker rm springboot-jdbc-postgres
-```
-#### Remove PostgreSql Image
-```
-docker rmi -f postgres:9.4.8
-```
