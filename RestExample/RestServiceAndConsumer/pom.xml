@@ -78,19 +78,6 @@
                             <async>true</async>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>run-rest</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>mvn</executable>
-                            <workingDirectory>${project.basedir}</workingDirectory>
-                            <arguments>
-                                <argument>spring-boot:run</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
