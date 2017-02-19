@@ -60,6 +60,59 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>run-third-party</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <workingDirectory>${project.basedir}/../RestServiceThirdPartyStubApplication</workingDirectory>
+                            <arguments>
+                                <argument>spring-boot:run</argument>
+                            </arguments>
+                            <async>true</async>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-rest</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>spring-boot:run</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>wait-for-ping</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="wait-for-ping-resource">
+                                <waitfor maxwait="1" maxwaitunit="minute" checkevery="500">
+                                    <http url="http://localhost:9000/ping.txt"/>
+                                </waitfor>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

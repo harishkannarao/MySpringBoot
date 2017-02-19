@@ -11,8 +11,12 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 
 ### Running full build
 * Start Postgresql database through docker (steps given below)
-* Execute **mvn clean install**
-    
+* Execute ```mvn clean install```
+
+### Running multiple spring boot application in parallel
+* Open terminal in root folder
+* Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping exec:exec@run-rest -pl RestExample/RestServiceAndConsumer```
+
 ### Docker Commands
 #### Create PostgreSql Database Container (one off setup)
 ```
