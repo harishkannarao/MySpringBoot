@@ -16,7 +16,6 @@
 
     <properties>
         <spring.boot.version>1.4.1.RELEASE</spring.boot.version>
-        <spring.loaded.version>1.2.6.RELEASE</spring.loaded.version>
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
