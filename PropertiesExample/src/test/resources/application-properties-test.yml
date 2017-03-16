@@ -1,0 +1,9 @@
+server:
+  port: 8280
+
+management:
+  port: 8281
+
+properties:
+  endpoint:
+    url: http://localhost:${server.port}

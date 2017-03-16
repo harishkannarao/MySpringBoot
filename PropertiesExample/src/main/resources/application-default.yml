@@ -1,0 +1,14 @@
+server:
+  port: 8280
+
+management:
+  port: -1
+
+# Set the location of pid file for spring boot application
+spring:
+  pid:
+    file: ./target/MyPropertiesExample.pid
+    fail:
+      on:
+        write:
+          error: true

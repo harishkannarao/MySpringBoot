@@ -1,0 +1,11 @@
+spring:
+  main:
+    banner:
+      mode: off
+
+custom:
+  property1: value1
+  property2: value2
+
+endpoints:
+  enabled: false
