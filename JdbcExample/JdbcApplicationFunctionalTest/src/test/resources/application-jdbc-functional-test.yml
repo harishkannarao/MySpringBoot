@@ -1,0 +1,10 @@
+server:
+  port: 8180
+
+management:
+  port: 8181
+
+spring:
+  datasource:
+    schema: classpath:/dbscripts/create-test-schema.sql
+    data: classpath:/dbscripts/delete-test-data.sql,classpath:/dbscripts/create-test-data.sql
