@@ -59,11 +59,47 @@
                     </images>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>reserve-server-port</id>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <portNames>
+                                <portName>random.server.http.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>reserve-management-port</id>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <portNames>
+                                <portName>random.management.http.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <argLine>-DsomethingElse=something -Dpostgresql.db.port=${postgresql.db.port}</argLine>
+                    <systemPropertyVariables>
+                        <server.port>${random.server.http.port}</server.port>
+                        <management.port>${random.management.http.port}</management.port>
+                        <postgresql.db.port>${postgresql.db.port}</postgresql.db.port>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
