@@ -19,7 +19,6 @@
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
-        <postgresql.db.port>15432</postgresql.db.port>
         <selenium.version>2.53.0</selenium.version>
         <phantomjsdriver.version>1.3.0</phantomjsdriver.version>
         <phantomjs.version>2.1.1</phantomjs.version>
