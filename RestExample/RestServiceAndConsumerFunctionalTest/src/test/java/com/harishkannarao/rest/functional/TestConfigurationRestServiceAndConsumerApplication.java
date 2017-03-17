@@ -3,6 +3,7 @@ package com.harishkannarao.rest.functional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harishkannarao.rest.client.ThirdPartyPingRestClient;
 import com.harishkannarao.rest.client.ThirdPartyRestQuoteClient;
+import com.harishkannarao.rest.filter.ErrorSimulationFilter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
@@ -18,8 +20,10 @@ import org.springframework.context.annotation.PropertySources;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.boot.web.servlet.FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER;
 
 @TestConfiguration
 @PropertySources({
@@ -73,6 +77,15 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 
         return driver;
+    }
+
+    @Bean
+    public FilterRegistrationBean registerErrorSimulationFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ErrorSimulationFilter());
+        filterRegistrationBean.setName(ErrorSimulationFilter.NAME);
+        filterRegistrationBean.setOrder(REQUEST_WRAPPER_FILTER_MAX_ORDER);
+        filterRegistrationBean.setUrlPatterns(asList(ErrorSimulationFilter.PATH));
+        return filterRegistrationBean;
     }
 
 }
