@@ -35,6 +35,9 @@ public abstract class BaseIntegration {
     @Qualifier("myTestRestTemplate")
     protected TestRestTemplate testRestTemplate;
     @Autowired
+    @Qualifier("myTestRestTemplateForHtml")
+    protected TestRestTemplate testRestTemplateForHtml;
+    @Autowired
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
     protected MockMvc mockMvc;

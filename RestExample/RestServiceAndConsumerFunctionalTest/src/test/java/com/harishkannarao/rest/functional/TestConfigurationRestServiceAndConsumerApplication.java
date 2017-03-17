@@ -51,6 +51,14 @@ public class TestConfigurationRestServiceAndConsumerApplication {
     }
 
     @Bean
+    @Qualifier("myTestRestTemplateForHtml")
+    public TestRestTemplate getMyTestRestTemplateForHtml() {
+        RestTemplateBuilder builder = new RestTemplateBuilder()
+                .additionalInterceptors(new HtmlAcceptHeaderInterceptor());
+        return new TestRestTemplate(builder);
+    }
+
+    @Bean
     @Qualifier("myTestObjectMapper")
     public ObjectMapper getMyTestObjectMapper() {
         return new ObjectMapper();
