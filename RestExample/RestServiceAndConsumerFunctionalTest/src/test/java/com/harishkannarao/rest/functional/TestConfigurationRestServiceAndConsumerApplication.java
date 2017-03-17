@@ -9,15 +9,13 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.mock;
@@ -46,12 +44,10 @@ public class TestConfigurationRestServiceAndConsumerApplication {
 
     @Bean
     @Qualifier("myTestRestTemplate")
-    public RestTemplate getMyTestRestTemplate() {
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-        interceptors.add(new JsonHeaderInterceptor());
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(interceptors);
-        return restTemplate;
+    public TestRestTemplate getMyTestRestTemplate() {
+        RestTemplateBuilder builder = new RestTemplateBuilder()
+                .additionalInterceptors(new JsonHeaderInterceptor());
+        return new TestRestTemplate(builder);
     }
 
     @Bean

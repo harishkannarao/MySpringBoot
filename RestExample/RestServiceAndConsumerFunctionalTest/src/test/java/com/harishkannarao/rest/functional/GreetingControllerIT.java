@@ -24,7 +24,7 @@ public class GreetingControllerIT extends BaseIntegration {
 
     @Test
     public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
-        Greeting result = restTemplate.getForObject(greetingEndpointUrl, Greeting.class);
+        Greeting result = testRestTemplate.getForObject(greetingEndpointUrl, Greeting.class);
         assertNotNull(result.getId());
         assertEquals("Hello, World!", result.getContent());
     }
@@ -33,7 +33,7 @@ public class GreetingControllerIT extends BaseIntegration {
     public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("name", "Harish");
-        Greeting result = restTemplate.getForObject(greetingWithNameEndpointUrl, Greeting.class, queryParams);
+        Greeting result = testRestTemplate.getForObject(greetingWithNameEndpointUrl, Greeting.class, queryParams);
         assertNotNull(result.getId());
         assertEquals("Hello, Harish!", result.getContent());
     }
@@ -46,7 +46,7 @@ public class GreetingControllerIT extends BaseIntegration {
         HttpEntity requestEntity = new HttpEntity(requestHeaders);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("name", "Harish");
-        ResponseEntity<Greeting> response = restTemplate.exchange(greetingWithNameEndpointUrl, HttpMethod.GET, requestEntity, Greeting.class, queryParams);
+        ResponseEntity<Greeting> response = testRestTemplate.exchange(greetingWithNameEndpointUrl, HttpMethod.GET, requestEntity, Greeting.class, queryParams);
         Greeting result = response.getBody();
 
         assertEquals(200, response.getStatusCode().value());

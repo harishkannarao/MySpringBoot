@@ -11,7 +11,7 @@ public class StatusControllerWithMockedThirdpartyPingClientIT extends BaseIntegr
 
     @Test
     public void getStatus_shouldReturnStatusOfThirdPartApps_capturedDuringStartup() {
-        Status status = restTemplate.getForObject(statusEndpointUrl, Status.class);
+        Status status = testRestTemplate.getForObject(statusEndpointUrl, Status.class);
         assertEquals("healthy", status.getThirdPartyStatus());
     }
 }

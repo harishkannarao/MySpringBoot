@@ -23,7 +23,7 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
                 .build();
         when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
-        com.harishkannarao.rest.domain.Quote result = restTemplate.getForObject(quoteEndpointUrl, com.harishkannarao.rest.domain.Quote.class);
+        com.harishkannarao.rest.domain.Quote result = testRestTemplate.getForObject(quoteEndpointUrl, com.harishkannarao.rest.domain.Quote.class);
         assertEquals("some type", result.getType());
         assertEquals("some quote", result.getValue().getQuote());
         assertEquals(new Long(2L), result.getValue().getId());
