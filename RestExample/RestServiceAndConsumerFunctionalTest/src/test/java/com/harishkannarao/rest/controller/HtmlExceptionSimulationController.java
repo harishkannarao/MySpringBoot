@@ -2,12 +2,12 @@ package com.harishkannarao.rest.controller;
 
 import com.harishkannarao.rest.exception.MyCustomCheckedException;
 import com.harishkannarao.rest.exception.MyCustomRuntimeException;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping(path = "generate-exception")
-public class ExceptionSimulationController {
+@Controller
+@RequestMapping(path = "generate-html-exception")
+public class HtmlExceptionSimulationController {
 
     @RequestMapping(path = "runtime")
     public void generateRuntimeException() {

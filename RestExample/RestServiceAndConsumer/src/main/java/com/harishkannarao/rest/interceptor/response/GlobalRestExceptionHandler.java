@@ -1,22 +1,20 @@
 package com.harishkannarao.rest.interceptor.response;
 
+import com.harishkannarao.rest.domain.ErrorResponse;
 import com.harishkannarao.rest.exception.EvilHeaderException;
 import com.harishkannarao.rest.exception.MyCustomCheckedException;
 import com.harishkannarao.rest.exception.MyCustomRuntimeException;
-import com.harishkannarao.rest.domain.ErrorResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice
+@RestControllerAdvice(annotations = {RestController.class})
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class GlobalExceptionHandler {
+public class GlobalRestExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseBody

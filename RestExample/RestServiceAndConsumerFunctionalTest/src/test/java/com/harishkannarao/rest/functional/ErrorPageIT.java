@@ -9,21 +9,19 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.Assert.assertEquals;
 
 public class ErrorPageIT extends BaseIntegration {
+    private static final String ERROR_STATUS_ID = "errorStatus";
     @org.springframework.beans.factory.annotation.Value("${nonExistentPageUrl}")
-    public String nonExistentPageUrl;
+    private String nonExistentPageUrl;
     @org.springframework.beans.factory.annotation.Value("${simulateFilterErrorUrl}")
-    public String simulateFilterErrorUrl;
+    private String simulateFilterErrorUrl;
 
     @Test
     public void shouldReturnGeneralErrorPageWith404MessageGivenNonExistentPageForHtmlClients() {
         webDriver.navigate().to(nonExistentPageUrl);
-        String errorStatus = webDriver.findElement(By.id("errorStatus")).getText();
+        String errorStatus = webDriver.findElement(By.id(ERROR_STATUS_ID)).getText();
         assertEquals(nonExistentPageUrl, webDriver.getCurrentUrl());
         assertEquals("404 Not Found", errorStatus);
-    }
 
-    @Test
-    public void shouldGetNotFoundStatusGivenNonExistentPageForHtmlClients() {
         ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(nonExistentPageUrl, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
     }
@@ -31,15 +29,13 @@ public class ErrorPageIT extends BaseIntegration {
     @Test
     public void shouldReturnGeneralErrorPageWith500MessageGivenNonExistentPageForHtmlClients() {
         webDriver.navigate().to(simulateFilterErrorUrl);
-        String errorStatus = webDriver.findElement(By.id("errorStatus")).getText();
+        String errorStatus = webDriver.findElement(By.id(ERROR_STATUS_ID)).getText();
         assertEquals(simulateFilterErrorUrl, webDriver.getCurrentUrl());
         assertEquals("500 Internal Server Error", errorStatus);
-    }
 
-    @Test
-    public void shouldGetServerErrorStatusGivenNonExistentPageForHtmlClients() {
         ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(simulateFilterErrorUrl, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Test

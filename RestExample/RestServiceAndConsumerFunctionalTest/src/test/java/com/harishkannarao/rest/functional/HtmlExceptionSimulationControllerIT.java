@@ -1,0 +1,66 @@
+package com.harishkannarao.rest.functional;
+
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import static org.junit.Assert.assertEquals;
+
+public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
+
+    private static final String ERROR_MESSAGE_ID = "errorMessage";
+    @org.springframework.beans.factory.annotation.Value("${generateHtmlRuntimeExceptionUrl}")
+    private String generateHtmlRuntimeExceptionUrl;
+    @org.springframework.beans.factory.annotation.Value("${generateHtmlCheckedExceptionUrl}")
+    private String generateHtmlCheckedExceptionUrl;
+    @org.springframework.beans.factory.annotation.Value("${generateHtmlCustomRuntimeExceptionUrl}")
+    private String generateHtmlCustomRuntimeExceptionUrl;
+    @org.springframework.beans.factory.annotation.Value("${generateHtmlCustomCheckedExceptionUrl}")
+    private String generateHtmlCustomCheckedExceptionUrl;
+
+    @Test
+    public void shouldGet500StatusWithMessageForCheckedException() throws Exception {
+        webDriver.navigate().to(generateHtmlCheckedExceptionUrl);
+        String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
+        assertEquals(generateHtmlCheckedExceptionUrl, webDriver.getCurrentUrl());
+        assertEquals("My Sample Checked Exception", errorMessage);
+
+        ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(generateHtmlCheckedExceptionUrl, String.class);
+        assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    public void shouldGet400StatusWithMessageForRuntimeException() throws Exception {
+        webDriver.navigate().to(generateHtmlRuntimeExceptionUrl);
+        String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
+        assertEquals(generateHtmlRuntimeExceptionUrl, webDriver.getCurrentUrl());
+        assertEquals("My Sample Runtime Exception", errorMessage);
+
+        ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(generateHtmlRuntimeExceptionUrl, String.class);
+        assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomRuntimeException() throws Exception {
+        webDriver.navigate().to(generateHtmlCustomRuntimeExceptionUrl);
+        String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
+        assertEquals(generateHtmlCustomRuntimeExceptionUrl, webDriver.getCurrentUrl());
+        assertEquals("CustomRuntime:My Custom Runtime Exception", errorMessage);
+
+        ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(generateHtmlCustomRuntimeExceptionUrl, String.class);
+        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomCheckedException() throws Exception {
+        webDriver.navigate().to(generateHtmlCustomCheckedExceptionUrl);
+        String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
+        assertEquals(generateHtmlCustomCheckedExceptionUrl, webDriver.getCurrentUrl());
+        assertEquals("CustomChecked:My Custom Checked Exception", errorMessage);
+
+        ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(generateHtmlCustomCheckedExceptionUrl, String.class);
+        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+    }
+
+}
