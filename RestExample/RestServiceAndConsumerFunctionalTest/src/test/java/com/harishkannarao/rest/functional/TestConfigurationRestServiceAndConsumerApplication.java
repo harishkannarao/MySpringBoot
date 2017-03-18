@@ -79,7 +79,7 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         return driver;
     }
 
-    @Bean
+    @Bean("errorSimulationFilter")
     public FilterRegistrationBean registerErrorSimulationFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ErrorSimulationFilter());
         filterRegistrationBean.setName(ErrorSimulationFilter.NAME);

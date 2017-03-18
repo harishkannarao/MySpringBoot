@@ -1,6 +1,5 @@
 package com.harishkannarao.rest.functional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.springframework.http.HttpEntity;
@@ -70,7 +69,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         String customHeaderValue = "someValue";
