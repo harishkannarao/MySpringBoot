@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @ControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE)
-public class ResponseHeaderHandler implements ResponseBodyAdvice {
+public class RestResponseHeaderHandler implements ResponseBodyAdvice {
 
     public static final String CUSTOM_HEADER_NAME = "MyCustomHeader";
     @Override

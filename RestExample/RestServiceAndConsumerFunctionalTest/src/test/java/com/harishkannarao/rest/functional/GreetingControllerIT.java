@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.harishkannarao.rest.interceptor.response.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
+import static com.harishkannarao.rest.interceptor.response.RestResponseHeaderHandler.CUSTOM_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
