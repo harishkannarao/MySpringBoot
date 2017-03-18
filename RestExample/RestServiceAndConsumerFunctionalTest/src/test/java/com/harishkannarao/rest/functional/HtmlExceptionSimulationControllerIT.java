@@ -69,7 +69,6 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
     }
 
     @Test
-//    @Ignore
     public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         String customHeaderValue = "someValue";

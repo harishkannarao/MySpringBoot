@@ -2,9 +2,12 @@ package com.harishkannarao.rest.controller;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,8 @@ public class ApplicationErrorController extends AbstractErrorController {
     private static final String STATUS_KEY = "status";
     private static final String ERROR_KEY = "error";
 
+    private final Logger logger = LoggerFactory.getLogger(ApplicationErrorController.class);
+
     @Autowired
     public ApplicationErrorController(ErrorAttributes errorAttributes) {
         super(errorAttributes);
@@ -34,18 +39,30 @@ public class ApplicationErrorController extends AbstractErrorController {
 
     @RequestMapping(value = {ERROR_PATH}, produces = {MediaType.TEXT_HTML_VALUE})
     public ModelAndView errorHtml(HttpServletRequest request) {
+        HttpStatus status = getStatus(request);
         Map<String, Object> errorAttributes = getErrorAttributes(request, INCLUDE_STACK_TRACE);
-        return new ModelAndView(GENERAL_ERROR_VIEW, errorAttributes, getStatus(request));
+        if (HttpStatus.NOT_FOUND.equals(status)) {
+            logger.debug(errorAttributes.get(ERROR_KEY).toString());
+        } else {
+            logger.error(errorAttributes.get(ERROR_KEY).toString());
+        }
+        return new ModelAndView(GENERAL_ERROR_VIEW, errorAttributes, status);
     }
 
     @RequestMapping(value = {ERROR_PATH})
     public ResponseEntity<ErrorDetails> errorObject(HttpServletRequest request) {
+        HttpStatus status = getStatus(request);
         Map<String, Object> errorAttributes = getErrorAttributes(request, INCLUDE_STACK_TRACE);
         ErrorDetails errorDetails = new ErrorDetails(
                 (Integer) errorAttributes.get(STATUS_KEY),
                 (String) errorAttributes.get(ERROR_KEY)
         );
-        return new ResponseEntity<>(errorDetails, getStatus(request));
+        if (HttpStatus.NOT_FOUND.equals(status)) {
+            logger.debug(errorAttributes.get(ERROR_KEY).toString());
+        } else {
+            logger.error(errorAttributes.get(ERROR_KEY).toString());
+        }
+        return new ResponseEntity<>(errorDetails, status);
     }
 
     public static class ErrorDetails {
