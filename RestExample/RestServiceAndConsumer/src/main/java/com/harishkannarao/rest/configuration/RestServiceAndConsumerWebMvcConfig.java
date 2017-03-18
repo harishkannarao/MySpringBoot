@@ -2,7 +2,6 @@ package com.harishkannarao.rest.configuration;
 
 import com.harishkannarao.rest.filter.ResponseHeaderFilter;
 import com.harishkannarao.rest.interceptor.request.EvilHeaderRequestInterceptor;
-import com.harishkannarao.rest.interceptor.response.HtmlResponseHeaderHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +16,11 @@ import static org.springframework.boot.web.servlet.FilterRegistrationBean.REQUES
 public class RestServiceAndConsumerWebMvcConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private EvilHeaderRequestInterceptor evilHeaderRequestInterceptor;
-    @Autowired
-    private HtmlResponseHeaderHandler htmlResponseHeaderHandler;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(evilHeaderRequestInterceptor);
-        registry.addInterceptor(htmlResponseHeaderHandler);
     }
 
     @Bean("responseHeaderFilter")

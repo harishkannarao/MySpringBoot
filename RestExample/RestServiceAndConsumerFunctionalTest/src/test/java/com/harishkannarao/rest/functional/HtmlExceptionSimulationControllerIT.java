@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static com.harishkannarao.rest.interceptor.response.RestResponseHeaderHandler.CUSTOM_HEADER_NAME;
+import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 
 public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
