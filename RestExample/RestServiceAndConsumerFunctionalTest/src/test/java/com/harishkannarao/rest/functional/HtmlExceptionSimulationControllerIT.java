@@ -1,10 +1,16 @@
 package com.harishkannarao.rest.functional;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import static com.harishkannarao.rest.interceptor.response.ResponseHeaderHandler.CUSTOM_HEADER_NAME;
 import static org.junit.Assert.assertEquals;
 
 public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
@@ -63,4 +69,15 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
         assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
     }
 
+    @Test
+    @Ignore
+    public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
+        MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
+        String customHeaderValue = "someValue";
+        requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
+        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        ResponseEntity<String> response = testRestTemplateForHtml.exchange(generateHtmlCustomCheckedExceptionUrl, HttpMethod.GET, requestEntity, String.class);
+        assertEquals(403, response.getStatusCodeValue());
+        assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));
+    }
 }

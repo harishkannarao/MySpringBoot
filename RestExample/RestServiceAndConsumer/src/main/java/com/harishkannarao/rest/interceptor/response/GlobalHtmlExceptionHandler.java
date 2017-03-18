@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice(annotations = {Controller.class})
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE+1)
 public class GlobalHtmlExceptionHandler {
 
     private static final String HTML_CONTROLLER_ERROR_VIEW = "html_controller_error";
