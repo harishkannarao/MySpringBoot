@@ -1,0 +1,5 @@
+server:
+  port: ${RANDOM_PORT_6:8186}
+
+custom:
+  message5: Message5 from spring-boot-default-config/application-dev.properties
