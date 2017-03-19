@@ -14,7 +14,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class ErrorPageIT extends BaseIntegration {
-    private static final String LOGGING_PATTERN = "%-5level %message";
+    private static final String LOGGING_PATTERN = "%-5level %message%n";
     private static final String LOG_FILE_LOCATION = "target/logs";
     private static final String LOG_FILE_PREFIX = "test_log_";
 

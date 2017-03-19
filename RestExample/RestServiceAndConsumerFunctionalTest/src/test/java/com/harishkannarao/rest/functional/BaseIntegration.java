@@ -2,20 +2,16 @@ package com.harishkannarao.rest.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harishkannarao.rest.RestServiceAndConsumerApplication;
-import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
@@ -41,15 +37,8 @@ public abstract class BaseIntegration {
     @Autowired
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
-    protected MockMvc mockMvc;
-    @Autowired
-    protected WebApplicationContext wac;
     @Autowired
     protected WebDriver webDriver;
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = webAppContextSetup(wac).build();
-    }
+    @Autowired
+    protected ConfigurableEnvironment configurableEnvironment;
 }
