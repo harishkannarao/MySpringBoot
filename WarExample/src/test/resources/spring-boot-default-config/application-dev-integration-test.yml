@@ -1,2 +1,4 @@
+randomPort2: 8186
+
 server:
-  port: ${RANDOM_PORT_5:8186}
+  port: ${randomPort2}

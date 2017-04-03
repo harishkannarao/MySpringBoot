@@ -1,2 +1,4 @@
+randomPort1: 8185
+
 server:
-  port: ${RANDOM_PORT_5:8185}
+  port: ${randomPort1}
