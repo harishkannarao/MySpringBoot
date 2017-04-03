@@ -15,7 +15,7 @@ public class HomePageDevProfile {
 
     @Autowired
     public HomePageDevProfile(WebDriver webDriver,
-                              @Value("${warExampleDevProfileIndexPageUrl}") String warExampleIndexPageUrl) {
+                              @Value("${warExample.indexPageUrl}") String warExampleIndexPageUrl) {
         this.webDriver = webDriver;
         this.homePageDevProfileUrl = warExampleIndexPageUrl + "#/home";
     }

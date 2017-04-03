@@ -15,7 +15,7 @@ public class HomePage {
 
     @Autowired
     public HomePage(WebDriver webDriver,
-                    @Value("${warExampleIndexPageUrl}") String warExampleIndexPageUrl) {
+                    @Value("${warExample.indexPageUrl}") String warExampleIndexPageUrl) {
         this.webDriver = webDriver;
         this.homePageUrl = warExampleIndexPageUrl + "#/home";
     }

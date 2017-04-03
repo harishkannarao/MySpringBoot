@@ -15,7 +15,7 @@ public class BasePage {
 
     @Autowired
     public BasePage(WebDriver webDriver,
-                    @Value("${warExampleBaseUrl}") String warExampleBaseUrl) {
+                    @Value("${warExample.baseUrl}") String warExampleBaseUrl) {
         this.webDriver = webDriver;
         this.warExampleBaseUrl = warExampleBaseUrl;
     }

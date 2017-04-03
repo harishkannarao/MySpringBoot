@@ -10,22 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 
 import java.util.concurrent.TimeUnit;
 
 @TestConfiguration
-@PropertySources({
-        @PropertySource("classpath:properties/local-test-config.properties")
-})
 public class TestConfigurationWarExampleApplication {
 
     private static final String FIREFOX_DRIVER = "firefox";
     private static final String PHANTOMJS_DRIVER = "phantomjs";
 
     @Autowired
-    @Value("${warExampleTestDriver}")
+    @Value("${warExample.testDriver}")
     private String warExampleTestDriver;
 
     @Bean(destroyMethod = "quit")
