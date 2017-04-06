@@ -1,7 +1,7 @@
-randomPort1: 8185
+randomServerPort1: 8185
 
 server:
-  port: ${randomPort1}
+  port: ${randomServerPort1}
 
 warExample:
   baseUrl: http://localhost:${server.port}
