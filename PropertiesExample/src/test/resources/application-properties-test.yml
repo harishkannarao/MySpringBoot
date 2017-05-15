@@ -1,8 +1,11 @@
+randomServerPort1: 8280
+randomServerPort2: 8281
+
 server:
-  port: 8280
+  port: ${randomServerPort1}
 
 management:
-  port: 8281
+  port: ${randomServerPort2}
 
 properties:
   endpoint:

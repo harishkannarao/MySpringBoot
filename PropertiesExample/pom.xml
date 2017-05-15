@@ -13,6 +13,21 @@
     <name>Properties Example</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <randomPort1>8280</randomPort1>
+        <randomPort2>8281</randomPort2>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>run-in-ci</id>
+            <properties>
+                <randomPort1>${random.server.http.port}</randomPort1>
+                <randomPort2>${random.management.http.port}</randomPort2>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -68,8 +83,8 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <server.port>${random.server.http.port}</server.port>
-                        <management.port>${random.management.http.port}</management.port>
+                        <randomServerPort1>${randomPort1}</randomServerPort1>
+                        <randomServerPort2>${randomPort2}</randomServerPort2>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
