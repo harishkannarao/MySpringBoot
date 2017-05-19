@@ -4,10 +4,22 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 ### Required Software and Tools
 * Java Version: Oracle Java 1.8.0_31 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
-* Docker Version: 1.12.0-rc4, build e4a0dbc, experimental (Execute **_docker --version_** in command line after installation)
+* Docker Version: Docker version 17.03.1-ce, build c6d412e (Execute **_docker --version_** in command line after installation)
+* Docker Compose Version: docker-compose version 1.11.2, build dfed245 (Execute **_docker-compose --version_** in command line after installation)
 * PhantomJS Browser: 2.1.1 (Execute **_phantomjs --version_** in command line after installation)
 * Git Client: Any latest version (Execute **_git --version_** in command line after installation)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
+
+### Docker dependencies
+Docker dependencies needs to be started using docker-compose before the build
+##### Start docker services
+```
+docker-compose -f docker_local/docker-compose.yml up --build -d
+```
+##### Stop docker services
+```
+docker-compose -f docker_local/docker-compose.yml down -v
+```
 
 ### Running full build
 * Start Postgresql database through docker (steps given below)
@@ -18,21 +30,9 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer```
 
 ### Docker Commands
-#### Create PostgreSql Database Container (one off setup)
-```
-docker create --name springboot-jdbc-postgres -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=superpassword -p 5432:5432 postgres:9.4.8
-```
-#### Start PostgreSql Database Container
-```
-docker start springboot-jdbc-postgres
-```
 #### Check PostgreSql Database Container Logs
 ```
 docker logs -t -f  springboot-jdbc-postgres
-```
-#### Stop PostgreSql Database Container
-```
-docker stop springboot-jdbc-postgres
 ```
 #### Connect to PostgreSql Database
 ```

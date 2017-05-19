@@ -79,7 +79,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <postgresql.db.port>${postgresql.db.port}</postgresql.db.port>
+                        <postgresql.db.port>${postgresDbPort}</postgresql.db.port>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

@@ -13,6 +13,21 @@
     <name>Jdbc Application Functional Test</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <randomPort1>8180</randomPort1>
+        <randomPort2>8181</randomPort2>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>run-in-ci</id>
+            <properties>
+                <randomPort1>${random.server.http.port}</randomPort1>
+                <randomPort2>${random.management.http.port}</randomPort2>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -96,9 +111,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <server.port>${random.server.http.port}</server.port>
-                        <management.port>${random.management.http.port}</management.port>
-                        <postgresql.db.port>${postgresql.db.port}</postgresql.db.port>
+                        <server.port>${randomPort1}</server.port>
+                        <management.port>${randomPort2}</management.port>
+                        <postgresql.db.port>${postgresDbPort}</postgresql.db.port>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

@@ -19,6 +19,21 @@
     </modules>
     <packaging>pom</packaging>
 
+    <properties>
+        <skipDocker>true</skipDocker>
+        <postgresDbPort>5432</postgresDbPort>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>run-in-ci</id>
+            <properties>
+                <skipDocker>false</skipDocker>
+                <postgresDbPort>${postgresql.db.port}</postgresDbPort>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

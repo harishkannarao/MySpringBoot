@@ -29,7 +29,6 @@
         <jquery.version>1.12.4</jquery.version>
         <html5shiv.version>3.7.3</html5shiv.version>
         <respondjs.version>1.4.2</respondjs.version>
-        <skipDocker>false</skipDocker>
     </properties>
 
     <build>
