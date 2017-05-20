@@ -100,7 +100,7 @@
                             <name>harishkannarao/properties_example:${version.number}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
-                                <from>anapsix/alpine-java:jre8</from>
+                                <from>openjdk:8-jre</from>
                                 <tags><!-- define additional tags for the image -->
                                     <tag>latest</tag>
                                 </tags>

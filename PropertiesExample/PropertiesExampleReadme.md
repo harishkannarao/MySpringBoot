@@ -4,3 +4,4 @@ This module demonstrates the different ways to change the properties of the appl
 * Profile specific properties file
 * OS environment variables
 * Command line arguments
+* Run as docker container
