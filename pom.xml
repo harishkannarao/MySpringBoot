@@ -15,6 +15,7 @@
     </modules>
 
     <properties>
+        <version.number>local</version.number>
         <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
@@ -30,6 +31,16 @@
         <html5shiv.version>3.7.3</html5shiv.version>
         <respondjs.version>1.4.2</respondjs.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>run-in-ci</id>
+
+            <properties>
+                <version.number>${git.commit.time}_${git.commit.id}</version.number>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <pluginManagement>
@@ -149,6 +160,24 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyyMMdd-HHmmss</dateFormat><!--  human-readable part of the version number -->
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <generateGitPropertiesFile>false</generateGitPropertiesFile><!-- somehow necessary. otherwise the variables are not available in the pom -->
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
+                </configuration>
             </plugin>
         </plugins>
     </build>
