@@ -1,9 +1,11 @@
 package com.harishkannarao.rest.functional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.harishkannarao.rest.domain.Greeting;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -36,6 +38,16 @@ public class GreetingControllerIT extends BaseIntegration {
         Greeting result = testRestTemplate.getForObject(greetingWithNameEndpointUrl, Greeting.class, queryParams);
         assertNotNull(result.getId());
         assertEquals("Hello, Harish!", result.getContent());
+    }
+
+    @Test
+    public void greeting_shouldReturnGreetingWithName_givenPostWithNameAsJson() throws Exception {
+        Map<String, String> body = new HashMap<>();
+        body.put("name", "Harish");
+        ResponseEntity<String> response = testRestTemplate.postForEntity(greetingEndpointUrl, body, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        JsonNode jsonResponse = objectMapper.readTree(response.getBody());
+        assertEquals("Hello, Harish!", jsonResponse.get("greeting").asText());
     }
 
     @Test
