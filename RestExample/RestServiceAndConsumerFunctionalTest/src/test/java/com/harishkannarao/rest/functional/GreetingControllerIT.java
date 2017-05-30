@@ -3,13 +3,11 @@ package com.harishkannarao.rest.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.harishkannarao.rest.domain.Greeting;
 import org.junit.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +42,11 @@ public class GreetingControllerIT extends BaseIntegration {
     public void greeting_shouldReturnGreetingWithName_givenPostWithNameAsJson() throws Exception {
         Map<String, String> body = new HashMap<>();
         body.put("name", "Harish");
-        ResponseEntity<String> response = testRestTemplate.postForEntity(greetingEndpointUrl, body, String.class);
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+        HttpEntity<Map> requestEntity = new HttpEntity<>(body, requestHeaders);
+        ResponseEntity<String> response = testRestTemplate.exchange(greetingEndpointUrl, HttpMethod.POST, requestEntity, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         JsonNode jsonResponse = objectMapper.readTree(response.getBody());
         assertEquals("Hello, Harish!", jsonResponse.get("greeting").asText());

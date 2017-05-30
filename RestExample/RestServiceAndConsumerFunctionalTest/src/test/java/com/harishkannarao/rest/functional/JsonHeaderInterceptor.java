@@ -13,8 +13,13 @@ public class JsonHeaderInterceptor implements ClientHttpRequestInterceptor {
 
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] body, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
         HttpHeaders headers = httpRequest.getHeaders();
-        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        if (!headers.containsKey(HttpHeaders.ACCEPT)) {
+            headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        }
+        if (!headers.containsKey(HttpHeaders.CONTENT_TYPE)) {
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        }
+
         return clientHttpRequestExecution.execute(httpRequest, body);
     }
 }

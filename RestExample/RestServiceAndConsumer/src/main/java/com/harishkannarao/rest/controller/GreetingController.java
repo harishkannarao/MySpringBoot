@@ -22,7 +22,7 @@ public class GreetingController {
                 String.format(template, name));
     }
 
-    @RequestMapping(value = "/get", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/get", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Map> greetingPost(@RequestBody JsonNode input) {
         String name = input.get("name").asText();
         Map<String, String> result = new HashMap<>();
