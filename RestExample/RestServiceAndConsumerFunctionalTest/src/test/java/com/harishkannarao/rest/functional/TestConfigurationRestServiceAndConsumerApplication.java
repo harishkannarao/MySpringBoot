@@ -68,17 +68,6 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         return new ObjectMapper();
     }
 
-    @Bean(destroyMethod = "quit")
-    public WebDriver getWebDriver() {
-        DesiredCapabilities phantomjsCapabilities = DesiredCapabilities.phantomjs();
-        String[] phantomJsArgs = {"--ignore-ssl-errors=true", "--ssl-protocol=any"};
-        phantomjsCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, phantomJsArgs);
-        WebDriver driver = new PhantomJSDriver(phantomjsCapabilities);
-        driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-
-        return driver;
-    }
-
     @Bean("errorSimulationFilter")
     public FilterRegistrationBean registerErrorSimulationFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ErrorSimulationFilter());

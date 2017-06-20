@@ -2,6 +2,7 @@ package com.harishkannarao.rest.functional;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 
     @Test
     public void shouldGet500StatusWithMessageForCheckedException() throws Exception {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(generateHtmlCheckedExceptionUrl);
         String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
         assertEquals(generateHtmlCheckedExceptionUrl, webDriver.getCurrentUrl());
@@ -37,6 +39,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 
     @Test
     public void shouldGet400StatusWithMessageForRuntimeException() throws Exception {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(generateHtmlRuntimeExceptionUrl);
         String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
         assertEquals(generateHtmlRuntimeExceptionUrl, webDriver.getCurrentUrl());
@@ -48,6 +51,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 
     @Test
     public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomRuntimeException() throws Exception {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(generateHtmlCustomRuntimeExceptionUrl);
         String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
         assertEquals(generateHtmlCustomRuntimeExceptionUrl, webDriver.getCurrentUrl());
@@ -59,6 +63,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 
     @Test
     public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomCheckedException() throws Exception {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(generateHtmlCustomCheckedExceptionUrl);
         String errorMessage = webDriver.findElement(By.id(ERROR_MESSAGE_ID)).getText();
         assertEquals(generateHtmlCustomCheckedExceptionUrl, webDriver.getCurrentUrl());

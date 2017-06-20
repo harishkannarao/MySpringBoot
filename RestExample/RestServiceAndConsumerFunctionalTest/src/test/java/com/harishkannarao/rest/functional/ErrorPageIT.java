@@ -6,6 +6,7 @@ import com.harishkannarao.rest.rule.LogbackTestAppenderRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -29,6 +30,7 @@ public class ErrorPageIT extends BaseIntegration {
 
     @Test
     public void shouldReturnGeneralErrorPageWith404MessageGivenNonExistentPageForHtmlClients() throws IOException {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(nonExistentPageUrl);
         String errorStatus = webDriver.findElement(By.id(ERROR_STATUS_ID)).getText();
         assertEquals(nonExistentPageUrl, webDriver.getCurrentUrl());
@@ -41,6 +43,7 @@ public class ErrorPageIT extends BaseIntegration {
 
     @Test
     public void shouldReturnGeneralErrorPageWith500MessageGivenNonExistentPageForHtmlClients() throws IOException {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(simulateFilterErrorUrl);
         String errorStatus = webDriver.findElement(By.id(ERROR_STATUS_ID)).getText();
         assertEquals(simulateFilterErrorUrl, webDriver.getCurrentUrl());

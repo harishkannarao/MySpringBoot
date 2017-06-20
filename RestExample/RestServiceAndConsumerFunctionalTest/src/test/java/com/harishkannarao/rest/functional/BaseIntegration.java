@@ -2,6 +2,11 @@ package com.harishkannarao.rest.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harishkannarao.rest.RestServiceAndConsumerApplication;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +43,24 @@ public abstract class BaseIntegration {
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
     @Autowired
-    protected WebDriver webDriver;
-    @Autowired
     protected ConfigurableEnvironment configurableEnvironment;
+    @Autowired
+    private WebDriverFactory webDriverFactory;
+    protected String testDisplayName;
+
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        protected void starting(Description description) {
+            testDisplayName = description.getDisplayName();
+        }
+    };
+
+    @After
+    public void globalTearDown() throws Exception {
+        webDriverFactory.closeDrivers();
+    }
+
+    protected WebDriver newWebDriver() {
+        return webDriverFactory.create(testDisplayName);
+    }
 }

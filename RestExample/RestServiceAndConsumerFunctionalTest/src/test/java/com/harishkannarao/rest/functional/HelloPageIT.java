@@ -2,6 +2,7 @@ package com.harishkannarao.rest.functional;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class HelloPageIT extends BaseIntegration {
 
     @Test
     public void shouldGetIndexPage() {
+        WebDriver webDriver = newWebDriver();
         webDriver.navigate().to(helloPageEndpointUrl);
         String date = webDriver.findElement(By.id("date")).getText();
         String message = webDriver.findElement(By.id("message")).getText();
