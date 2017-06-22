@@ -6,4 +6,4 @@ services:
   - docker
 
 script:
-  - mvn clean install
+  - mvn clean install -P run-in-ci
