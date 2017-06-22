@@ -1,6 +1,9 @@
 # MySpringBoot
 This repository is a playground for learning and trying new ideas with Spring Boot
 
+### Travis CI Build status
+[![Build Status](https://travis-ci.org/harishkannarao/MySpringBoot.svg?branch=master)](https://travis-ci.org/harishkannarao/MySpringBoot)
+
 ### Required Software and Tools
 * Java Version: Oracle Java 1.8.0_31 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
