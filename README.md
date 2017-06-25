@@ -28,6 +28,12 @@ docker-compose -f docker_local/docker-compose.yml down -v
 * Start Postgresql database through docker (steps given below)
 * Execute ```mvn clean install```
 
+### Generate artifacts only
+Will skip unit tests, integration tests and docker commands
+```
+mvn clean install -DskipTests=true -DskipDockerDependency=true -DskipDockerBuild=true
+```
+
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder
 * Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer```

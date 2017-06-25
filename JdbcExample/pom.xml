@@ -20,7 +20,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <skipDocker>true</skipDocker>
+        <skipDockerDependency>true</skipDockerDependency>
         <postgresDbPort>5432</postgresDbPort>
     </properties>
 
@@ -28,7 +28,7 @@
         <profile>
             <id>run-in-ci</id>
             <properties>
-                <skipDocker>false</skipDocker>
+                <skipDockerDependency>false</skipDockerDependency>
                 <postgresDbPort>${postgresql.db.port}</postgresDbPort>
             </properties>
         </profile>

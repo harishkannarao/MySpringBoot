@@ -50,7 +50,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <skip>${skipDocker}</skip>
+                    <skip>${skipDockerDependency}</skip>
                     <showLogs>true</showLogs>
                     <logDate>ISO8601</logDate>
                     <images>
