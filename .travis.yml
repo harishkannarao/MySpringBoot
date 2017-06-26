@@ -9,14 +9,3 @@ install: true
 
 script:
   - mvn clean install -P run-in-ci
-
-branches:
-  only:
-  - master
-
-after_success:
-  - git config user.email "builds@travis-ci.com"
-  - git config user.name "Travis CI"
-  - export GIT_TAG=live
-  - git tag -f $GIT_TAG
-  - git push -f origin $GIT_TAG
