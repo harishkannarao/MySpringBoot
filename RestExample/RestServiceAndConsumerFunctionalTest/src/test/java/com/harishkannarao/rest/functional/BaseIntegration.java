@@ -46,21 +46,23 @@ public abstract class BaseIntegration {
     protected ConfigurableEnvironment configurableEnvironment;
     @Autowired
     private WebDriverFactory webDriverFactory;
-    protected String testDisplayName;
 
     @Rule
     public TestRule watcher = new TestWatcher() {
-        protected void starting(Description description) {
-            testDisplayName = description.getDisplayName();
+        @Override
+        protected void failed(Throwable e, Description description) {
+            super.failed(e, description);
+            webDriverFactory.takeScreenShots(description.getDisplayName());
+        }
+
+        @Override
+        protected void finished(Description description) {
+            super.finished(description);
+            webDriverFactory.closeDrivers();
         }
     };
 
-    @After
-    public void globalTearDown() throws Exception {
-        webDriverFactory.closeDrivers();
-    }
-
     protected WebDriver newWebDriver() {
-        return webDriverFactory.create(testDisplayName);
+        return webDriverFactory.create();
     }
 }

@@ -15,28 +15,32 @@ import java.util.stream.IntStream;
 @Component
 public class WebDriverFactory {
 
-    private final List<WebDriverWrapper> webDrivers = new ArrayList<>();
+    private final List<WebDriver> webDrivers = new ArrayList<>();
 
-    public WebDriver create(String testDisplayName) {
+    public WebDriver create() {
         DesiredCapabilities phantomjsCapabilities = DesiredCapabilities.phantomjs();
         String[] phantomJsArgs = {"--ignore-ssl-errors=true", "--ssl-protocol=any"};
         phantomjsCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, phantomJsArgs);
         WebDriver driver = new PhantomJSDriver(phantomjsCapabilities);
         driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 
-        webDrivers.add(new WebDriverWrapper(testDisplayName, driver));
+        webDrivers.add(driver);
 
         return driver;
     }
 
-    public void closeDrivers() {
+    public void takeScreenShots(String fileNamePrefix) {
         IntStream.range(0, webDrivers.size())
                 .forEach(index -> {
-                    WebDriverWrapper webDriverWrapper = webDrivers.get(index);
-                    String filename = webDriverWrapper.getTestDisplayName() + "_" + index;
-                    WebDriverScreenShotUtil.takeScreenShot(webDriverWrapper.getWebDriver(), filename);
-                    webDriverWrapper.getWebDriver().quit();
+                    String fileNameSufix = webDrivers.size() == 1 ? "" : "_" + index;
+                    String filename = fileNamePrefix + fileNameSufix;
+                    WebDriverScreenShotUtil.takeScreenShot(webDrivers.get(index), filename);
                 });
+
+    }
+
+    public void closeDrivers() {
+        webDrivers.forEach(WebDriver::quit);
         webDrivers.clear();
     }
 }
