@@ -1,42 +1,42 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.domain.FeatureToggleResponse;
+import com.harishkannarao.rest.util.PropertiesBasedFeatureToggler;
+import com.harishkannarao.rest.util.TestFeatureToggler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FeatureToggleIT extends BaseIntegration {
 
-    private static final String FEATURE_TOGGLE_PROPERTY = "custom.feature.toggle";
-
     @Value("${featureToggleEndpointUrl}")
     private String featureToggleEndpointUrl;
-    @Value("${custom.feature.toggle}")
-    private String originalFeatureToggleValue;
+    @Autowired
+    private TestFeatureToggler testFeatureToggler;
+    @Autowired
+    private PropertiesBasedFeatureToggler propertiesBasedFeatureToggler;
 
     @Before
     public void setUp() throws Exception {
-        resetFeatureToggleProperty();
-
+        testFeatureToggler.resetCustomFeature();
     }
 
     @After
     public void tearDown() throws Exception {
-        resetFeatureToggleProperty();
-
+        testFeatureToggler.resetCustomFeature();
     }
 
     @Test
     public void shouldReturnFeatureToggleDefaultStatusAsTrue() throws Exception {
+        testFeatureToggler.setCustomFeature(true);
+
         ResponseEntity<String> response = testRestTemplate.exchange(featureToggleEndpointUrl, HttpMethod.GET, null, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -46,7 +46,7 @@ public class FeatureToggleIT extends BaseIntegration {
 
     @Test
     public void shouldReturnFeatureToggleStatusAsFalse() throws Exception {
-        EnvironmentTestUtils.addEnvironment(configurableEnvironment, FEATURE_TOGGLE_PROPERTY+"=false");
+        testFeatureToggler.setCustomFeature(false);
 
         ResponseEntity<String> response = testRestTemplate.exchange(featureToggleEndpointUrl, HttpMethod.GET, null, String.class);
 
@@ -56,8 +56,9 @@ public class FeatureToggleIT extends BaseIntegration {
 
     }
 
-    private void resetFeatureToggleProperty() {
-        EnvironmentTestUtils.addEnvironment(configurableEnvironment, FEATURE_TOGGLE_PROPERTY+"="+originalFeatureToggleValue);
+    @Test
+    public void shouldReadValueFromProperties() {
+        assertTrue(propertiesBasedFeatureToggler.isCustomFeature());
     }
 
 }

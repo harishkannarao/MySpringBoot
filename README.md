@@ -15,14 +15,12 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 
 ### Docker dependencies
 Docker dependencies needs to be started using docker-compose before the build
+##### Pull the latest images of docker services
+    docker-compose -f docker_local/docker-compose.yml pull
 ##### Start docker services
-```
-docker-compose -f docker_local/docker-compose.yml up --build -d
-```
+    docker-compose -f docker_local/docker-compose.yml up --build -d
 ##### Stop docker services
-```
-docker-compose -f docker_local/docker-compose.yml down -v
-```
+    docker-compose -f docker_local/docker-compose.yml down -v
 
 ### Running full build
 * Start Postgresql database through docker (steps given below)
@@ -30,9 +28,8 @@ docker-compose -f docker_local/docker-compose.yml down -v
 
 ### Generate artifacts only
 Will skip unit tests, integration tests and docker commands
-```
-mvn clean install -DskipTests=true -DskipDockerDependency=true -DskipDockerBuild=true
-```
+    
+    mvn clean install -DskipTests=true -DskipDockerDependency=true -DskipDockerBuild=true
 
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder
@@ -40,11 +37,8 @@ mvn clean install -DskipTests=true -DskipDockerDependency=true -DskipDockerBuild
 
 ### Docker Commands
 #### Check PostgreSql Database Container Logs
-```
-docker logs -t -f  springboot-jdbc-postgres
-```
+    docker logs -t -f  springboot-jdbc-postgres
 #### Connect to PostgreSql Database
-```
-docker run --network=dockerlocal_main -it --rm postgres:9.4.8 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
-```
+    docker run --network=dockerlocal_main -it --rm postgres:9.4.8 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
+    
 Type '\q' to quit the terminal and container
