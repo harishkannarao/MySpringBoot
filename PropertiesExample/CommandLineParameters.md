@@ -3,11 +3,11 @@ This document explains how to use the command line parameters to override defaul
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample-exec.jar --server.port=8281 --custom.property1=production.value
+    java -Dserver.port=8281 -Dcustom.property1=production.value -jar ./target/PropertiesExample_local-exec.jar
 
 ### Running with Maven plugin
 
-    mvn spring-boot:run -Drun.arguments="--server.port=8281,--custom.property1=production.value"
+    mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8281 -Dcustom.property1=production.value"
 
 ### Check the overridden values:
 

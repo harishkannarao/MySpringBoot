@@ -5,12 +5,12 @@ For example, to set spring.config.location property, use SPRING_CONFIG_LOCATION 
 
 ### Set Environment Variables (Unix/Linux/Mac)
 
-    export SPRING_CONFIG_LOCATION=./external-config/conf/production.yml
-    export LOGGIN_CONFIG=./external-config/conf/logback-spring.xml
+    export SPRING_CONFIG_LOCATION=classpath:/application.yml,./external-config/conf/production.yml
+    export LOGGING_CONFIG=./external-config/conf/logback-spring.xml
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample-exec.jar
+    java -jar ./target/PropertiesExample_local-exec.jar
 
 ### Running with Maven plugin
 

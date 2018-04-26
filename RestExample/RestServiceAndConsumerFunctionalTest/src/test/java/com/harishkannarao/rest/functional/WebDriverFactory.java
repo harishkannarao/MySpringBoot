@@ -1,6 +1,7 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.util.WebDriverScreenShotUtil;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -18,7 +19,7 @@ public class WebDriverFactory {
     private final List<WebDriver> webDrivers = new ArrayList<>();
 
     public WebDriver create() {
-        DesiredCapabilities phantomjsCapabilities = DesiredCapabilities.phantomjs();
+        DesiredCapabilities phantomjsCapabilities = new DesiredCapabilities("phantomjs", "", Platform.ANY);
         String[] phantomJsArgs = {"--ignore-ssl-errors=true", "--ssl-protocol=any"};
         phantomjsCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, phantomJsArgs);
         WebDriver driver = new PhantomJSDriver(phantomjsCapabilities);

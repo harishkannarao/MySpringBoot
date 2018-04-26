@@ -2,7 +2,6 @@ package com.harishkannarao.war;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -27,11 +26,7 @@ public class TestConfigurationWarExampleApplication {
     public WebDriver getWebDriver() {
         WebDriver driver = null;
         if (FIREFOX_DRIVER.equals(warExampleTestDriver)) {
-            FirefoxProfile fp = new FirefoxProfile();
-            fp.setPreference("browser.startup.homepage", "about:blank");
-            fp.setPreference("startup.homepage_welcome_url", "about:blank");
-            fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
-            driver = new FirefoxDriver(fp);
+            driver = new FirefoxDriver();
             driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
         } else if (PHANTOMJS_DRIVER.equals(warExampleTestDriver)) {
             DesiredCapabilities phantomjsCapabilities = DesiredCapabilities.phantomjs();

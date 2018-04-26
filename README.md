@@ -34,11 +34,14 @@ Will skip unit tests, integration tests and docker commands
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder
 * Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer```
+* Verify all applications are running ```curl --header "Content-Type: application/json" -X GET "http://localhost:8080/quote"```
 
 ### Docker Commands
 #### Check PostgreSql Database Container Logs
     docker logs -t -f  springboot-jdbc-postgres
 #### Connect to PostgreSql Database
     docker run --network=dockerlocal_main -it --rm postgres:9.4.8 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
+    
+Enter password `superpassword`
     
 Type '\q' to quit the terminal and container

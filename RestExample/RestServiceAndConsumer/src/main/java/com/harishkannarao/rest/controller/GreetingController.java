@@ -1,13 +1,15 @@
 package com.harishkannarao.rest.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harishkannarao.rest.domain.Greeting;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -23,10 +25,10 @@ public class GreetingController {
     }
 
     @RequestMapping(value = "/get", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<Map> greetingPost(@RequestBody JsonNode input) {
+    public ResponseEntity<JsonNode> greetingPost(HttpServletRequest request, @RequestBody(required = false) JsonNode input) {
         String name = input.get("name").asText();
-        Map<String, String> result = new HashMap<>();
-        result.put("greeting", String.format(template, name));
-        return ResponseEntity.ok(result);
+        ObjectNode response = JsonNodeFactory.instance.objectNode();
+        response.put("greeting", String.format(template, name));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

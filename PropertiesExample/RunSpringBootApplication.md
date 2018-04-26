@@ -5,7 +5,7 @@ This document explains the commands to run spring boot application using:
 
 ### Running as Java application
 
-    java -jar ./target/PropertiesExample-exec.jar
+    java -jar ./target/PropertiesExample_local-exec.jar
 
 ### Running with Maven plugin
 
