@@ -10,5 +10,9 @@ services:
 
 install: true
 
+before_script:
+  - docker --version
+  - docker-compose --version
+
 script:
-  - mvn clean install -P run-in-ci
+  - mvn clean install --batch-mode -P run-in-ci
