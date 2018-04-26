@@ -29,7 +29,7 @@ Docker dependencies needs to be started using docker-compose before the build
 ### Generate artifacts only
 Will skip unit tests, integration tests and docker commands
     
-    mvn clean install -DskipTests=true -DskipDockerDependency=true -DskipDockerBuild=true
+    mvn clean install -DskipTests=true -DskipDockerBuild=true
 
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder

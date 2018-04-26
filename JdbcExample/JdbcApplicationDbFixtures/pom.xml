@@ -16,50 +16,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>start-database</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                    </execution>
-                    <execution>
-                        <id>stop-database</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skip>${skipDockerDependency}</skip>
-                    <showLogs>true</showLogs>
-                    <logDate>ISO8601</logDate>
-                    <images>
-                        <image>
-                            <alias>postgres-database</alias>
-                            <name>postgres:${postgresql.db.version}</name>
-                            <run>
-                                <env>
-                                    <POSTGRES_USER>myuser</POSTGRES_USER>
-                                    <POSTGRES_PASSWORD>superpassword</POSTGRES_PASSWORD>
-                                </env>
-                                <ports>
-                                    <port>${postgresql.db.port}:5432</port>
-                                </ports>
-                                <wait>
-                                    <log>PostgreSQL init process complete; ready for start up</log>
-                                    <time>90000</time>
-                                </wait>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -73,15 +29,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <systemPropertyVariables>
-                        <postgresql.db.port>${postgresDbPort}</postgresql.db.port>
-                    </systemPropertyVariables>
-                </configuration>
             </plugin>
         </plugins>
 

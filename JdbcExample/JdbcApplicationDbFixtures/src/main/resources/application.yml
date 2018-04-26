@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:${postgresql.db.port:5432}/myuser
+    url: jdbc:postgresql://localhost:5432/myuser
     username: myuser
     password: superpassword
     driver:

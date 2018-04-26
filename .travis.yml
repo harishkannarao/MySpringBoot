@@ -13,6 +13,11 @@ install: true
 before_script:
   - docker --version
   - docker-compose --version
+  - docker-compose -f docker_local/docker-compose.yml pull
+  - docker-compose -f docker_local/docker-compose.yml up --build -d
 
 script:
-  - mvn clean install --batch-mode -P run-in-ci
+  - mvn clean install --batch-mode -P run-in-ci -DskipDockerBuild=true
+
+after_script:
+  - docker-compose -f docker_local/docker-compose.yml down -v

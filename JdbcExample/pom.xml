@@ -19,44 +19,6 @@
     </modules>
     <packaging>pom</packaging>
 
-    <properties>
-        <skipDockerDependency>true</skipDockerDependency>
-        <postgresDbPort>5432</postgresDbPort>
-    </properties>
-
-    <profiles>
-        <profile>
-            <id>run-in-ci</id>
-            <properties>
-                <skipDockerDependency>false</skipDockerDependency>
-                <postgresDbPort>${postgresql.db.port}</postgresDbPort>
-            </properties>
-        </profile>
-    </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>reserve-postgres-db-port</id>
-                        <goals>
-                            <goal>reserve-network-port</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <portNames>
-                                <portName>postgresql.db.port</portName>
-                            </portNames>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
