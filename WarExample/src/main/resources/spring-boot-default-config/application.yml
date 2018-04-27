@@ -7,7 +7,3 @@ custom:
   message3: Message3 from spring-boot-default-config/application.properties
   message4: Message4 from spring-boot-default-config/application.properties
   message5: Message5 from spring-boot-default-config/application.properties
-
-requireSsl: false
-httpPort: 80
-httpsPort: 443
