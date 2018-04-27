@@ -7,7 +7,7 @@ services:
     container_name: springboot-jdbc-postgres
     image: "postgres:9.4.8"
     ports:
-      - "5432:5432"
+      - "15432:5432"
     environment:
       - "POSTGRES_USER=myuser"
       - "POSTGRES_PASSWORD=superpassword"
