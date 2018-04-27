@@ -14,7 +14,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <skipDockerBuild>false</skipDockerBuild>
         <randomPort1>8280</randomPort1>
         <randomPort2>8281</randomPort2>
     </properties>
@@ -88,60 +87,6 @@
                         <randomServerPort2>${randomPort2}</randomServerPort2>
                     </systemPropertyVariables>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <verbose>true</verbose>
-                    <images>
-                        <image>
-                            <name>harishkannarao/properties_example:${version.number}</name>
-                            <alias>${project.artifactId}</alias>
-                            <build>
-                                <from>openjdk:8-jre</from>
-                                <tags><!-- define additional tags for the image -->
-                                    <tag>latest</tag>
-                                </tags>
-                                <assembly>
-                                    <mode>dir</mode>
-                                    <targetDir>/opt</targetDir>
-                                    <inline>
-                                        <id>${project.artifactId}</id>
-                                        <files>
-                                            <file>
-                                                <source>target/${project.artifactId}_${version.number}-exec.jar</source>
-                                                <outputDirectory>.</outputDirectory>
-                                            </file>
-                                        </files>
-                                    </inline>
-                                </assembly>
-                                <ports>
-                                    <port>8280</port>
-                                </ports>
-                                <cmd>
-                                    <shell>
-                                        java -jar /opt/${project.artifactId}_${version.number}-exec.jar
-                                    </shell>
-                                </cmd>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build-docker-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipDockerBuild}</skip>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
