@@ -80,4 +80,9 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         return new TestFeatureToggler(propertiesBasedFeatureToggler);
     }
 
+    @Bean
+    public WebDriverFactory createWebDriverFactorySingleton() {
+        return new WebDriverFactory();
+    }
+
 }

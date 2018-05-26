@@ -58,11 +58,11 @@ public abstract class BaseIntegration {
         @Override
         protected void finished(Description description) {
             super.finished(description);
-            webDriverFactory.closeDrivers();
+            webDriverFactory.closeAllWebDrivers();
         }
     };
 
     protected WebDriver newWebDriver() {
-        return webDriverFactory.create();
+        return webDriverFactory.newWebDriver();
     }
 }

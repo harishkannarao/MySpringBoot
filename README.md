@@ -9,7 +9,8 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
 * Docker Version: Docker version 17.03.1-ce, build c6d412e (Execute **_docker --version_** in command line after installation)
 * Docker Compose Version: docker-compose version 1.11.2, build dfed245 (Execute **_docker-compose --version_** in command line after installation)
-* PhantomJS Browser: 2.1.1 (Execute **_phantomjs --version_** in command line after installation)
+* Chrome (Windows & Mac OS) Browser / Chromium (Linux OS) Browser: 62
+* chromedriver: 2.32 [chromedriver installation steps](https://blogs.harishkannarao.com/2018/01/installing-chromedriver-for-selenium.html)
 * Git Client: Any latest version (Execute **_git --version_** in command line after installation)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
@@ -25,6 +26,11 @@ Docker dependencies needs to be started using docker-compose before the build
 ### Running full build
 * Start Postgresql database through docker (steps given below)
 * Execute ```mvn clean install```
+
+### Run full build (headless mode)
+To run the tests with chrome in headless mode
+
+    mvn clean install -DchromeHeadless=true
 
 ### Generate artifacts only
 Will skip unit tests, integration tests and docker commands

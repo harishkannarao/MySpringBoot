@@ -8,7 +8,11 @@ jdk:
 services:
   - docker
 
-install: true
+install:
+  - sudo apt-get -qq install -y chromium-browser
+  - sudo apt-get -qq install -y chromium-chromedriver
+  - sudo apt-get -qq install -y libxi6
+  - sudo apt-get -qq install -y libgconf-2-4
 
 before_script:
   - docker --version
@@ -17,7 +21,7 @@ before_script:
   - docker-compose -f docker_local/docker-compose.yml up --build -d
 
 script:
-  - mvn clean install --batch-mode -P run-in-ci -DskipDockerBuild=true
+  - mvn clean install --batch-mode -P run-in-ci -DskipDockerBuild=true -DchromeDriverBinary=/usr/lib/chromium-browser/chromedriver -DchromeBinary=/usr/bin/chromium-browser -DchromeHeadless=true
 
 after_script:
   - docker-compose -f docker_local/docker-compose.yml down -v
