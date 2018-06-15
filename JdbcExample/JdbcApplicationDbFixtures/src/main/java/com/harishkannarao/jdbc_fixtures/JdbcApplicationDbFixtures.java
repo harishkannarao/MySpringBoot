@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.env.Environment;
 
 @SpringBootApplication(
         scanBasePackageClasses = {
@@ -19,10 +20,14 @@ public class JdbcApplicationDbFixtures implements CommandLineRunner {
 
     @Autowired
     private DbFixturesPopulator dbFixturesPopulator;
+    @Autowired
+    private Environment environment;
 
     @Override
-    public void run(String... strings) throws Exception {
-        dbFixturesPopulator.createSchema();
-        dbFixturesPopulator.insertData();
+    public void run(String... strings) {
+        if (environment.getProperty("application.run", Boolean.class, Boolean.TRUE)) {
+            dbFixturesPopulator.createSchema();
+            dbFixturesPopulator.insertData();
+        }
     }
 }

@@ -6,7 +6,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
-        classes = {JdbcApplicationDbFixtures.class}
+        classes = {JdbcApplicationDbFixtures.class},
+        properties = {
+                "application.run=false"
+        }
 )
 public abstract class BaseIntegrationTestWithRestServiceAndJdbcDbFixturesApplication {
 }
