@@ -24,7 +24,8 @@ public class DbFixturesPopulator {
         log.info("Creating schema in database");
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScripts(
-                new ClassPathResource("/dbscripts/create-test-schema.sql"));
+                new ClassPathResource("/dbscripts/create-test-schema.sql")
+        );
         populator.execute(this.dataSource);
     }
 

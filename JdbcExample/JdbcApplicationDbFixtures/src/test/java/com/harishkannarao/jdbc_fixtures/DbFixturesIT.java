@@ -2,15 +2,15 @@ package com.harishkannarao.jdbc_fixtures;
 
 import com.harishkannarao.jdbc.fixtures.DbFixturesPopulator;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class DbFixturesIT extends BaseIntegrationTestWithRestServiceAndJdbcDbFixturesApplication {
 
-    @Autowired
-    private DbFixturesPopulator dbFixturesPopulator;
-
     @Test
     public void shouldBeAbleToResetFixturesConsitently() {
+        runSpringApplication();
+
+        DbFixturesPopulator dbFixturesPopulator = application.getBean(DbFixturesPopulator.class);
+
         dbFixturesPopulator.createSchema();
         dbFixturesPopulator.insertData();
         dbFixturesPopulator.resetData();

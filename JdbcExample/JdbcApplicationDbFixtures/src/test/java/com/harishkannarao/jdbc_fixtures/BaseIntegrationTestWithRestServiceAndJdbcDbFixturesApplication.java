@@ -1,15 +1,25 @@
 package com.harishkannarao.jdbc_fixtures;
 
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.After;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(
-        classes = {JdbcApplicationDbFixtures.class},
-        properties = {
-                "application.run=false"
-        }
-)
 public abstract class BaseIntegrationTestWithRestServiceAndJdbcDbFixturesApplication {
+
+    static ConfigurableApplicationContext application;
+    private static String[] defaultProperties = new String[]{"--application.run=false"};
+
+    static void runSpringApplication() {
+        application =  SpringApplication.run(
+                JdbcApplicationDbFixtures.class,
+                defaultProperties
+        );
+    }
+
+    @After
+    public void stopSpringApplication() {
+        if (application != null && application.isRunning()) {
+            SpringApplication.exit(application);
+        }
+    }
 }
