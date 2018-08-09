@@ -7,6 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,10 +21,12 @@ public class ErrorPageIT extends BaseIntegration {
     private static final String LOG_FILE_PREFIX = "test_log_";
 
     private static final String ERROR_STATUS_ID = "errorStatus";
-    @org.springframework.beans.factory.annotation.Value("${nonExistentPageUrl}")
+    @Value("${nonExistentPageUrl}")
     private String nonExistentPageUrl;
-    @org.springframework.beans.factory.annotation.Value("${simulateFilterErrorUrl}")
+    @Value("${simulateFilterErrorUrl}")
     private String simulateFilterErrorUrl;
+    @Value("${customErrorSimulationUrl}")
+    private String customErrorSimulationUrl;
 
     @Rule
     public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(ApplicationErrorController.class.getName(), LOGGING_PATTERN, LOG_FILE_LOCATION, LOG_FILE_PREFIX);
@@ -74,4 +77,12 @@ public class ErrorPageIT extends BaseIntegration {
         testAppenderRule.assertLogEntry("ERROR Internal Server Error");
     }
 
+    @Test
+    public void shouldHandleCustomExceptionTo405Status() throws Exception {
+        ResponseEntity<String> response = testRestTemplate.getForEntity(customErrorSimulationUrl, String.class);
+        assertEquals(response.getStatusCode(), HttpStatus.METHOD_NOT_ALLOWED);
+        ApplicationErrorController.ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ApplicationErrorController.ErrorDetails.class);
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), errorDetails.getStatus());
+        assertEquals("ERR123 :: Unique error", errorDetails.getError());
+    }
 }

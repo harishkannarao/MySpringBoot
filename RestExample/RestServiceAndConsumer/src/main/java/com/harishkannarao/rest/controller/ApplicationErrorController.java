@@ -2,6 +2,7 @@ package com.harishkannarao.rest.controller;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.harishkannarao.rest.exception.MyCustomRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +28,12 @@ public class ApplicationErrorController extends AbstractErrorController {
     private static final String ERROR_KEY = "error";
 
     private final Logger logger = LoggerFactory.getLogger(ApplicationErrorController.class);
+    private final ErrorAttributes errorAttributes;
 
     @Autowired
     public ApplicationErrorController(ErrorAttributes errorAttributes) {
         super(errorAttributes);
+        this.errorAttributes = errorAttributes;
     }
 
     @Override
@@ -53,6 +57,17 @@ public class ApplicationErrorController extends AbstractErrorController {
     public ResponseEntity<ErrorDetails> errorObject(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
         Map<String, Object> errorAttributes = getErrorAttributes(request, INCLUDE_STACK_TRACE);
+        Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
+        if (error != null) {
+            if (error instanceof MyCustomRuntimeException) {
+                MyCustomRuntimeException exception = (MyCustomRuntimeException) error;
+                ErrorDetails errorDetails = new ErrorDetails(
+                        HttpStatus.METHOD_NOT_ALLOWED.value(),
+                        String.format("%s :: %s", exception.getCode(), exception.getDescription())
+                );
+                return new ResponseEntity<>(errorDetails, HttpStatus.METHOD_NOT_ALLOWED);
+            }
+        }
         ErrorDetails errorDetails = new ErrorDetails(
                 (Integer) errorAttributes.get(STATUS_KEY),
                 (String) errorAttributes.get(ERROR_KEY)

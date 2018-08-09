@@ -46,7 +46,7 @@ Will skip unit tests, integration tests and docker commands
 #### Check PostgreSql Database Container Logs
     docker logs -t -f  springboot-jdbc-postgres
 #### Connect to PostgreSql Database
-    docker run --network=docker_local_main -it --rm postgres:9.4.8 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
+    docker run --network=docker_local_main -it --rm postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
 Enter password `superpassword`
     
