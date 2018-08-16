@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/menuentries", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-public class MenuEntriesRestController {
+public class MenuEntriesRestController extends AbstractBaseController{
     private MenuEntriesDao menuEntriesDao;
 
     @Autowired
