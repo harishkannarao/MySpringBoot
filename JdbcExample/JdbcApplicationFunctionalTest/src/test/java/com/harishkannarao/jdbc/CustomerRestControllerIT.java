@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CustomerRestControllerIT extends BaseIntegrationJdbc {
     @Autowired
@@ -30,9 +30,9 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 
     @Test
     public void canCreateAndDeleteCustomer() {
-        Customer[] customersArray = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(customersArray);
-        assertEquals(5, customersArray.length);
+        Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
+        assertNotNull(initialCustomers);
+        assertEquals(5, initialCustomers.length);
 
         CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
         String firstName = "testFirstName";
@@ -70,6 +70,39 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
         assertEquals(5, updatedListAfterDelete.length);
 
         long checkCustomer = Arrays.stream(updatedListAfterDelete)
+                .filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+                .count();
+
+        assertEquals(0, checkCustomer);
+    }
+
+    @Test
+    public void testTransaction() {
+        Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
+        assertNotNull(initialCustomers);
+        assertEquals(5, initialCustomers.length);
+
+        CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
+        String firstName = "testFirstName";
+        String lastName = "testLastName";
+        createCustomerRequestDto.setFirstName(firstName);
+        createCustomerRequestDto.setLastName(lastName);
+
+        HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
+        try {
+            restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.PUT, createRequest, Void.class);
+            fail("should have thrown exception");
+        } catch (RestClientException exception) {
+            assertTrue(exception instanceof HttpServerErrorException);
+            HttpServerErrorException httpServerErrorException = (HttpServerErrorException) exception;
+            assertTrue(httpServerErrorException.getResponseBodyAsString().contains("Bang Bang"));
+        }
+
+        Customer[] updatedCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
+        assertNotNull(updatedCustomers);
+        assertEquals(5, updatedCustomers.length);
+
+        long checkCustomer = Arrays.stream(updatedCustomers)
                 .filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
                 .count();
 

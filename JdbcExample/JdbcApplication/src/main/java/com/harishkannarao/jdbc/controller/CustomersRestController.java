@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +39,15 @@ public class CustomersRestController {
     ) {
         customerDao.createCustomer(requestDto.getFirstName(), requestDto.getLastName());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @Transactional
+    public ResponseEntity<Void> createCustomerWithTransaction(
+            @RequestBody CreateCustomerRequestDto requestDto
+    ) {
+        customerDao.createCustomer(requestDto.getFirstName(), requestDto.getLastName());
+        throw new RuntimeException("Bang Bang");
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
