@@ -25,4 +25,12 @@ public class CustomerDao {
                 (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
         );
     }
+
+    public void createCustomer(String firstName, String lastName) {
+        jdbcTemplate.update("INSERT INTO customers(first_name, last_name) VALUES (?,?)", firstName, lastName);
+    }
+
+    public void deleteCustomer(Long id) {
+        jdbcTemplate.update("DELETE FROM customers where id = ?", id);
+    }
 }
