@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +30,11 @@ public class CustomerDao {
 
     public void createCustomer(String firstName, String lastName) {
         jdbcTemplate.update("INSERT INTO customers(first_name, last_name) VALUES (?,?)", firstName, lastName);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void createCustomerInIsolation(String firstName, String lastName) {
+        createCustomer(firstName, lastName);
     }
 
     public void deleteCustomer(Long id) {

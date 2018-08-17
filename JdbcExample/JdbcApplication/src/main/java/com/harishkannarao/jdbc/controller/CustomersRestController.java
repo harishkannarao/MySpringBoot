@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(value = "/customers", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CustomersRestController extends AbstractBaseController {
 
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
 
     @Autowired
     public CustomersRestController(@Qualifier("myCustomerDao") CustomerDao customerDao) {

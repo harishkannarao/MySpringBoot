@@ -5,6 +5,7 @@ import com.harishkannarao.jdbc.domain.Customer;
 import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ import static org.junit.Assert.*;
 
 public class CustomerRestControllerIT extends BaseIntegrationJdbc {
     @Autowired
-    @org.springframework.beans.factory.annotation.Value("${allCustomersEndpointUrl}")
-    public String allCustomersEndpointUrl;
+    @Value("${allCustomersEndpointUrl}")
+    private String allCustomersEndpointUrl;
 
     @Test
     public void getAllCustomers_shouldReturnAllCustomers_fromDatabase() {
