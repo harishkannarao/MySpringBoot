@@ -30,6 +30,7 @@
         <html5shiv.version>3.7.3</html5shiv.version>
         <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.6</common.io.version>
+        <logback.access.version>2.7.1</logback.access.version>
     </properties>
 
     <profiles>
@@ -194,6 +195,12 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>net.rakugakibox.spring.boot</groupId>
+                <artifactId>logback-access-spring-boot-starter</artifactId>
+                <version>${logback.access.version}</version>
             </dependency>
 
             <dependency>
