@@ -16,11 +16,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.core.Ordered;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.boot.web.servlet.FilterRegistrationBean.REQUEST_WRAPPER_FILTER_MAX_ORDER;
 
 @TestConfiguration
 @PropertySources({
@@ -69,7 +69,7 @@ public class TestConfigurationRestServiceAndConsumerApplication {
     public FilterRegistrationBean registerErrorSimulationFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ErrorSimulationFilter());
         filterRegistrationBean.setName(ErrorSimulationFilter.NAME);
-        filterRegistrationBean.setOrder(REQUEST_WRAPPER_FILTER_MAX_ORDER);
+        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         filterRegistrationBean.setUrlPatterns(asList(ErrorSimulationFilter.PATH));
         return filterRegistrationBean;
     }
