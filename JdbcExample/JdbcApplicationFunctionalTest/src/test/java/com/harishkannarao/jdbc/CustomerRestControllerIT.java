@@ -30,6 +30,13 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
     }
 
     @Test
+    public void getAllCustomers_shouldReturn_customersWithMatchingName_fromDatabase() {
+        Customer[] customersArray = restTemplate.getForObject(allCustomersEndpointUrl + "?firstName=Josh", Customer[].class);
+        assertNotNull(customersArray);
+        assertEquals(2, customersArray.length);
+    }
+
+    @Test
     public void canCreateAndDeleteCustomer() {
         Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
         assertNotNull(initialCustomers);

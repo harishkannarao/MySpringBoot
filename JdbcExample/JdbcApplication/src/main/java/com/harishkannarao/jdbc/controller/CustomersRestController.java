@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RestController
 @RequestMapping(value = "/customers", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CustomersRestController extends AbstractBaseController {
@@ -28,8 +27,14 @@ public class CustomersRestController extends AbstractBaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Customer> getAllCustomers() {
-        return customerDao.getAllCustomers();
+    public List<Customer> getAllCustomers(
+            @RequestParam("firstName") Optional<String> firstName
+    ) {
+        if (firstName.isPresent()) {
+            return customerDao.getCustomersByFirstName(firstName.get());
+        } else {
+            return customerDao.getAllCustomers();
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)
