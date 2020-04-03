@@ -51,3 +51,14 @@ Will skip unit tests, integration tests and docker commands
     docker run --network=docker_local_main -it --rm -e PGPASSWORD=superpassword postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
 Type '\q' to quit the terminal and container
+
+#### Create a docker image for jdbc application
+
+    docker build --pull -t com.harishkannarao/spring-boot-jdbc:latest -f JdbcExample/JdbcApplication/Dockerfile JdbcExample/JdbcApplication/target
+    
+#### Run the dockerised jdbc application
+
+    docker run --network=docker_local_main -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' --rm -it --name spring-boot-jdbc -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    
+    curl -s -H 'Content-Type: application/json' -X GET 'http://localhost:8180/menuentries'
+    

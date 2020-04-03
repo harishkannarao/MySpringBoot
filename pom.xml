@@ -15,7 +15,6 @@
     </modules>
 
     <properties>
-        <version.number>local</version.number>
         <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
@@ -33,16 +32,6 @@
         <common.io.version>2.6</common.io.version>
         <logback.access.version>2.7.1</logback.access.version>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>run-in-ci</id>
-
-            <properties>
-                <version.number>${git.commit.time}_${git.commit.id}</version.number>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <pluginManagement>

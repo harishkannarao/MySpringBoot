@@ -20,7 +20,7 @@
     </properties>
 
     <build>
-        <finalName>${project.artifactId}_${version.number}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
