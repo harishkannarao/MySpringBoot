@@ -43,11 +43,11 @@ Will skip unit tests, integration tests and docker commands
 * Verify all applications are running ```curl --header "Content-Type: application/json" -X GET "http://localhost:8080/quote"```
 
 ### Docker Commands
+
 #### Check PostgreSql Database Container Logs
     docker logs -t -f  springboot-jdbc-postgres
-#### Connect to PostgreSql Database
-    docker run --network=docker_local_main -it --rm postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
-Enter password `superpassword`
+#### Connect to PostgreSql Database
+    docker run --network=docker_local_main -it --rm -e PGPASSWORD=superpassword postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
 Type '\q' to quit the terminal and container

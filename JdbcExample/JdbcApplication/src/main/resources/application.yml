@@ -2,3 +2,5 @@ spring:
   main:
     banner:
       mode: off
+  flyway:
+    baseline-on-migrate: true

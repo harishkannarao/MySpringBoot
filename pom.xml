@@ -20,6 +20,7 @@
         <cucumber.version>1.2.3</cucumber.version>
         <postgresql.driver.version>9.4-1203-jdbc4</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
+        <flyway.version>6.0.8</flyway.version>
         <selenium.version>3.9.1</selenium.version>
         <phantomjs.version>2.1.1</phantomjs.version>
         <commons.lang3.version>3.4</commons.lang3.version>
@@ -201,6 +202,12 @@
                 <groupId>net.rakugakibox.spring.boot</groupId>
                 <artifactId>logback-access-spring-boot-starter</artifactId>
                 <version>${logback.access.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
 
             <dependency>

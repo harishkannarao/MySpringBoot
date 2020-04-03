@@ -1,4 +1,4 @@
-package com.harishkannarao.jdbc.fixtures;
+package com.harishkannarao.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

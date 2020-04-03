@@ -13,7 +13,6 @@
     <name>Jdbc Example</name>
     <modules>
         <module>JdbcApplicationTestConfig</module>
-        <module>JdbcApplicationDbFixtures</module>
         <module>JdbcApplication</module>
         <module>JdbcApplicationFunctionalTest</module>
     </modules>
@@ -26,12 +25,6 @@
                 <artifactId>JdbcApplicationTestConfig</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.harishkannarao.spring</groupId>
-                <artifactId>JdbcApplicationDbFixtures</artifactId>
-                <version>${project.version}</version>
             </dependency>
 
             <dependency>
