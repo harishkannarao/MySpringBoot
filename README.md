@@ -4,6 +4,9 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 ### Travis CI Build status
 [![Build Status](https://travis-ci.org/harishkannarao/MySpringBoot.svg?branch=master)](https://travis-ci.org/harishkannarao/MySpringBoot)
 
+## Github Actions Build status
+[![Build Status](https://github.com/harishkannarao/MySpringBoot/workflows/CI-master/badge.svg)](https://github.com/harishkannarao/MySpringBoot/actions?query=workflow%3ACI-master)
+
 ### Required Software and Tools
 * Java Version: OpenJDK 11 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
