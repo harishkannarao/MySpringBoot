@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/menuentries", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/menuentries", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class MenuEntriesRestController extends AbstractBaseController{
     private MenuEntriesDao menuEntriesDao;
 

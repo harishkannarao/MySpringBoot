@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RestController
-@RequestMapping(value = "/customers", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/customers", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CustomersRestController extends AbstractBaseController {
 
     private final CustomerDao customerDao;
@@ -37,7 +37,7 @@ public class CustomersRestController extends AbstractBaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> createCustomer(
             @RequestBody CreateCustomerRequestDto requestDto
     ) {
@@ -45,7 +45,7 @@ public class CustomersRestController extends AbstractBaseController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> createCustomerWithTransaction(
             @RequestBody CreateCustomerRequestDto requestDto
     ) {
@@ -53,7 +53,7 @@ public class CustomersRestController extends AbstractBaseController {
         throw new RuntimeException("Bang Bang");
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> deleteCustomer(
             @RequestBody DeleteCustomerRequestDto requestDto
     ) {

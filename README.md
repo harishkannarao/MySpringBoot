@@ -60,5 +60,5 @@ Type '\q' to quit the terminal and container
 
     docker run --network=docker_local_main -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' --rm -it --name spring-boot-jdbc -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
     
-    curl -s -H 'Content-Type: application/json' -X GET 'http://localhost:8180/menuentries'
+    curl -s -X GET 'http://localhost:8180/menuentries'
     
