@@ -3,6 +3,8 @@
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
+    <conversionRule conversionWord="wEx" converterClass="com.harishkannarao.jdbc.logback.LogbackNewLineConverter" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
