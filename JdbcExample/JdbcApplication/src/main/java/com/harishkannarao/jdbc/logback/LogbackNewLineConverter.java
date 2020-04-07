@@ -5,7 +5,7 @@ import ch.qos.logback.classic.spi.IThrowableProxy;
 
 public class LogbackNewLineConverter extends ThrowableProxyConverter {
 
-    private static final String NEW_LINE = "\n";
+    private static final String NEW_LINE = System.lineSeparator();
     private static final String NEW_LINE_REPLACEMENT = "";
 
     @Override
