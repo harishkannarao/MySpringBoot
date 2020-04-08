@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 30 # default 360
     env:
       DEPLOY_TO_AWS: ${{ secrets.DeployToAws }}
-    if: env.DEPLOY_TO_AWS == 'true'
+    if: ${{ env.DEPLOY_TO_AWS == 'true' }}
     steps:
     - uses: actions/checkout@v1
     - name: Install Java 11
