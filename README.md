@@ -65,3 +65,13 @@ Type '\q' to quit the terminal and container
     
     curl -s -X GET 'http://localhost:8180/menuentries'
     
+## Triggering github CI-deploy-master-to-aws workflow/actions using http
+
+```
+curl -v -H "Accept: application/vnd.github.everest-preview+json" \
+    -H "Authorization: token {github-personal-access-token}" \
+    --request POST \
+    --data '{"event_type": "do-deploy-master-to-aws", "client_payload": { "transaction_id": "some reference"}}' \
+    'https://api.github.com/repos/harishkannarao/MySpringBoot/dispatches'
+```
+    

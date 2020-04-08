@@ -1,17 +1,13 @@
 name: 'CI-deploy-master-to-aws'
 
 on:
-  push:
-    branches:
-      - master
+  repository_dispatch:
+    types: do-deploy-master-to-aws
 
 jobs:
   master-build:
     runs-on: ubuntu-latest
     timeout-minutes: 30 # default 360
-    env:
-      DEPLOY_TO_AWS: ${{ secrets.DeployToAws }}
-    if: ${{ env.DEPLOY_TO_AWS == 'true' }}
     steps:
     - uses: actions/checkout@v1
     - name: Install Java 11
