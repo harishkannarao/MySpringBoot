@@ -5,7 +5,7 @@ on:
     types: do-deploy-master-to-aws
 
 jobs:
-  master-build:
+  deploy-master-to-aws-build:
     runs-on: ubuntu-latest
     timeout-minutes: 30 # default 360
     steps:
