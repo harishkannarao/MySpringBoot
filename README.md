@@ -67,11 +67,18 @@ Type '\q' to quit the terminal and container
     
 ## Triggering github CI-deploy-master-to-aws workflow/actions using http
 
+Set the following secrets for this repo:
+
+* AwsAccountId
+* AwsRegion
+* AwsAccessKeyId
+* AwsSecretAccessKey
+
 ```
 curl -v -H "Accept: application/vnd.github.everest-preview+json" \
     -H "Authorization: token {github-personal-access-token}" \
     --request POST \
-    --data '{"event_type": "do-deploy-master-to-aws", "client_payload": { "transaction_id": "some reference"}}' \
+    --data '{"event_type": "do-deploy-master-to-aws-development", "client_payload": { "transaction_id": "some reference"}}' \
     'https://api.github.com/repos/harishkannarao/MySpringBoot/dispatches'
 ```
     
