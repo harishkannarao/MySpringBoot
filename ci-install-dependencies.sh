@@ -13,3 +13,4 @@ sudo apt-get -qq install -y chromium-chromedriver
 mvn --version
 docker --version
 docker-compose --version
+aws --version
