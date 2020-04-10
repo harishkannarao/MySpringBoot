@@ -74,11 +74,12 @@ Set the following secrets for this repo:
 * AwsAccessKeyId
 * AwsSecretAccessKey
 
-```
-curl -v -H "Accept: application/vnd.github.everest-preview+json" \
-    -H "Authorization: token {github-personal-access-token}" \
-    --request POST \
-    --data '{"event_type": "do-deploy-master-to-aws-development", "client_payload": { "transaction_id": "some reference"}}' \
-    'https://api.github.com/repos/harishkannarao/MySpringBoot/dispatches'
-```
+    
+    export GITHUB_PERSONAL_ACCESS_TOKEN=<<your_personal_token>>
+
+    curl -v -H "Accept: application/vnd.github.everest-preview+json" \
+        -H "Authorization: token $GITHUB_PERSONAL_ACCESS_TOKEN" \
+        --request POST \
+        --data '{"event_type": "do-deploy-master-to-aws-development", "client_payload": { "transaction_id": "some reference"}}' \
+        'https://api.github.com/repos/harishkannarao/MySpringBoot/dispatches'
     
