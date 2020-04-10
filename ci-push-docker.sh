@@ -19,3 +19,5 @@ docker tag com.harishkannarao/spring-boot-jdbc:latest $REPOSITORY_URI:$ENVIRONME
 docker push $REPOSITORY_URI:$GIT_SHORT_SHA
 
 docker push $REPOSITORY_URI:$ENVIRONMENT
+
+aws ecs update-service --cluster $APPLICATION_NAME-$ENVIRONMENT-ecs-cluster --service $APPLICATION_NAME-$ENVIRONMENT --force-new-deployment
