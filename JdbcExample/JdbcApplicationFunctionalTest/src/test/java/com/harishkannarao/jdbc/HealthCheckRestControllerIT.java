@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("ConstantConditions")
 public class HealthCheckRestControllerIT extends BaseIntegrationJdbc {
@@ -22,5 +22,6 @@ public class HealthCheckRestControllerIT extends BaseIntegrationJdbc {
 
         assertThat(response.getStatusCodeValue(), equalTo(200));
         assertThat(entity.getStatus(), equalTo("UP"));
+        assertThat(entity.getCommit(), not(emptyOrNullString()));
     }
 }

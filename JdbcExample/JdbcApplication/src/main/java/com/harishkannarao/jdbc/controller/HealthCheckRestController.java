@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc.controller;
 
+import com.harishkannarao.jdbc.util.GitPropertiesUtil;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,14 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckRestController {
 
     @RequestMapping
-    public ResponseEntity<HealthCheckResponse> getAllMenuEntries() {
+    public ResponseEntity<HealthCheckResponse> getHealthCheckResponse() {
         HealthCheckResponse entity = new HealthCheckResponse();
         entity.setStatus("UP");
+        entity.setCommit(GitPropertiesUtil.getInstance().getGitCommitIdAbbrev());
         return ResponseEntity.ok(entity);
     }
 
     public static class HealthCheckResponse {
         private String status;
+        private String commit;
 
         public String getStatus() {
             return status;
@@ -25,6 +28,14 @@ public class HealthCheckRestController {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getCommit() {
+            return commit;
+        }
+
+        public void setCommit(String commit) {
+            this.commit = commit;
         }
     }
 }
