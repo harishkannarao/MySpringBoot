@@ -3,7 +3,7 @@
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%t{yyyy-MM-dd HH:mm:ss.SSS} ACCESS %D %B %s %i{x-forwarded-for} %reqAttribute{request_id} %m %U%q</pattern>
+            <pattern>%t{yyyy-MM-dd HH:mm:ss.SSS} ACCESS_LOG %D %B %s %i{x-forwarded-for} %reqAttribute{request_id} %m %U%q</pattern>
             <charset>utf8</charset>
         </encoder>
     </appender>
