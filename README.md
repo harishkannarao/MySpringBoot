@@ -82,3 +82,4 @@ Set the following secrets for this repo:
         --request POST \
         --data '{"event_type": "do-deploy-master-to-aws-development", "client_payload": { "transaction_id": "some reference"}}' \
         'https://api.github.com/repos/harishkannarao/MySpringBoot/dispatches'
+        
