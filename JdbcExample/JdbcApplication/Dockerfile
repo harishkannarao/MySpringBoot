@@ -17,5 +17,7 @@ WORKDIR /var/application/
 # Expose Ports
 EXPOSE $SERVER_PORT
 
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=10 CMD curl -f http://localhost/health-check || exit 1
+
 # Run application
 CMD java -XX:MaxRAMPercentage=75.0 -XX:+PrintFlagsFinal -jar /var/application/JdbcApplication-exec.jar
