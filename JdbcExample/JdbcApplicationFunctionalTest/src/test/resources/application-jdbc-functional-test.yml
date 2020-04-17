@@ -3,3 +3,10 @@ server:
 
 management:
   port: 8181
+
+wiremock:
+  port: 9010
+
+thirdparty:
+  ping:
+    url: "http://localhost:${wiremock.port}/ping"

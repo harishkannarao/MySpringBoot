@@ -31,6 +31,7 @@
         <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.6</common.io.version>
         <logback.access.version>2.7.1</logback.access.version>
+        <wiremock.version>2.25.1</wiremock.version>
     </properties>
 
     <build>
@@ -280,6 +281,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8</artifactId>
+                <version>${wiremock.version}</version>
             </dependency>
 
         </dependencies>

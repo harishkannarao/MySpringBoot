@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,15 @@ public abstract class BaseIntegrationJdbc {
     protected RestTemplate restTemplate;
     @Autowired
     protected DbFixturesPopulator dbFixturesPopulator;
+    @Autowired
+    protected WireMock wireMock;
 
     @Before
     public void setup() {
         dbFixturesPopulator.resetData();
+
+        wireMock.resetMappings();
+        wireMock.resetRequests();
+        wireMock.resetScenarios();
     }
 }
