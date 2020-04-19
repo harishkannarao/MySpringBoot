@@ -25,6 +25,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=10 CMD curl
 # Run application
 CMD mkdir ~/.ssh && \
     echo $SSH_PUBLIC_KEY > ~/.ssh/authorized_keys && \
+    service ssh start && \
     java \
     -XX:MaxRAMPercentage=75.0 \
     -XX:+PrintFlagsFinal \
