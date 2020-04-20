@@ -61,7 +61,7 @@ Type '\q' to quit the terminal and container
     
 #### Run the dockerised jdbc application
 
-    docker run --network=docker_local_main -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
     
     curl -s -X GET 'http://localhost:8180/menuentries'
     
