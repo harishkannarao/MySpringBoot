@@ -70,7 +70,6 @@ Type '\q' to quit the terminal and container
 Set the following secrets for this repo:
 
 * AwsAccountId
-* AwsRegion
 * AwsAccessKeyId
 * AwsSecretAccessKey
 

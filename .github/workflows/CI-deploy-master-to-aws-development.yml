@@ -52,10 +52,10 @@ jobs:
         ENVIRONMENT: 'development'
         APPLICATION_NAME: 'docker-http-app'
         DOCKER_AWS_ACCOUNT_ID: ${{ secrets.AwsAccountId }}
-        DOCKER_AWS_REGION: ${{ secrets.AwsRegion }}
+        DOCKER_AWS_REGION: 'eu-west-2'
         AWS_ACCESS_KEY_ID: ${{ secrets.AwsAccessKeyId }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AwsSecretAccessKey }}
-        AWS_DEFAULT_REGION: ${{ secrets.AwsRegion }}
+        AWS_DEFAULT_REGION: 'eu-west-2'
         AWS_DEFAULT_OUTPUT: 'json'
       run: |
         ./ci-push-docker.sh
