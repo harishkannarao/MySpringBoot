@@ -72,6 +72,7 @@ Set the following secrets for this repo:
 * AwsAccountId
 * AwsAccessKeyId
 * AwsSecretAccessKey
+* GithubAccessToken
 
     
     export GITHUB_PERSONAL_ACCESS_TOKEN=<<your_personal_token>>

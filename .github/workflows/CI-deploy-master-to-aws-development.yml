@@ -65,3 +65,9 @@ jobs:
         URL: 'https://docker-http-app-development.harishkannarao.com/health-check'
       run: |
         ./ci-verify-deployment.sh
+    - name: 'Trigger Downstream Pipeline'
+      timeout-minutes: 10
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GithubAccessToken }}
+      run: |
+        ./ci-trigger-downstream-pipelines.sh
