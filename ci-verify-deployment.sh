@@ -9,7 +9,7 @@ SLEEP_SECS=1
 SUCCESS=-1
 
 while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-   VERSION="$(curl -s $VERSION_HOST | jq -r '.commit')"
+   VERSION="$(curl -s $VERSION_HOST | jq ".commit")"
    SUCCESS=$?
 
    if [ $SUCCESS == 0 ] && [ $VERSION == "\"${EXPECTED_SHA}\"" ];
