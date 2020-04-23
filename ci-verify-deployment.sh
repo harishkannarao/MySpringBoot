@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION_HOST=$URL
-EXPECTED_SHA=$(echo $GITHUB_SHA | cut -c1-8)
+EXPECTED_SHA=$(echo $GITHUB_SHA | cut -c1-7)
 
 ATTEMPT=1
 MAX_ATTEMPTS=600
