@@ -59,3 +59,9 @@ jobs:
         AWS_DEFAULT_OUTPUT: 'json'
       run: |
         ./ci-push-docker.sh
+    - name: 'Verify Deployment'
+      timeout-minutes: 20
+      env:
+        URL: 'https://docker-http-app-development.harishkannarao.com/health-check'
+      run: |
+        ./ci-verify-deployment.sh
