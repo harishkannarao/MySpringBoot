@@ -46,6 +46,12 @@ jobs:
       timeout-minutes: 20
       run: |
         ./ci-build-docker.sh
+    - name: 'CI Print current version of deployment'
+      timeout-minutes: 5
+      env:
+        URL: 'https://docker-http-app-development.harishkannarao.com/health-check'
+      run: |
+        ./ci-print-current-version.sh
     - name: 'CI Push Docker Command'
       timeout-minutes: 20
       env:
@@ -59,13 +65,13 @@ jobs:
         AWS_DEFAULT_OUTPUT: 'json'
       run: |
         ./ci-push-docker.sh
-    - name: 'Verify Deployment'
+    - name: 'CI Verify Deployment'
       timeout-minutes: 20
       env:
         URL: 'https://docker-http-app-development.harishkannarao.com/health-check'
       run: |
         ./ci-verify-deployment.sh
-    - name: 'Trigger Downstream Pipeline'
+    - name: 'CI Trigger Downstream Pipeline'
       timeout-minutes: 10
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GithubAccessToken }}
