@@ -3,6 +3,7 @@ package com.harishkannarao.jdbc.dao;
 import com.harishkannarao.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,9 +27,10 @@ public class CustomerDao {
     }
 
     public List<Customer> getAllCustomers() {
+        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> toCustomer(rs, rowNum);
         return jdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM customers",
-                (rs, rowNum) -> toCustomer(rs, rowNum)
+                customerRowMapper
         );
     }
 
@@ -36,10 +38,11 @@ public class CustomerDao {
         Map<String, Object> params = Map.ofEntries(
                 Map.entry("first_name", firstName)
         );
+        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> toCustomer(rs, rowNum);
         return jdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM customers WHERE first_name = :first_name",
                 params,
-                (rs, rowNum) -> toCustomer(rs, rowNum)
+                customerRowMapper
         );
     }
 
