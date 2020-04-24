@@ -10,6 +10,10 @@ spring:
       class:
         name: org.postgresql.Driver
 
+springdoc:
+  api-docs:
+    enabled: true
+
 thirdparty:
   ping:
     url: "http://www.example.com"

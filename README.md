@@ -65,6 +65,15 @@ Type '\q' to quit the terminal and container
     
     curl -s -X GET 'http://localhost:8180/menuentries'
     
+Swagger / Open API urls:
+
+    http://localhost:8180/api-docs
+    
+    http://localhost:8180/api-docs.yaml
+    
+    http://localhost:8180/swagger-ui/index.html?configUrl=/api-docs/swagger-config
+    
+    
 ## Triggering github CI-deploy-master-to-aws workflow/actions using http
 
 Set the following secrets for this repo:

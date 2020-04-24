@@ -3,6 +3,7 @@ package com.harishkannarao.jdbc.controller;
 import com.harishkannarao.jdbc.util.GitPropertiesUtil;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/health-check", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class HealthCheckRestController {
 
-    @RequestMapping
+    @GetMapping
     public ResponseEntity<HealthCheckResponse> getHealthCheckResponse() {
         HealthCheckResponse entity = new HealthCheckResponse();
         entity.setStatus("UP");
