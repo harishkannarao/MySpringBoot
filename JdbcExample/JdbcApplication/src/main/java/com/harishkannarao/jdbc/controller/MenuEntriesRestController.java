@@ -4,6 +4,7 @@ import com.harishkannarao.jdbc.dao.MenuEntriesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class MenuEntriesRestController extends AbstractBaseController{
         this.menuEntriesDao = menuEntriesDao;
     }
 
-    @RequestMapping
+    @GetMapping
     public List<String> getAllMenuEntries() {
         return menuEntriesDao.getMenuEntries();
     }

@@ -4,7 +4,7 @@ import com.harishkannarao.jdbc.client.ThirdPartyPingRestClient;
 import com.harishkannarao.jdbc.domain.ThirdPartyStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +17,7 @@ public class ThirdPartyPingStatusController {
         this.thirdPartyPingRestClient = thirdPartyPingRestClient;
     }
 
-    @RequestMapping("/third-party-ping-status")
+    @GetMapping("/third-party-ping-status")
     public ResponseEntity<ThirdPartyStatus> getQuote() {
         return ResponseEntity.ok()
                 .body(thirdPartyPingRestClient.getPingStatus());

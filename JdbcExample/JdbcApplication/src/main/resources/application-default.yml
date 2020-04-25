@@ -10,6 +10,10 @@ spring:
       class:
         name: org.postgresql.Driver
 
+app:
+  cors:
+    origins: "http://localhost:8180"
+
 springdoc:
   api-docs:
     enabled: true
