@@ -11,6 +11,8 @@ spring:
         name: org.postgresql.Driver
 
 app:
+  openapi:
+    url: "http://localhost:8180"
   cors:
     origins: "http://localhost:8180"
 
