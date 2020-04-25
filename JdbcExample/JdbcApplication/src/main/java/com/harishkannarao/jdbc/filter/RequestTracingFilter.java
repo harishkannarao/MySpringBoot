@@ -12,9 +12,6 @@ import java.util.UUID;
 
 public class RequestTracingFilter extends OncePerRequestFilter {
     public static final String REQUEST_ID_KEY = "request_id";
-    public static final String NAME = "requestIdFilterBean";
-    public static final String PATH = "/*";
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
