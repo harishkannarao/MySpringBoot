@@ -83,6 +83,7 @@ Set the following secrets for this repo:
 * AwsSecretAccessKey
 * GithubAccessToken
 
+Execute the following commands:
     
     export GITHUB_PERSONAL_ACCESS_TOKEN=<<your_personal_token>>
 
