@@ -40,6 +40,14 @@ Will skip unit tests, integration tests and docker commands
     
     mvn clean install -DskipTests=true
 
+### Running single spring boot application
+
+    mvn spring-boot:run -pl JdbcExample/JdbcApplication
+    
+Open URL in browser:
+
+    http://localhost:8180/swagger-ui.html
+
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder
 * Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer```
