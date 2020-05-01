@@ -79,6 +79,8 @@ Swagger / Open API urls:
     
     http://localhost:8180/api-docs.yaml
     
+    http://localhost:8180/swagger-ui.html
+    
     http://localhost:8180/swagger-ui/index.html?configUrl=/api-docs/swagger-config
     
     
