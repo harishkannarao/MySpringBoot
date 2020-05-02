@@ -1,28 +1,46 @@
 package com.harishkannarao.jdbc.configuration;
 
+import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.filter.RequestTracingFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class JdbcApplicationConfiguration {
+
+    private static final long DEFAULT_CONNECT_TIMEOUT_MS = 3000;
+    private static final long DEFAULT_READ_TIMEOUT_MS = 15000;
 
     @Value("${app.cors.origins}")
     private String corsOrigins;
 
     @Bean
     @Qualifier("myRestTemplate")
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
+    public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateAccessLoggingInterceptor restTemplateAccessLoggingInterceptor = new RestTemplateAccessLoggingInterceptor();
+
+        BufferingClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+
+        return restTemplateBuilder
+                .setConnectTimeout(Duration.ofMillis(DEFAULT_CONNECT_TIMEOUT_MS))
+                .setReadTimeout(Duration.ofMillis(DEFAULT_READ_TIMEOUT_MS))
+                .requestFactory(() -> clientHttpRequestFactory)
+                .additionalInterceptors(List.of(restTemplateAccessLoggingInterceptor))
+                .build();
     }
 
     @Bean

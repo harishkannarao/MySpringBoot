@@ -1,4 +1,4 @@
-package com.harishkannarao.rest.rule;
+package com.harishkannarao.jdbc;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;

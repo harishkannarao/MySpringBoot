@@ -16,9 +16,6 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class ErrorPageIT extends BaseIntegration {
-    private static final String LOGGING_PATTERN = "%-5level %message%n";
-    private static final String LOG_FILE_LOCATION = "target/logs";
-    private static final String LOG_FILE_PREFIX = "test_log_";
 
     private static final String ERROR_STATUS_ID = "errorStatus";
     @Value("${nonExistentPageUrl}")
@@ -29,7 +26,7 @@ public class ErrorPageIT extends BaseIntegration {
     private String customErrorSimulationUrl;
 
     @Rule
-    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(ApplicationErrorController.class.getName(), LOGGING_PATTERN, LOG_FILE_LOCATION, LOG_FILE_PREFIX);
+    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(ApplicationErrorController.class.getName());
 
     @Test
     public void shouldReturnGeneralErrorPageWith404MessageGivenNonExistentPageForHtmlClients() throws IOException {
