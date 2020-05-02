@@ -2,6 +2,9 @@ package com.harishkannarao.jdbc.configuration;
 
 import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.filter.RequestTracingFilter;
+import com.harishkannarao.jdbc.interceptor.AuthHeaderRequestInterceptor;
+import com.harishkannarao.jdbc.interceptor.CookieRequestInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,6 +16,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.Duration;
@@ -27,6 +31,10 @@ public class JdbcApplicationConfiguration {
 
     @Value("${app.cors.origins}")
     private String corsOrigins;
+    @Autowired
+    private AuthHeaderRequestInterceptor authHeaderRequestInterceptor;
+    @Autowired
+    private CookieRequestInterceptor cookieRequestInterceptor;
 
     @Bean
     @Qualifier("myRestTemplate")
@@ -49,6 +57,13 @@ public class JdbcApplicationConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins(corsOrigins.split(",")).allowedMethods("*");
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                // Interceptors are called in the same order it is added to the registry
+                registry.addInterceptor(authHeaderRequestInterceptor);
+                registry.addInterceptor(cookieRequestInterceptor);
             }
         };
     }
