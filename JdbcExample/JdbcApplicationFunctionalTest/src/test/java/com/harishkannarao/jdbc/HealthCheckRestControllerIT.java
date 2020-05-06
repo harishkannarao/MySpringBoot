@@ -2,7 +2,7 @@ package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.controller.HealthCheckRestController;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
@@ -11,8 +11,7 @@ import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("ConstantConditions")
 public class HealthCheckRestControllerIT extends BaseIntegrationJdbc {
-    @Autowired
-    @org.springframework.beans.factory.annotation.Value("${healthCheckEndpointUrl}")
+    @Value("${healthCheckEndpointUrl}")
     public String healthCheckEndpointUrl;
 
     @Test

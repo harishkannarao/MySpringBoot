@@ -2,7 +2,12 @@ package com.harishkannarao.jdbc;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +34,8 @@ public abstract class BaseIntegrationJdbc {
     protected DbFixturesPopulator dbFixturesPopulator;
     @Autowired
     protected WireMock wireMock;
+    @Autowired
+    private WebDriverFactory webDriverFactory;
 
     @Before
     public void setup() {
@@ -37,5 +44,25 @@ public abstract class BaseIntegrationJdbc {
         wireMock.resetMappings();
         wireMock.resetRequests();
         wireMock.resetScenarios();
+    }
+
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        @Override
+        protected void failed(Throwable e, Description description) {
+            super.failed(e, description);
+            webDriverFactory.takeScreenShots(description.getDisplayName(), false);
+        }
+
+        @Override
+        protected void finished(Description description) {
+            super.finished(description);
+            webDriverFactory.takeScreenShots(description.getDisplayName(), true);
+            webDriverFactory.closeAllWebDrivers();
+        }
+    };
+
+    protected WebDriver newWebDriver() {
+        return webDriverFactory.newWebDriver();
     }
 }

@@ -50,4 +50,9 @@ public class TestConfigurationJdbcApplication {
         restTemplate.setInterceptors(interceptors);
         return restTemplate;
     }
+
+    @Bean
+    public WebDriverFactory createWebDriverFactorySingleton() {
+        return new WebDriverFactory();
+    }
 }
