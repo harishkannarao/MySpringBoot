@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -16,16 +16,16 @@ import java.util.Optional;
 public class HelloPageController {
 
 	@GetMapping
-	public String displayHomePage(
-			@RequestParam("displayDate") Optional<String> displayDateParam,
-			HttpServletRequest request,
-			Map<String, Object> model
+	public ModelAndView displayHomePage(
+			@RequestParam("displayDate")
+			String displayDateParam,
+			HttpServletRequest request
 	) {
-		Boolean displayDate = displayDateParam.map(Boolean::parseBoolean).orElse(false);
+		Boolean displayDate = Optional.ofNullable(displayDateParam).map(Boolean::parseBoolean).orElse(false);
+		ModelAndView modelAndView = new ModelAndView("root/home_page");
 		if (displayDate) {
-			model.put("utc_date", OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC));
+			modelAndView.addObject("utc_date", OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC));
 		}
-		return "root/home_page";
+		return modelAndView;
 	}
-
 }
