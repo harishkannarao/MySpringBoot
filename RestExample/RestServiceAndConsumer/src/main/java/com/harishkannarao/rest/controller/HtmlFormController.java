@@ -34,7 +34,7 @@ public class HtmlFormController {
 		} else {
 			modelAndView = new ModelAndView("form/form_template");
 			modelAndView.addObject("formData", formData);
-			modelAndView.addObject("errorMessage", "Please select atleast 2 pets");
+			modelAndView.addObject("errorMessage", "Please select at least 2 pets");
 		}
 		return modelAndView;
 	}
