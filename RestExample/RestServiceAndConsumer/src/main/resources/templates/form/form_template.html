@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<p th:if="${errorMessage != null}">
+Error: <span id="error" th:text="${errorMessage}"></span>
+</p>
+<form method="post" action="">
+    Name: <input type="text" name="name" id="name" th:value="${formData.getFirst('name')}"/>
+    <br/>
+    <fieldset>
+        <legend>What is Your Favorite Pet?</legend>
+        <input type="checkbox" name="favoritePet" value="Cats" id="cats" th:checked="${formData.get('favoritePet')?.contains('Cats')}"/>Cats<br/>
+        <input type="checkbox" name="favoritePet" value="Dogs" id="dogs" th:checked="${formData.get('favoritePet')?.contains('Dogs')}"/>Dogs<br/>
+        <input type="checkbox" name="favoritePet" value="Birds" id="birds" th:checked="${formData.get('favoritePet')?.contains('Birds')}"/>Birds<br/>
+        <br/>
+        <input type="submit" id="submit-form" value="Submit now" />
+    </fieldset>
+</form>
+</body>
+
+</html>
