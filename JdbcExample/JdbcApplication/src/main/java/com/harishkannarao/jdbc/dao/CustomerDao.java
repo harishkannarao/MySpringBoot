@@ -14,32 +14,37 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("Convert2MethodRef")
 @Component
 @Qualifier("myCustomerDao")
 public class CustomerDao {
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public CustomerDao(NamedParameterJdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CustomerDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     public List<Customer> getAllCustomers() {
-        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> toCustomer(rs, rowNum);
-        return jdbcTemplate.query(
+        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> {
+            return toCustomer(rs);
+        };
+        return namedParameterJdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM customers",
                 customerRowMapper
         );
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     public List<Customer> getCustomersByFirstName(String firstName) {
         Map<String, Object> params = Map.ofEntries(
                 Map.entry("first_name", firstName)
         );
-        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> toCustomer(rs, rowNum);
-        return jdbcTemplate.query(
+        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> {
+            return toCustomer(rs);
+        };
+        return namedParameterJdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM customers WHERE first_name = :first_name",
                 params,
                 customerRowMapper
@@ -51,7 +56,7 @@ public class CustomerDao {
                 Map.entry("first_name", firstName),
                 Map.entry("last_name", lastName)
         );
-        jdbcTemplate.update("INSERT INTO customers(first_name, last_name) VALUES (:first_name,:last_name)", params);
+        namedParameterJdbcTemplate.update("INSERT INTO customers(first_name, last_name) VALUES (:first_name,:last_name)", params);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -63,10 +68,10 @@ public class CustomerDao {
         Map<String, Object> params = Map.ofEntries(
                 Map.entry("id", id)
         );
-        jdbcTemplate.update("DELETE FROM customers where id = :id", params);
+        namedParameterJdbcTemplate.update("DELETE FROM customers where id = :id", params);
     }
 
-    private Customer toCustomer(ResultSet rs, int rowNum) throws SQLException {
+    private Customer toCustomer(ResultSet rs) throws SQLException {
         return new Customer(
                 rs.getLong("id"),
                 rs.getString("first_name"),
