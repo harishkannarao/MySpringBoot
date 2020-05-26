@@ -15,7 +15,7 @@ public class HealthCheckRestControllerIT extends BaseIntegrationJdbc {
     public String healthCheckEndpointUrl;
 
     @Test
-    public void getAllMenuEntries_shouldReturnAllMenuEntries_fromDatabase() {
+    public void verify_health_check_endpoint() {
         ResponseEntity<HealthCheckRestController.HealthCheckResponse> response = restTemplate.exchange(healthCheckEndpointUrl, HttpMethod.GET, null, HealthCheckRestController.HealthCheckResponse.class);
         HealthCheckRestController.HealthCheckResponse entity = response.getBody();
 

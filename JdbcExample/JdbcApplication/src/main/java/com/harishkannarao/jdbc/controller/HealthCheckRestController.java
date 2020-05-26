@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/health-check", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = {"${application.healthCheck.path}"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class HealthCheckRestController {
 
     @GetMapping
