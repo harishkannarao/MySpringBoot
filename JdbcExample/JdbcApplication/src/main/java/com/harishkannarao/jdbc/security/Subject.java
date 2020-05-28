@@ -4,14 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Caller {
+public class Subject {
     private String id;
     private List<String> roles;
 
-    public Caller() {
+    public Subject() {
     }
 
-    public Caller(String id, List<String> roles) {
+    public Subject(String id, List<String> roles) {
         this.id = id;
         this.roles = roles;
     }

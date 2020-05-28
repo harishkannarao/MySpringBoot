@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.interceptor;
 
-import com.harishkannarao.jdbc.security.Caller;
+import com.harishkannarao.jdbc.security.Subject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
-import static com.harishkannarao.jdbc.security.AuthContext.CALLER_ATTR_KEY;
+import static com.harishkannarao.jdbc.security.AuthContext.SUBJECT_ATTR_KEY;
 
 @Component
 public class AuthHeaderRequestInterceptor extends HandlerInterceptorAdapter {
@@ -19,12 +19,12 @@ public class AuthHeaderRequestInterceptor extends HandlerInterceptorAdapter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (request.getAttribute(CALLER_ATTR_KEY) == null) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (request.getAttribute(SUBJECT_ATTR_KEY) == null) {
             Optional<String> authHeader = extractBearerToken(request);
             if (authHeader.isPresent() && SUPER_SECRET_HEADER_VALUE.equals(authHeader.get())) {
-                Caller caller = new Caller("header-id", List.of("header-role"));
-                request.setAttribute(CALLER_ATTR_KEY, caller);
+                Subject subject = new Subject("header-id", List.of("header-role"));
+                request.setAttribute(SUBJECT_ATTR_KEY, subject);
             }
         }
         return true;

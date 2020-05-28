@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc;
 
-import com.harishkannarao.jdbc.security.Caller;
+import com.harishkannarao.jdbc.security.Subject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,8 +25,8 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer HELLO_HEADER");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Caller> response = restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Caller.class);
-        Caller entity = response.getBody();
+        ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
+        Subject entity = response.getBody();
 
         assertThat(response.getStatusCodeValue(), equalTo(200));
         assertThat(entity.getId(), equalTo("header-id"));
@@ -79,8 +79,8 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", "session_cookie=HELLO_COOKIE;");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Caller> response = restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Caller.class);
-        Caller entity = response.getBody();
+        ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
+        Subject entity = response.getBody();
 
         assertThat(response.getStatusCodeValue(), equalTo(200));
         assertThat(entity.getId(), equalTo("cookie-id"));

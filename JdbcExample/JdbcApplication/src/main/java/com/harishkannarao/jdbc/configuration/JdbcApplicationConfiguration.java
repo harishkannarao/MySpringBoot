@@ -4,6 +4,7 @@ import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInter
 import com.harishkannarao.jdbc.filter.RequestTracingFilter;
 import com.harishkannarao.jdbc.interceptor.AuthHeaderRequestInterceptor;
 import com.harishkannarao.jdbc.interceptor.CookieRequestInterceptor;
+import com.harishkannarao.jdbc.interceptor.SubjectRoleInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,8 @@ public class JdbcApplicationConfiguration {
     private AuthHeaderRequestInterceptor authHeaderRequestInterceptor;
     @Autowired
     private CookieRequestInterceptor cookieRequestInterceptor;
+    @Autowired
+    private SubjectRoleInterceptor subjectRoleInterceptor;
 
     @Bean
     @Qualifier("myRestTemplate")
@@ -64,6 +67,7 @@ public class JdbcApplicationConfiguration {
                 // Interceptors are called in the same order it is added to the registry
                 registry.addInterceptor(authHeaderRequestInterceptor);
                 registry.addInterceptor(cookieRequestInterceptor);
+                registry.addInterceptor(subjectRoleInterceptor);
             }
         };
     }
