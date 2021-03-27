@@ -6,7 +6,7 @@ set -e
 # Print the commands as it is executed. Useful for debugging
 set -x
 
-$(aws ecr get-login --registry-ids $DOCKER_AWS_ACCOUNT_ID --region $DOCKER_AWS_REGION --no-include-email)
+aws ecr get-login-password --region $DOCKER_AWS_REGION | docker login --username AWS --password-stdin $DOCKER_AWS_ACCOUNT_ID.dkr.ecr.$DOCKER_AWS_REGION.amazonaws.com
 
 REPOSITORY_URI=$DOCKER_AWS_ACCOUNT_ID.dkr.ecr.$DOCKER_AWS_REGION.amazonaws.com/$APPLICATION_NAME/$ENVIRONMENT
 
