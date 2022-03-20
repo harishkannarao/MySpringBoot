@@ -6,4 +6,3 @@ server:
 warExample:
   baseUrl: http://localhost:${server.port}
   indexPageUrl: ${warExample.baseUrl}/app/index.html
-  testDriver: phantomjs

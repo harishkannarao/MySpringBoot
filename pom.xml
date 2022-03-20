@@ -23,7 +23,6 @@
         <selenium.version>4.1.2</selenium.version>
         <webdrivermanager.version>5.0.3</webdrivermanager.version>
         <guava.version>31.1-jre</guava.version>
-        <phantomjs.version>2.1.1</phantomjs.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
         <java.version>11</java.version>
         <angularjs.version>1.4.1</angularjs.version>
@@ -81,12 +80,6 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.version}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>com.github.klieber</groupId>
-                    <artifactId>phantomjs-maven-plugin</artifactId>
-                    <version>0.7</version>
                 </plugin>
 
                 <plugin>

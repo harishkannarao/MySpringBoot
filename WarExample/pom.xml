@@ -70,28 +70,12 @@
             </plugin>
 
             <plugin>
-                <groupId>com.github.klieber</groupId>
-                <artifactId>phantomjs-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <version>${phantomjs.version}</version>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
                         <randomServerPort1>${randomPort1}</randomServerPort1>
                         <randomServerPort2>${randomPort2}</randomServerPort2>
-                        <phantomjs.binary.path>${phantomjs.binary}</phantomjs.binary.path>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
