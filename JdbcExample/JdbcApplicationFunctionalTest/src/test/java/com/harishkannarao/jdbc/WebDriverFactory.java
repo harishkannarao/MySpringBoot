@@ -1,18 +1,16 @@
 package com.harishkannarao.jdbc;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class WebDriverFactory {
@@ -20,18 +18,16 @@ public class WebDriverFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);
     private static final List<WebDriver> WEB_DRIVERS = new ArrayList<>();
 
-    private final ChromeDriverService chromeDriverService = createChromeDriverService();
-
     public WebDriver newWebDriver() {
-        startChromeDriverService();
         WebDriver webDriver = createChromeWebDriver();
         WEB_DRIVERS.add(webDriver);
         return webDriver;
     }
 
     private WebDriver createChromeWebDriver() {
-        WebDriver webDriver = new ChromeDriver(chromeDriverService, getDefaultChromeOptions());
-        webDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
+        WebDriverManager.chromedriver().setup();
+        WebDriver webDriver = new ChromeDriver(getDefaultChromeOptions());
+        webDriver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(3));
         return webDriver;
     }
 
@@ -53,23 +49,6 @@ public class WebDriverFactory {
             }
         });
         WEB_DRIVERS.clear();
-        stopChromeDriverService();
-    }
-
-    private void startChromeDriverService() {
-        if (!chromeDriverService.isRunning()) {
-            try {
-                chromeDriverService.start();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private void stopChromeDriverService() {
-        if (chromeDriverService.isRunning()) {
-            chromeDriverService.stop();
-        }
     }
 
     private ChromeOptions getDefaultChromeOptions() {
@@ -88,16 +67,6 @@ public class WebDriverFactory {
         chromeBinary.ifPresent(chromeOptions::setBinary);
 
         return chromeOptions;
-    }
-
-    private ChromeDriverService createChromeDriverService() {
-        ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
-        Optional<String> chromeDriverBinary = Optional.ofNullable(System.getProperty("chromeDriverBinary"));
-        chromeDriverBinary.ifPresent(path -> builder.usingDriverExecutable(new File(path)));
-
-        return builder
-                .usingAnyFreePort()
-                .build();
     }
 
 }

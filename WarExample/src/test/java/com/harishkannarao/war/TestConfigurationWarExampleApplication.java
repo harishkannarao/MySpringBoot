@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @TestConfiguration
 public class TestConfigurationWarExampleApplication {
@@ -20,7 +20,7 @@ public class TestConfigurationWarExampleApplication {
     @Bean(destroyMethod = "quit")
     public WebDriver getWebDriver(ChromeDriverService chromeDriverService) {
         WebDriver webDriver = new ChromeDriver(chromeDriverService, getDefaultChromeOptions());
-        webDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
+        webDriver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(3));
         return webDriver;
     }
 

@@ -1,7 +1,8 @@
 package com.harishkannarao.rest.functional;
 
-import com.harishkannarao.rest.controller.ApplicationErrorController;
-import com.harishkannarao.rest.controller.ApplicationErrorController.ErrorDetails;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.harishkannarao.rest.controller.CustomApplicationErrorController;
 import com.harishkannarao.rest.rule.LogbackTestAppenderRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class ErrorPageIT extends BaseIntegration {
     private String customErrorSimulationUrl;
 
     @Rule
-    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(ApplicationErrorController.class.getName());
+    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(CustomApplicationErrorController.class.getName());
 
     @Test
     public void shouldReturnGeneralErrorPageWith404MessageGivenNonExistentPageForHtmlClients() throws IOException {
@@ -78,8 +79,33 @@ public class ErrorPageIT extends BaseIntegration {
     public void shouldHandleCustomExceptionTo405Status() throws Exception {
         ResponseEntity<String> response = testRestTemplate.getForEntity(customErrorSimulationUrl, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.METHOD_NOT_ALLOWED);
-        ApplicationErrorController.ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ApplicationErrorController.ErrorDetails.class);
+        ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ErrorDetails.class);
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), errorDetails.getStatus());
         assertEquals("ERR123 :: Unique error", errorDetails.getError());
+    }
+
+
+    public static class ErrorDetails {
+        @JsonProperty("status")
+        private final Integer status;
+        @JsonProperty("error")
+        private final String error;
+
+        @JsonCreator
+        public ErrorDetails(
+                @JsonProperty("status") Integer status,
+                @JsonProperty("error") String error
+        ) {
+            this.status = status;
+            this.error = error;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public String getError() {
+            return error;
+        }
     }
 }
