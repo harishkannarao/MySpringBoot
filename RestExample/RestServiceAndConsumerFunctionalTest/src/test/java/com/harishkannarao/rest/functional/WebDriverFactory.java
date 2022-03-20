@@ -58,8 +58,10 @@ public class WebDriverFactory {
         arguments.add("--allow-insecure-localhost");
         arguments.add("--start-maximized");
         arguments.add("--disable-gpu");
-        arguments.add("--no-sandbox");
+        arguments.add("--disable-extensions");
+        arguments.add("--disable-infobars");
         arguments.add("--disable-dev-shm-usage");
+        arguments.add("--no-sandbox");
         boolean isChromeHeadlessOn = Boolean.parseBoolean(System.getProperty("chromeHeadless", "false"));
         if (isChromeHeadlessOn) {
             arguments.add("--headless");
