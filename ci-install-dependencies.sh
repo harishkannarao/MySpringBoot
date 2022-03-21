@@ -8,8 +8,7 @@ set -x
 
 sudo apt-get -qq update
 sudo apt-get -qq install -y jq
-sudo apt-get -qq install -y chromium-browser
-sudo apt-get -qq install -y chromium-chromedriver
+sudo apt-get -qq install -y firefox
 
 mvn --version
 docker --version
