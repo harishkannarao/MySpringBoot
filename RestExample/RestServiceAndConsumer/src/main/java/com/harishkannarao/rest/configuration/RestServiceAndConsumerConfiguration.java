@@ -9,11 +9,17 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.Resource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
+import org.springframework.web.servlet.resource.ResourceResolverChain;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class RestServiceAndConsumerConfiguration {
@@ -34,7 +40,31 @@ public class RestServiceAndConsumerConfiguration {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(evilHeaderRequestInterceptor);
             }
+
+            @Override
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                registry
+                        .setOrder(Ordered.LOWEST_PRECEDENCE)
+                        .addResourceHandler("/**")
+                        .addResourceLocations("classpath:/static/")
+                        //first time resolved, that route will always be used from cache
+                        .resourceChain(true)
+                        .addResolver(new IndexFallbackResourceResolver());
+            }
         };
+    }
+
+    static class IndexFallbackResourceResolver extends PathResourceResolver {
+        @Override
+        protected Resource resolveResourceInternal(HttpServletRequest request, String requestPath,
+                                                   List<? extends Resource> locations, ResourceResolverChain chain) {
+            Resource resource = super.resolveResourceInternal(request, requestPath, locations, chain);
+            if(resource==null){
+                //try with /index.html
+                resource = super.resolveResourceInternal(request, requestPath + "/index.html", locations, chain);
+            }
+            return resource;
+        }
     }
 
     @Bean("responseHeaderFilter")

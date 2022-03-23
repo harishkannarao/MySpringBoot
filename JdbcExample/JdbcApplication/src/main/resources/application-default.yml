@@ -14,7 +14,7 @@ app:
   openapi:
     url: "http://localhost:8180"
   cors:
-    origins: "http://localhost:8180,http://localhost:3000"
+    origins: "http://localhost:8180,http://localhost:8080,http://localhost:3000"
 
 springdoc:
   api-docs:
