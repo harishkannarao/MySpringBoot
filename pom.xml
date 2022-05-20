@@ -20,8 +20,8 @@
         <postgresql.driver.version>42.3.3</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
         <flyway.version>8.5.4</flyway.version>
-        <selenium.version>4.1.2</selenium.version>
-        <webdrivermanager.version>5.1.0</webdrivermanager.version>
+        <selenium.version>4.1.4</selenium.version>
+        <webdrivermanager.version>5.1.1</webdrivermanager.version>
         <guava.version>31.1-jre</guava.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
         <java.version>11</java.version>

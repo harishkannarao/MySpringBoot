@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 public class HomePage {
     private final WebDriver webDriver;
@@ -27,7 +29,7 @@ public class HomePage {
     public void navigate() {
         webDriver.navigate().to(homePageUrl);
         webDriver.navigate().refresh();
-        WebDriverWait waitForHomePageElement = new WebDriverWait(webDriver, 10);
+        WebDriverWait waitForHomePageElement = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         waitForHomePageElement.until(ExpectedConditions.presenceOfElementLocated(By.id("qa-home-page-id")));
     }
 
