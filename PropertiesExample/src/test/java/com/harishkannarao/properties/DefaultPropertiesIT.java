@@ -1,10 +1,11 @@
 package com.harishkannarao.properties;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class DefaultPropertiesIT extends BaseIntegrationWithDefaultProperties {
 

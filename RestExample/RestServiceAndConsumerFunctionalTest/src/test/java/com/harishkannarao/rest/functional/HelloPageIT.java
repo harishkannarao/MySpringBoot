@@ -1,6 +1,6 @@
 package com.harishkannarao.rest.functional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.http.HttpEntity;
@@ -12,7 +12,7 @@ import org.springframework.util.MultiValueMap;
 import java.time.LocalDate;
 
 import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HelloPageIT extends BaseIntegration {
 

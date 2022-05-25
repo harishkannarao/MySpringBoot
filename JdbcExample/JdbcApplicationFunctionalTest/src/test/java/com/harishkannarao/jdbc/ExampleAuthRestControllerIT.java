@@ -1,7 +1,7 @@
 package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.security.Subject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("ConstantConditions")
 public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {

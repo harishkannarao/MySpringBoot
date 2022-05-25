@@ -1,4 +1,0 @@
-randomServerPort2: 8186
-
-server:
-  port: ${randomServerPort2}

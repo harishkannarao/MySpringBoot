@@ -5,7 +5,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
-import org.junit.rules.ExternalResource;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -13,9 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
-public class LogbackTestAppenderRule extends ExternalResource {
+
+public class LogbackTestAppender {
     private static final String LOGGING_PATTERN = "%-5level %message%n";
     private static final String LOG_FILE_LOCATION = "target/logs";
     private static final String LOG_FILE_PREFIX = "test_log_";
@@ -32,11 +32,11 @@ public class LogbackTestAppenderRule extends ExternalResource {
     private FileAppender<ILoggingEvent> testAppender;
     private String logFile;
 
-    public LogbackTestAppenderRule(String loggerName) {
+    public LogbackTestAppender(String loggerName) {
         this(loggerName, LOGGING_PATTERN, LOG_FILE_LOCATION, LOG_FILE_PREFIX);
     }
 
-    public LogbackTestAppenderRule(String loggerName, String loggingPattern, String logFileLocation, String logFilePrefix) {
+    public LogbackTestAppender(String loggerName, String loggingPattern, String logFileLocation, String logFilePrefix) {
         this.logFileLocation = logFileLocation;
         this.logFilePrefix = logFilePrefix;
 
@@ -46,8 +46,7 @@ public class LogbackTestAppenderRule extends ExternalResource {
     }
 
 
-    @Override
-    protected void before() throws Throwable {
+    public void startLogsCapture() {
         logFile = String.format(LOG_FILENAME_FORMAT, logFileLocation, logFilePrefix, UUID.randomUUID().toString());
 
         testAppender = new FileAppender<>();
@@ -60,8 +59,7 @@ public class LogbackTestAppenderRule extends ExternalResource {
         logger.addAppender(testAppender);
     }
 
-    @Override
-    protected void after() {
+    public void stopLogsCapture() {
         logger.detachAppender(testAppender);
     }
 

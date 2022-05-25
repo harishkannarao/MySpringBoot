@@ -1,7 +1,7 @@
 package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.controller.HealthCheckRestController;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

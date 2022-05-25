@@ -2,8 +2,9 @@ package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.domain.ThirdPartyStatus;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -17,8 +18,18 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${thirdparty.ping.url}")
     String thirdPartyPingRestUrl;
 
-    @Rule
-    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(RestTemplateAccessLoggingInterceptor.class.getName());
+    public final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName());
+
+    @BeforeEach
+    public void setUp() {
+        logbackTestAppender.startLogsCapture();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        logbackTestAppender.stopLogsCapture();
+    }
+
 
     @Test
     public void getPingStatus_shouldReturnStatusOfThirdPartUrl() {
@@ -51,7 +62,7 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
         assertThat(status.getStatus(), equalTo(204));
         assertThat(status.getUrl(), equalTo(thirdPartyPingRestUrl));
 
-        testAppenderRule.assertLogEntry("INFO  REST_CLIENT_ACCESS_LOG");
-        testAppenderRule.assertLogEntry("204 GET http://localhost:9010/ping");
+        logbackTestAppender.assertLogEntry("INFO  REST_CLIENT_ACCESS_LOG");
+        logbackTestAppender.assertLogEntry("204 GET http://localhost:9010/ping");
     }
 }

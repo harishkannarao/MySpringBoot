@@ -3,9 +3,10 @@ package com.harishkannarao.rest.functional;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.harishkannarao.rest.controller.CustomApplicationErrorController;
-import com.harishkannarao.rest.rule.LogbackTestAppenderRule;
-import org.junit.Rule;
-import org.junit.Test;
+import com.harishkannarao.rest.rule.LogbackTestAppender;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ErrorPageIT extends BaseIntegration {
 
@@ -26,8 +27,17 @@ public class ErrorPageIT extends BaseIntegration {
     @Value("${customErrorSimulationUrl}")
     private String customErrorSimulationUrl;
 
-    @Rule
-    public final LogbackTestAppenderRule testAppenderRule = new LogbackTestAppenderRule(CustomApplicationErrorController.class.getName());
+    public final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(CustomApplicationErrorController.class.getName());
+
+    @BeforeEach
+    public void setUp() {
+        logbackTestAppender.startLogsCapture();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        logbackTestAppender.stopLogsCapture();
+    }
 
     @Test
     public void shouldReturnGeneralErrorPageWith404MessageGivenNonExistentPageForHtmlClients() throws IOException {
@@ -39,7 +49,7 @@ public class ErrorPageIT extends BaseIntegration {
 
         ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(nonExistentPageUrl, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
-        testAppenderRule.assertLogEntry("DEBUG Not Found");
+        logbackTestAppender.assertLogEntry("DEBUG Not Found");
     }
 
     @Test
@@ -52,7 +62,7 @@ public class ErrorPageIT extends BaseIntegration {
 
         ResponseEntity<String> response = testRestTemplateForHtml.getForEntity(simulateFilterErrorUrl, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-        testAppenderRule.assertLogEntry("ERROR Internal Server Error");
+        logbackTestAppender.assertLogEntry("ERROR Internal Server Error");
     }
 
     @Test
@@ -62,7 +72,7 @@ public class ErrorPageIT extends BaseIntegration {
         ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ErrorDetails.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), errorDetails.getStatus());
         assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), errorDetails.getError());
-        testAppenderRule.assertLogEntry("DEBUG Not Found");
+        logbackTestAppender.assertLogEntry("DEBUG Not Found");
     }
 
     @Test
@@ -72,7 +82,7 @@ public class ErrorPageIT extends BaseIntegration {
         ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ErrorDetails.class);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorDetails.getStatus());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), errorDetails.getError());
-        testAppenderRule.assertLogEntry("ERROR Internal Server Error");
+        logbackTestAppender.assertLogEntry("ERROR Internal Server Error");
     }
 
     @Test

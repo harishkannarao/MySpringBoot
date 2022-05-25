@@ -3,7 +3,7 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
 import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,7 +15,8 @@ import org.springframework.web.client.RestClientException;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class CustomerRestControllerIT extends BaseIntegrationJdbc {
     @Autowired

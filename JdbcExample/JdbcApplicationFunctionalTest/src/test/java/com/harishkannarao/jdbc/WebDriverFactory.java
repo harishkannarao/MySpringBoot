@@ -31,11 +31,11 @@ public class WebDriverFactory {
         return driver;
     }
 
-    public void takeScreenShots(String displayName, boolean success) {
+    public void takeScreenShots(String displayName) {
         IntStream.range(0, WEB_DRIVERS.size())
                 .forEach(index -> {
                     String filename = displayName + "_" + index;
-                    WebDriverScreenShotUtil.takeScreenShot(WEB_DRIVERS.get(index), filename, success);
+                    WebDriverScreenShotUtil.takeScreenShot(WEB_DRIVERS.get(index), filename);
                 });
     }
 

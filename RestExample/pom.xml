@@ -19,8 +19,6 @@
         <module>RestServiceAndConsumer</module>
         <module>RestServiceAndConsumerFunctionalTest</module>
         <module>RestServiceAndConsumerFunctionalTestWithoutMocks</module>
-        <module>RestServiceAndConsumerBddTest</module>
-        <module>RestServiceAndConsumerBddTestWithMocks</module>
     </modules>
 
     <dependencyManagement>

@@ -1,8 +1,0 @@
-randomServerPort1: 8185
-
-server:
-  port: ${randomServerPort1}
-
-warExample:
-  baseUrl: http://localhost:${server.port}
-  indexPageUrl: ${warExample.baseUrl}/app/index.html

@@ -3,16 +3,17 @@ package com.harishkannarao.rest.functional;
 import com.harishkannarao.rest.domain.FeatureToggleResponse;
 import com.harishkannarao.rest.util.PropertiesBasedFeatureToggler;
 import com.harishkannarao.rest.util.TestFeatureToggler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class FeatureToggleIT extends BaseIntegration {
 
@@ -23,12 +24,12 @@ public class FeatureToggleIT extends BaseIntegration {
     @Autowired
     private PropertiesBasedFeatureToggler propertiesBasedFeatureToggler;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         testFeatureToggler.resetCustomFeature();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         testFeatureToggler.resetCustomFeature();
     }

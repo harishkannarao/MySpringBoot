@@ -1,6 +1,0 @@
-custom:
-  message1: Message1 from war-default-config/application.properties
-  message2: Message2 from war-default-config/application.properties
-  message3: Message3 from war-default-config/application.properties
-  message4: Message4 from war-default-config/application.properties
-  message5: Message5 from war-default-config/application.properties

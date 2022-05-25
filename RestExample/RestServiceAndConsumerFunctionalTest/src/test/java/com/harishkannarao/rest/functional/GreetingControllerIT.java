@@ -2,7 +2,7 @@ package com.harishkannarao.rest.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.harishkannarao.rest.domain.Greeting;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class GreetingControllerIT extends BaseIntegration {
 

@@ -1,11 +1,11 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.client.ThirdPartyRestQuoteClient;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration {
@@ -26,6 +26,6 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
         com.harishkannarao.rest.domain.Quote result = testRestTemplate.getForObject(quoteEndpointUrl, com.harishkannarao.rest.domain.Quote.class);
         assertEquals("some type", result.getType());
         assertEquals("some quote", result.getValue().getQuote());
-        assertEquals(new Long(2L), result.getValue().getId());
+        assertEquals(Long.valueOf(2L), result.getValue().getId());
     }
 }
