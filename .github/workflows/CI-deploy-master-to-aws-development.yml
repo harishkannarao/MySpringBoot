@@ -44,18 +44,6 @@ jobs:
       timeout-minutes: 20
       run: |
         ./ci-build.sh
-    - name: Archive cucumber reports 1
-      uses: actions/upload-artifact@v1
-      if: ${{ always() }}
-      with:
-        name: cucumber-test-result-1
-        path: RestExample/RestServiceAndConsumerBddTest/target/cucumber-html-report
-    - name: Archive cucumber reports 2
-      uses: actions/upload-artifact@v1
-      if: ${{ always() }}
-      with:
-        name: cucumber-test-result-2
-        path: RestExample/RestServiceAndConsumerBddTestWithMocks/target/cucumber-html-report
     - name: 'CI Build Docker Command'
       timeout-minutes: 20
       run: |
