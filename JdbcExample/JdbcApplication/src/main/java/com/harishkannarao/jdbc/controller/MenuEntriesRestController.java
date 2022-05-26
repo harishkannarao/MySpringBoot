@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/menuentries", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class MenuEntriesRestController extends AbstractBaseController{
-    private MenuEntriesDao menuEntriesDao;
+    private final MenuEntriesDao menuEntriesDao;
 
     @Autowired
     public MenuEntriesRestController(@Qualifier("myMenuEntriesDao") MenuEntriesDao menuEntriesDao) {

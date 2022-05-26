@@ -2,7 +2,7 @@ package com.harishkannarao.jdbc.interceptor;
 
 import com.harishkannarao.jdbc.security.Subject;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import static com.harishkannarao.jdbc.security.AuthContext.SUBJECT_ATTR_KEY;
 
 @Component
-public class AuthHeaderRequestInterceptor extends HandlerInterceptorAdapter {
+public class AuthHeaderRequestInterceptor implements HandlerInterceptor {
 
     private static final String SUPER_SECRET_HEADER_VALUE = "HELLO_HEADER";
     private static final String BEARER_PREFIX = "Bearer ";

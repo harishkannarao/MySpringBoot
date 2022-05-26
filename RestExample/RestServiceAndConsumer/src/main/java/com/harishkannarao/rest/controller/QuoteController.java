@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class QuoteController {
 
-    private ThirdPartyRestQuoteClient thirdPartyRestQuoteClient;
+    private final ThirdPartyRestQuoteClient thirdPartyRestQuoteClient;
 
     @Autowired
     public QuoteController(@Qualifier("myThirdPartyRestQuoteClientImpl")ThirdPartyRestQuoteClient thirdPartyRestQuoteClient) {

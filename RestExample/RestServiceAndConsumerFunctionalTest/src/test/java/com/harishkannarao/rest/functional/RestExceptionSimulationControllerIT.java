@@ -63,7 +63,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         String customHeaderValue = "someValue";
         requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestCustomCheckedExceptionUrl, HttpMethod.GET, requestEntity, String.class);
         assertEquals(403, response.getStatusCodeValue());
         assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));

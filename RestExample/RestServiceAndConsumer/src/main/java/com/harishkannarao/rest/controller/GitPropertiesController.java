@@ -12,7 +12,6 @@ public class GitPropertiesController {
 
     @RequestMapping
     public GitProperties getGitProperties() {
-        GitProperties gitProperties = GitPropertiesUtil.getInstance().getGitProperties();
-        return gitProperties;
+        return GitPropertiesUtil.getInstance().getGitProperties();
     }
 }

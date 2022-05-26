@@ -1,6 +1,7 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.domain.ErrorResponse;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -9,6 +10,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static com.harishkannarao.rest.interceptor.request.EvilHeaderRequestInterceptor.EVIL_HEADER_NAME;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
@@ -26,7 +29,7 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         requestHeaders.add(EVIL_HEADER_NAME, "Something");
         String requestUrl = fromHttpUrl(greetingEndpointUrl).queryParam("name", "Harish").toUriString();
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplate.exchange(requestUrl, HttpMethod.GET, requestEntity, String.class);
         assertEquals(400, response.getStatusCodeValue());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
@@ -35,14 +38,14 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
 
 
     @Test
-    public void shouldGet400StatusWithDescriptionForHtmlClients() throws Exception {
+    public void shouldGet400StatusWithDescriptionForHtmlClients() {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         requestHeaders.add(EVIL_HEADER_NAME, "Something");
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplateForHtml.exchange(helloPageEndpointUrl, HttpMethod.GET, requestEntity, String.class);
         assertEquals(400, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("You are an evil request::/hello"));
-        assertTrue(response.getBody().contains("Something went wrong in controller:"));
+        assertThat(response.getBody(), containsString("You are an evil request::/hello"));
+        assertThat(response.getBody(), containsString("Something went wrong in controller:"));
     }
 
 }

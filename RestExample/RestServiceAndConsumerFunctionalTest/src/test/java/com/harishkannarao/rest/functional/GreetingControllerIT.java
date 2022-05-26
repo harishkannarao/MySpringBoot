@@ -43,8 +43,8 @@ public class GreetingControllerIT extends BaseIntegration {
         Map<String, String> body = new HashMap<>();
         body.put("name", "Harish");
         HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Map> requestEntity = new HttpEntity<>(body, requestHeaders);
         ResponseEntity<String> response = testRestTemplate.exchange(greetingEndpointUrl, HttpMethod.POST, requestEntity, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -52,12 +52,13 @@ public class GreetingControllerIT extends BaseIntegration {
         assertEquals("Hello, Harish!", jsonResponse.get("greeting").asText());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
         MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
         String customHeaderValue = "someValue";
         requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("name", "Harish");
         ResponseEntity<Greeting> response = testRestTemplate.exchange(greetingWithNameEndpointUrl, HttpMethod.GET, requestEntity, Greeting.class, queryParams);

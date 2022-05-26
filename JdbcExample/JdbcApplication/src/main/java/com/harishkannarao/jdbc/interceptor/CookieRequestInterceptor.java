@@ -2,7 +2,7 @@ package com.harishkannarao.jdbc.interceptor;
 
 import com.harishkannarao.jdbc.security.Subject;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import static com.harishkannarao.jdbc.security.AuthContext.SUBJECT_ATTR_KEY;
 
 @Component
-public class CookieRequestInterceptor extends HandlerInterceptorAdapter {
+public class CookieRequestInterceptor implements HandlerInterceptor {
 
     private static final String SUPER_SECRET_COOKIE_VALUE = "HELLO_COOKIE";
     private static final String COOKIE_NAME = "session_cookie";

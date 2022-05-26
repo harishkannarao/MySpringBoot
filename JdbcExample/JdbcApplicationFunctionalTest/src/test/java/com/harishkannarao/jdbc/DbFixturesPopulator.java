@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 public class DbFixturesPopulator {
     private static final Logger log = LoggerFactory.getLogger(DbFixturesPopulator.class);
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     @Autowired
     public DbFixturesPopulator(DataSource dataSource) {

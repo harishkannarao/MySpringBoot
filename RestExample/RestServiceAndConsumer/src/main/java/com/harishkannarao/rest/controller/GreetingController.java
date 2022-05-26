@@ -24,7 +24,7 @@ public class GreetingController {
                 String.format(template, name));
     }
 
-    @RequestMapping(value = "/get", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/get", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<JsonNode> greetingPost(HttpServletRequest request, @RequestBody(required = false) JsonNode input) {
         String name = input.get("name").asText();
         ObjectNode response = JsonNodeFactory.instance.objectNode();

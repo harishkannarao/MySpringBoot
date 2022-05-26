@@ -3,15 +3,16 @@ package com.harishkannarao.rest.interceptor.request;
 import com.harishkannarao.rest.exception.EvilHeaderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
+
 
 @Component
-public class EvilHeaderRequestInterceptor extends HandlerInterceptorAdapter {
+public class EvilHeaderRequestInterceptor implements HandlerInterceptor {
     public static final String EVIL_HEADER_NAME = "MyEvilHeader";
 
     private final String evilHeaderMessage;

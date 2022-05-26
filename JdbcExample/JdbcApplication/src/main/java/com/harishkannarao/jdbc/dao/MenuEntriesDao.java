@@ -12,7 +12,7 @@ import java.util.List;
 @Qualifier("myMenuEntriesDao")
 public class MenuEntriesDao {
 
-    private List<String> menuEntries;
+    private final List<String> menuEntries;
 
     @Autowired
     public MenuEntriesDao(JdbcTemplate jdbcTemplate) {

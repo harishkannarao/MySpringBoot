@@ -18,6 +18,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.Ordered;
 
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,11 +68,11 @@ public class TestConfigurationRestServiceAndConsumerApplication {
     }
 
     @Bean("errorSimulationFilter")
-    public FilterRegistrationBean registerErrorSimulationFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ErrorSimulationFilter());
+    public FilterRegistrationBean<ErrorSimulationFilter> registerErrorSimulationFilter() {
+        FilterRegistrationBean<ErrorSimulationFilter> filterRegistrationBean = new FilterRegistrationBean<>(new ErrorSimulationFilter());
         filterRegistrationBean.setName(ErrorSimulationFilter.NAME);
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        filterRegistrationBean.setUrlPatterns(asList(ErrorSimulationFilter.PATH));
+        filterRegistrationBean.setUrlPatterns(List.of(ErrorSimulationFilter.PATH));
         return filterRegistrationBean;
     }
 

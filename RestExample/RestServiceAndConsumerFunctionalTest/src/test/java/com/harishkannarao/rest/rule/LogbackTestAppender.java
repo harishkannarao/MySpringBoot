@@ -47,11 +47,11 @@ public class LogbackTestAppender {
 
 
     public void startLogsCapture() {
-        logFile = String.format(LOG_FILENAME_FORMAT, logFileLocation, logFilePrefix, UUID.randomUUID().toString());
+        logFile = String.format(LOG_FILENAME_FORMAT, logFileLocation, logFilePrefix, UUID.randomUUID());
 
         testAppender = new FileAppender<>();
         testAppender.setFile(logFile);
-        testAppender.setName(String.format(TEST_APPENDER_NAME_FORMAT, UUID.randomUUID().toString()));
+        testAppender.setName(String.format(TEST_APPENDER_NAME_FORMAT, UUID.randomUUID()));
         testAppender.setContext(context);
         testAppender.setEncoder(encoder);
         testAppender.start();
