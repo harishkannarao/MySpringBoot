@@ -1,6 +1,7 @@
 name: 'CI-deploy-master-to-aws-development'
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: do-deploy-master-to-aws-development
 # push:
