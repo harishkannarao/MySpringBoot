@@ -8,7 +8,7 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 [![Build Status](https://github.com/harishkannarao/MySpringBoot/workflows/CI-master/badge.svg)](https://github.com/harishkannarao/MySpringBoot/actions?query=workflow%3ACI-master)
 
 ### Required Software and Tools
-* Java Version: OpenJDK 11 (Execute **_java -version_** in command line after installation)
+* Java Version: OpenJDK 17 (Execute **_java -version_** in command line after installation)
 * Apache Maven Version: 3.2.5 (Execute **_mvn -version_** in command line after installation)
 * Docker Version: Docker version 17.03.1-ce, build c6d412e (Execute **_docker --version_** in command line after installation)
 * Docker Compose Version: docker-compose version 1.11.2, build dfed245 (Execute **_docker-compose --version_** in command line after installation)
