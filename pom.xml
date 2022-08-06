@@ -15,7 +15,7 @@
 
     <properties>
         <spring.boot.version>2.6.4</spring.boot.version>
-        <postgresql.driver.version>42.3.6</postgresql.driver.version>
+        <postgresql.driver.version>42.4.1</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
         <flyway.version>8.5.11</flyway.version>
         <selenium.version>4.1.4</selenium.version>
