@@ -51,7 +51,15 @@ Open URL in browser:
 
     mvn versions:use-latest-versions
 
+    mvn versions:use-latest-releases
+
+    mvn versions:use-latest-snapshots
+
     mvn versions:update-properties
+
+    mvn versions:update-child-modules
+
+    mvn versions:update-parent
 
 ### Running multiple spring boot application in parallel
 * Open terminal in root folder
