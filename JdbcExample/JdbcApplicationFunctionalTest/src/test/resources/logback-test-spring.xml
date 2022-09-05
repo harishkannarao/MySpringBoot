@@ -10,6 +10,10 @@
         </encoder>
     </appender>
 
+    <logger level="TRACE" name="org.springframework.jdbc.core">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
