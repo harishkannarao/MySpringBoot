@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
@@ -61,14 +62,16 @@ public class LogbackTestAppender {
 
     public void stopLogsCapture() {
         logger.detachAppender(testAppender);
+        testAppender.stop();
     }
 
     public void assertLogEntry(String expectedString) throws IOException {
-        boolean matchFound = Files.lines(Paths.get(logFile)).anyMatch(s -> s.contains(expectedString));
-        assertTrue("\nLog file: " + logFile
-                + "\ndoes not contain expected string \n"
-                + expectedString, matchFound);
-
+        try(Stream<String> lines = Files.lines(Paths.get(logFile))) {
+            boolean matchFound = lines.anyMatch(s -> s.contains(expectedString));
+            assertTrue("\nLog file: " + logFile
+                    + "\ndoes not contain expected string \n"
+                    + expectedString, matchFound);
+        }
     }
 
 
