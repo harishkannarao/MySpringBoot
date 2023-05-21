@@ -18,7 +18,7 @@
         <postgresql.driver.version>42.3.6</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
         <flyway.version>8.5.11</flyway.version>
-        <selenium.version>4.1.4</selenium.version>
+        <selenium.version>4.9.1</selenium.version>
         <webdrivermanager.version>5.1.1</webdrivermanager.version>
         <guava.version>31.1-jre</guava.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
@@ -300,6 +300,13 @@
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-support</artifactId>
+                <version>${selenium.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>htmlunit3-driver</artifactId>
                 <version>${selenium.version}</version>
                 <scope>test</scope>
             </dependency>

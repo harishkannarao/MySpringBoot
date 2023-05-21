@@ -8,12 +8,8 @@ set -x
 
 sudo apt-get -qq update
 sudo apt-get -qq install -y jq
-sudo snap remove firefox
-sudo add-apt-repository ppa:mozillateam/ppa
-sudo apt -qq install -y firefox
 
 mvn --version
 docker --version
 docker-compose --version
 aws --version
-firefox --version

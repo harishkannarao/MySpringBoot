@@ -43,7 +43,6 @@ public abstract class BaseIntegration {
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        webDriverFactory.takeScreenShots(testInfo.getDisplayName());
         webDriverFactory.closeAllWebDrivers();
     }
 
