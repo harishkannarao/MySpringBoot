@@ -1,9 +1,6 @@
 # MySpringBoot
 This repository is a playground for learning and trying new ideas with Spring Boot
 
-### Travis CI Build status
-[![Build Status](https://travis-ci.org/harishkannarao/MySpringBoot.svg?branch=master)](https://travis-ci.org/harishkannarao/MySpringBoot)
-
 ## Github Actions Build status
 [![Build Status](https://github.com/harishkannarao/MySpringBoot/workflows/CI-master/badge.svg)](https://github.com/harishkannarao/MySpringBoot/actions?query=workflow%3ACI-master)
 
