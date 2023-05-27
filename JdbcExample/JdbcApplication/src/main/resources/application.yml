@@ -9,6 +9,16 @@ application:
   healthCheck:
     path: "/health-check"
 
+async:
+  task:
+    executor:
+      pool:
+        size:
+          core: 2
+          max: 2
+      queue:
+        capacity: 500
+
 springdoc:
   api-docs:
     path: "/api-docs"

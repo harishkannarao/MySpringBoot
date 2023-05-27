@@ -75,9 +75,9 @@ public class JdbcApplicationConfiguration {
     @Bean("requestTracingFilter")
     public FilterRegistrationBean<RequestTracingFilter> registerRequestTracingFilter() {
         FilterRegistrationBean<RequestTracingFilter> filterRegistrationBean = new FilterRegistrationBean<>(new RequestTracingFilter());
-        filterRegistrationBean.setName("requestIdFilterBean");
+        filterRegistrationBean.setName(RequestTracingFilter.NAME);
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        filterRegistrationBean.setUrlPatterns(Collections.singletonList("/*"));
+        filterRegistrationBean.setUrlPatterns(Collections.singletonList(RequestTracingFilter.PATH));
         return filterRegistrationBean;
     }
 
