@@ -22,6 +22,8 @@
         <webdrivermanager.version>5.1.1</webdrivermanager.version>
         <guava.version>31.1-jre</guava.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
+        <assertj.version>3.21.0</assertj.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <java.version>17</java.version>
         <angularjs.version>1.4.1</angularjs.version>
         <bootstrap.version>3.3.7</bootstrap.version>
@@ -199,6 +201,20 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>${awaitility.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
