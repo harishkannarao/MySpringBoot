@@ -18,7 +18,7 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${thirdparty.ping.url}")
     String thirdPartyPingRestUrl;
 
-    public final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName());
+    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName());
 
     @BeforeEach
     public void setUp() {

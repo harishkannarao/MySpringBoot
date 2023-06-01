@@ -14,8 +14,8 @@ async:
     executor:
       pool:
         size:
-          core: 2
-          max: 2
+          core: 5
+          max: 5
       queue:
         capacity: 500
 

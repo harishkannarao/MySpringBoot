@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+
+import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY;
 
 @RestController
 @RequestMapping(value = "/async", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -33,14 +34,19 @@ public class ExampleAsyncRestController {
 
     @RequestMapping(value = "fireAndForget", method = RequestMethod.POST)
     public ResponseEntity<Void> fireAndForget(
+            @RequestAttribute(REQUEST_ID_KEY) String requestId,
             @RequestBody List<Long> ids) {
         Optional.ofNullable(ids)
                 .orElseGet(Collections::emptyList)
                 .forEach(aLong ->
                         CompletableFuture
-                                .runAsync(() -> sendForId(aLong), executor)
-                                .whenComplete(((unused, throwable) ->
-                                        logger.error(throwable.getMessage(), throwable)))
+                                .runAsync(() -> sendForId(requestId, aLong), executor)
+                                .orTimeout(3, TimeUnit.SECONDS)
+                                .whenComplete(((unused, throwable) -> {
+                                            if (Objects.nonNull(throwable)) {
+                                                logger.error("requestId: " + requestId + " " + throwable.getMessage(), throwable);
+                                            }
+                                        }))
                 );
         return ResponseEntity.noContent().build();
     }
@@ -50,14 +56,18 @@ public class ExampleAsyncRestController {
         return ResponseEntity.noContent().build();
     }
 
-    private void sendForId(Long id) {
+    private void sendForId(String requestId, Long id) {
         try {
-            Thread.sleep(3000L);
+            if (id == 1) {
+                Thread.sleep(4000L);
+            } else {
+                Thread.sleep(2000L);
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         if (id % 2 == 0) {
-            logger.info("Success for id: " + id);
+            logger.info("requestId: " + requestId + " Success for id: " + id);
         } else {
             throw new IllegalArgumentException("Invalid id: " + id);
         }

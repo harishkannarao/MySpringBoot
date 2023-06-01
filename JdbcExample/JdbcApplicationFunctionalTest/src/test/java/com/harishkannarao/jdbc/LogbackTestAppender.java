@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.springframework.test.util.AssertionErrors.assertTrue;
@@ -63,6 +65,16 @@ public class LogbackTestAppender {
     public void stopLogsCapture() {
         logger.detachAppender(testAppender);
         testAppender.stop();
+    }
+
+    public String getLogFile() {
+        return logFile;
+    }
+
+    public List<String> getLogs() throws IOException {
+        try(Stream<String> lines = Files.lines(Paths.get(logFile))) {
+            return lines.toList();
+        }
     }
 
     public void assertLogEntry(String expectedString) throws IOException {
