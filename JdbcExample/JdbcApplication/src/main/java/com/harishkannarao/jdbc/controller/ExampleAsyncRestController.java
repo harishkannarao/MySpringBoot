@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY;
 
@@ -40,13 +41,17 @@ public class ExampleAsyncRestController {
                 .orElseGet(Collections::emptyList)
                 .forEach(aLong ->
                         CompletableFuture
-                                .runAsync(() -> sendForId(requestId, aLong), executor)
+                                .runAsync(() -> sendForId(aLong), executor)
                                 .orTimeout(3, TimeUnit.SECONDS)
                                 .whenComplete(((unused, throwable) -> {
-                                            if (Objects.nonNull(throwable)) {
-                                                logger.error("requestId: " + requestId + " " + throwable.getMessage(), throwable);
-                                            }
-                                        }))
+                                    if (Objects.nonNull(throwable)) {
+                                        if (throwable instanceof TimeoutException) {
+                                            logger.error("requestId: " + requestId + " " + throwable.getMessage(), throwable);
+                                        } else {
+                                            logger.error(throwable.getMessage(), throwable);
+                                        }
+                                    }
+                                }))
                 );
         return ResponseEntity.noContent().build();
     }
@@ -56,7 +61,7 @@ public class ExampleAsyncRestController {
         return ResponseEntity.noContent().build();
     }
 
-    private void sendForId(String requestId, Long id) {
+    private void sendForId(Long id) {
         try {
             if (id == 1) {
                 Thread.sleep(4000L);
@@ -67,7 +72,7 @@ public class ExampleAsyncRestController {
             throw new RuntimeException(e);
         }
         if (id % 2 == 0) {
-            logger.info("requestId: " + requestId + " Success for id: " + id);
+            logger.info("Success for id: " + id);
         } else {
             throw new IllegalArgumentException("Invalid id: " + id);
         }
