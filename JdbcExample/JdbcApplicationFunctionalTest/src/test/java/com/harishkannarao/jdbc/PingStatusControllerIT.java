@@ -1,5 +1,7 @@
 package com.harishkannarao.jdbc;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.domain.ThirdPartyStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -8,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("ConstantConditions")
 public class PingStatusControllerIT extends BaseIntegrationJdbc {
@@ -18,7 +19,7 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${thirdparty.ping.url}")
     String thirdPartyPingRestUrl;
 
-    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName());
+    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName(), Level.INFO);
 
     @BeforeEach
     public void setUp() {
@@ -43,12 +44,12 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
 
         ThirdPartyStatus status = restTemplate.getForObject(pingStatusEndpointUrl, ThirdPartyStatus.class);
 
-        assertThat(status.getStatus(), equalTo(204));
-        assertThat(status.getUrl(), equalTo(thirdPartyPingRestUrl));
+        assertThat(status.getStatus()).isEqualTo(204);
+        assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);
     }
 
     @Test
-    public void getPingStatus_should_capture_rest_template_metrics() throws Exception {
+    public void getPingStatus_should_capture_rest_template_metrics() {
         wireMock.register(
                 get(urlEqualTo("/ping"))
                         .willReturn(
@@ -59,10 +60,11 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
 
         ThirdPartyStatus status = restTemplate.getForObject(pingStatusEndpointUrl, ThirdPartyStatus.class);
 
-        assertThat(status.getStatus(), equalTo(204));
-        assertThat(status.getUrl(), equalTo(thirdPartyPingRestUrl));
+        assertThat(status.getStatus()).isEqualTo(204);
+        assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);
 
-        logbackTestAppender.assertLogEntry("INFO  REST_CLIENT_ACCESS_LOG");
-        logbackTestAppender.assertLogEntry("204 GET http://localhost:9010/ping");
+        assertThat(logbackTestAppender.getLogs())
+                        .extracting(ILoggingEvent::getFormattedMessage)
+                                .anySatisfy(s -> assertThat(s).matches("REST_CLIENT_ACCESS_LOG .* 204 GET http://localhost:9010/ping"));
     }
 }

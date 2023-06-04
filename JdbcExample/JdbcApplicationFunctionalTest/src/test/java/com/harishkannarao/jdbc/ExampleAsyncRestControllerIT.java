@@ -1,9 +1,9 @@
 package com.harishkannarao.jdbc;
 
-import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
 import com.harishkannarao.jdbc.controller.ExampleAsyncRestController;
-import org.assertj.core.api.Assertions;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.awaitility.Awaitility.await;
 public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
 
     private final String fireAndForgetEndpointUrl;
-    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(ExampleAsyncRestController.class.getName());
+    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(ExampleAsyncRestController.class.getName(), Level.INFO);
 
     @Autowired
     public ExampleAsyncRestControllerIT(
@@ -48,14 +48,17 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         assertThat(response.getStatusCodeValue()).isEqualTo(204);
 
         await().atMost(Duration.ofSeconds(6))
-                .untilAsserted(() -> {
-                    assertThat(logbackTestAppender.getLogs())
-                            .as("LogFile: " + logbackTestAppender.getLogFile())
-                            .anySatisfy(s -> assertThat(s).contains("Success for id: 2"))
-                            .anySatisfy(s -> assertThat(s).contains("Invalid id: 3"))
-                            .anySatisfy(s -> assertThat(s).contains("Success for id: 4"))
-                            .anySatisfy(s -> assertThat(s).contains("java.util.concurrent.TimeoutException"));
+                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                        .extracting(ILoggingEvent::getFormattedMessage)
+                        .anySatisfy(s -> assertThat(s).contains("Success for id: 2"))
+                        .anySatisfy(s -> assertThat(s).contains("Invalid id: 3"))
+                        .anySatisfy(s -> assertThat(s).contains("Success for id: 4")));
 
-                });
+        await().atMost(Duration.ofSeconds(6))
+                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                        .filteredOn(iLoggingEvent -> iLoggingEvent.getThrowableProxy() != null)
+                        .extracting(ILoggingEvent::getThrowableProxy)
+                        .extracting(IThrowableProxy::getClassName)
+                        .anySatisfy(s -> assertThat(s).contains("java.util.concurrent.TimeoutException")));
     }
 }
