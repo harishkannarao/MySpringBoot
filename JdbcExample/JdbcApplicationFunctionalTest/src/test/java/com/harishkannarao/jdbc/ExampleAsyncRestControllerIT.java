@@ -46,6 +46,8 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(body, headers);
         ResponseEntity<Void> response = restTemplate.exchange(fireAndForgetEndpointUrl, HttpMethod.POST, requestEntity, Void.class);
         assertThat(response.getStatusCodeValue()).isEqualTo(204);
+        String requestId = response.getHeaders().getFirst("request_id");
+        assertThat(requestId).isNotBlank();
 
         await().atMost(Duration.ofSeconds(6))
                 .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
@@ -60,5 +62,10 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
                         .extracting(ILoggingEvent::getThrowableProxy)
                         .extracting(IThrowableProxy::getClassName)
                         .anySatisfy(s -> assertThat(s).contains("java.util.concurrent.TimeoutException")));
+
+        await().atMost(Duration.ofSeconds(6))
+                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                        .extracting(ILoggingEvent::getMDCPropertyMap)
+                        .allSatisfy(mdc -> assertThat(mdc.get("request_id")).isEqualTo(requestId)));
     }
 }

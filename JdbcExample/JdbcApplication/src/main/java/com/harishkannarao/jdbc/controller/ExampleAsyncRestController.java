@@ -2,20 +2,17 @@ package com.harishkannarao.jdbc.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY;
 
@@ -37,6 +34,7 @@ public class ExampleAsyncRestController {
     public ResponseEntity<Void> fireAndForget(
             @RequestAttribute(REQUEST_ID_KEY) String requestId,
             @RequestBody List<Long> ids) {
+        Map<String, String> contextMap = MDC.getCopyOfContextMap();
         Optional.ofNullable(ids)
                 .orElseGet(Collections::emptyList)
                 .forEach(aLong ->
@@ -45,15 +43,18 @@ public class ExampleAsyncRestController {
                                 .orTimeout(3, TimeUnit.SECONDS)
                                 .whenComplete(((unused, throwable) -> {
                                     if (Objects.nonNull(throwable)) {
-                                        if (throwable instanceof TimeoutException) {
-                                            logger.error("requestId: " + requestId + " " + throwable.getMessage(), throwable);
-                                        } else {
+                                        try {
+                                            MDC.setContextMap(contextMap);
                                             logger.error(throwable.getMessage(), throwable);
+                                        } finally {
+                                            MDC.clear();
                                         }
                                     }
                                 }))
                 );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .header(REQUEST_ID_KEY, requestId)
+                .build();
     }
 
     @RequestMapping(value = "executeAndWait", method = RequestMethod.POST)
