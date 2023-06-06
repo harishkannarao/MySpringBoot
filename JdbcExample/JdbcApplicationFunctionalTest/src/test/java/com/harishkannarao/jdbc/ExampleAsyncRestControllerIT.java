@@ -20,12 +20,15 @@ import static org.awaitility.Awaitility.await;
 public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
 
     private final String fireAndForgetEndpointUrl;
+    private final String executeAndWaitEndpointUrl;
     private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(ExampleAsyncRestController.class.getName(), Level.INFO);
 
     @Autowired
     public ExampleAsyncRestControllerIT(
-            @Value("${fireAndForgetEndpointUrl}") String fireAndForgetEndpointUrl) {
+            @Value("${fireAndForgetEndpointUrl}") String fireAndForgetEndpointUrl,
+            @Value("${executeAndWaitEndpointUrl}") String executeAndWaitEndpointUrl) {
         this.fireAndForgetEndpointUrl = fireAndForgetEndpointUrl;
+        this.executeAndWaitEndpointUrl = executeAndWaitEndpointUrl;
     }
 
     @BeforeEach
@@ -64,6 +67,38 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
                         .anySatisfy(s -> assertThat(s).contains("java.util.concurrent.TimeoutException")));
 
         await().atMost(Duration.ofSeconds(6))
+                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                        .extracting(ILoggingEvent::getMDCPropertyMap)
+                        .allSatisfy(mdc -> assertThat(mdc.get("request_id")).isEqualTo(requestId)));
+    }
+
+
+    @Test
+    public void test_executeAndWait() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        List<Long> body = List.of(0L,1L,2L,3L);
+        HttpEntity<List<Long>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String[]> response = restTemplate.exchange(executeAndWaitEndpointUrl, HttpMethod.POST, requestEntity, String[].class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody())
+                .contains("2=4")
+                .contains("3=9")
+                .hasSize(2);
+        String requestId = response.getHeaders().getFirst("request_id");
+        assertThat(requestId).isNotBlank();
+
+        await().atMost(Duration.ofSeconds(8))
+                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                        .extracting(ILoggingEvent::getFormattedMessage)
+                        .anySatisfy(s -> assertThat(s).contains("Calculating for: 0"))
+                        .anySatisfy(s -> assertThat(s).contains("Calculating for: 1"))
+                        .anySatisfy(s -> assertThat(s).contains("Calculating for: 2"))
+                        .anySatisfy(s -> assertThat(s).contains("Calculating for: 3"))
+                        .anySatisfy(s -> assertThat(s).contains("Exception for input: 0"))
+                        .anySatisfy(s -> assertThat(s).contains("Exception for input: 1")));
+
+        await().atMost(Duration.ofSeconds(8))
                 .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
                         .extracting(ILoggingEvent::getMDCPropertyMap)
                         .allSatisfy(mdc -> assertThat(mdc.get("request_id")).isEqualTo(requestId)));
