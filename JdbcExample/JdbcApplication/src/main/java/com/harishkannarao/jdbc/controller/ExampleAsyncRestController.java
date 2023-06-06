@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY;
@@ -60,7 +59,7 @@ public class ExampleAsyncRestController {
     }
 
     @RequestMapping(value = "executeAndWait", method = RequestMethod.POST)
-    public ResponseEntity<List<Long>> executeAndWait(
+    public ResponseEntity<List<String>> executeAndWait(
             @RequestAttribute(REQUEST_ID_KEY) String requestId,
             @RequestBody List<Long> values
     ) {
@@ -73,8 +72,8 @@ public class ExampleAsyncRestController {
                                 .supplyAsync(() -> calculateSquare(value), executor)
                                 .orTimeout(4, TimeUnit.SECONDS)
                                 .handle((result, throwable) -> Optional.ofNullable(throwable)
-                                        .map(FutureResult::error)
-                                        .orElseGet(() -> FutureResult.success(result)))
+                                        .map(ex -> FutureResult.error(value, ex))
+                                        .orElseGet(() -> FutureResult.success(value, result)))
                 )
                 .toList();
         Stream<FutureResult> results = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
@@ -88,16 +87,16 @@ public class ExampleAsyncRestController {
                     }
                 })
                 .join();
-        List<Long> squaredValues = results.map(futureResult -> {
+        List<String> result = results.map(futureResult -> {
                     Optional<Throwable> exception = futureResult.getException();
-                    exception.ifPresent(throwable -> logger.error(throwable.getMessage(), throwable));
-                    return futureResult.getResult().orElse(null);
+                    exception.ifPresent(throwable -> logger.error("Exception for input: " + futureResult.getInput(), throwable));
+                    return futureResult.getResult().map(aLong -> futureResult.getInput() + "=" + aLong).orElse(null);
                 })
                 .filter(Objects::nonNull)
                 .toList();
         return ResponseEntity.ok()
                 .header(REQUEST_ID_KEY, requestId)
-                .body(squaredValues);
+                .body(result);
     }
 
     private void sendForId(Long id) {
@@ -137,10 +136,12 @@ public class ExampleAsyncRestController {
     }
 
     public static class FutureResult {
+        private final Long input;
         private final Long result;
         private final Throwable exception;
 
-        private FutureResult(Long result, Throwable exception) {
+        private FutureResult(Long input, Long result, Throwable exception) {
+            this.input = input;
             this.result = result;
             this.exception = exception;
         }
@@ -153,11 +154,15 @@ public class ExampleAsyncRestController {
             return Optional.ofNullable(exception);
         }
 
-        public static FutureResult success(Long result) {
-            return new FutureResult(result, null);
+        public static FutureResult success(Long input, Long result) {
+            return new FutureResult(input, result, null);
         }
-        public static FutureResult error(Throwable exception) {
-            return new FutureResult(null, exception);
+        public static FutureResult error(Long input, Throwable exception) {
+            return new FutureResult(input, null, exception);
+        }
+
+        public Long getInput() {
+            return input;
         }
     }
 }
