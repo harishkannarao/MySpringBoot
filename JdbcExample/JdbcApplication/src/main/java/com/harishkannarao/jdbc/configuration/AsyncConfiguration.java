@@ -23,6 +23,7 @@ public class AsyncConfiguration {
         executor.setQueueCapacity(queueCapacity);
         executor.setThreadNamePrefix("AsyncTaskExecutor-");
         executor.setTaskDecorator(new MdcTaskDecorator());
+        executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.initialize();
         return executor;
     }
