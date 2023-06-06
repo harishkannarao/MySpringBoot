@@ -40,7 +40,14 @@ public class ExampleAsyncRestController {
                 .orElseGet(Collections::emptyList)
                 .forEach(id ->
                         CompletableFuture
-                                .runAsync(() -> sendForId(id), executor)
+                                .runAsync(() -> {
+                                    try {
+                                        MDC.setContextMap(contextMap);
+                                        sendForId(id);
+                                    } finally {
+                                        MDC.clear();
+                                    }
+                                }, executor)
                                 .orTimeout(3, TimeUnit.SECONDS)
                                 .whenComplete(((unused, throwable) -> {
                                     if (Objects.nonNull(throwable)) {
@@ -69,11 +76,25 @@ public class ExampleAsyncRestController {
                 .stream()
                 .map(value ->
                         CompletableFuture
-                                .supplyAsync(() -> calculateSquare(value), executor)
+                                .supplyAsync(() -> {
+                                    try {
+                                        MDC.setContextMap(contextMap);
+                                        return calculateSquare(value);
+                                    } finally {
+                                        MDC.clear();
+                                    }
+                                }, executor)
                                 .orTimeout(4, TimeUnit.SECONDS)
-                                .handle((result, throwable) -> Optional.ofNullable(throwable)
-                                        .map(ex -> FutureResult.error(value, ex))
-                                        .orElseGet(() -> FutureResult.success(value, result)))
+                                .handle((result, throwable) -> {
+                                    try {
+                                        MDC.setContextMap(contextMap);
+                                        return Optional.ofNullable(throwable)
+                                                .map(ex -> FutureResult.error(value, ex))
+                                                .orElseGet(() -> FutureResult.success(value, result));
+                                    } finally {
+                                        MDC.clear();
+                                    }
+                                })
                 )
                 .toList();
         Stream<FutureResult> results = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
@@ -85,7 +106,7 @@ public class ExampleAsyncRestController {
                     } finally {
                         MDC.clear();
                     }
-                })
+                }, executor)
                 .join();
         List<String> result = results.map(futureResult -> {
                     Optional<Throwable> exception = futureResult.getException();
