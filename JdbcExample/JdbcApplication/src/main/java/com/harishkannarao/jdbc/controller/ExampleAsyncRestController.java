@@ -71,7 +71,7 @@ public class ExampleAsyncRestController {
             @RequestBody List<Long> values
     ) {
         Map<String, String> contextMap = MDC.getCopyOfContextMap();
-        List<CompletableFuture<FutureResult>> futures = Optional.ofNullable(values)
+        List<CompletableFuture<FutureResult<Long, Long>>> futures = Optional.ofNullable(values)
                 .orElseGet(Collections::emptyList)
                 .stream()
                 .map(value ->
@@ -89,15 +89,15 @@ public class ExampleAsyncRestController {
                                     try {
                                         MDC.setContextMap(contextMap);
                                         return Optional.ofNullable(throwable)
-                                                .map(ex -> FutureResult.error(value, ex))
-                                                .orElseGet(() -> FutureResult.success(value, result));
+                                                .map(ex -> new FutureResult<Long, Long>(value, null, throwable))
+                                                .orElseGet(() -> new FutureResult<>(value, result, null));
                                     } finally {
                                         MDC.clear();
                                     }
                                 })
                 )
                 .toList();
-        Stream<FutureResult> results = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
+        Stream<FutureResult<Long, Long>> results = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
                 .thenApplyAsync(unused -> {
                     try {
                         MDC.setContextMap(contextMap);
@@ -156,18 +156,18 @@ public class ExampleAsyncRestController {
         return value * value;
     }
 
-    public static class FutureResult {
-        private final Long input;
-        private final Long result;
+    public static class FutureResult<T, R> {
+        private final T input;
+        private final R result;
         private final Throwable exception;
 
-        private FutureResult(Long input, Long result, Throwable exception) {
+        public FutureResult(T input, R result, Throwable exception) {
             this.input = input;
             this.result = result;
             this.exception = exception;
         }
 
-        public Optional<Long> getResult() {
+        public Optional<R> getResult() {
             return Optional.ofNullable(result);
         }
 
@@ -175,14 +175,7 @@ public class ExampleAsyncRestController {
             return Optional.ofNullable(exception);
         }
 
-        public static FutureResult success(Long input, Long result) {
-            return new FutureResult(input, result, null);
-        }
-        public static FutureResult error(Long input, Throwable exception) {
-            return new FutureResult(input, null, exception);
-        }
-
-        public Long getInput() {
+        public T getInput() {
             return input;
         }
     }
