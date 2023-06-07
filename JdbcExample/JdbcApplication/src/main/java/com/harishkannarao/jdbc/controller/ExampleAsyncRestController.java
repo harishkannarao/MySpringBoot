@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc.controller;
 
+import com.harishkannarao.jdbc.domain.FutureResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -154,29 +155,5 @@ public class ExampleAsyncRestController {
             throw new IllegalArgumentException("Invalid value: " + value);
         }
         return value * value;
-    }
-
-    public static class FutureResult<T, R> {
-        private final T input;
-        private final R result;
-        private final Throwable exception;
-
-        public FutureResult(T input, R result, Throwable exception) {
-            this.input = input;
-            this.result = result;
-            this.exception = exception;
-        }
-
-        public Optional<R> getResult() {
-            return Optional.ofNullable(result);
-        }
-
-        public Optional<Throwable> getException() {
-            return Optional.ofNullable(exception);
-        }
-
-        public T getInput() {
-            return input;
-        }
     }
 }
