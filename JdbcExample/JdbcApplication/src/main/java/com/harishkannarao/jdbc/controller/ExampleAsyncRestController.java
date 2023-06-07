@@ -8,9 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -22,138 +30,139 @@ import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY
 @RequestMapping(value = "/async", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class ExampleAsyncRestController {
 
-    private final Logger logger = LoggerFactory.getLogger(ExampleAsyncRestController.class);
-    private final Executor executor;
+	private final Logger logger = LoggerFactory.getLogger(ExampleAsyncRestController.class);
+	private final Executor executor;
 
-    @Autowired
-    public ExampleAsyncRestController(
-            @Qualifier("asyncTaskExecutor") Executor executor
-    ) {
-        this.executor = executor;
-    }
+	@Autowired
+	public ExampleAsyncRestController(
+		@Qualifier("asyncTaskExecutor") Executor executor
+	) {
+		this.executor = executor;
+	}
 
-    @RequestMapping(value = "fireAndForget", method = RequestMethod.POST)
-    public ResponseEntity<Void> fireAndForget(
-            @RequestAttribute(REQUEST_ID_KEY) String requestId,
-            @RequestBody List<Long> ids) {
-        Map<String, String> contextMap = MDC.getCopyOfContextMap();
-        Optional.ofNullable(ids)
-                .orElseGet(Collections::emptyList)
-                .forEach(id ->
-                        CompletableFuture
-                                .runAsync(() -> {
-                                    try {
-                                        MDC.setContextMap(contextMap);
-                                        sendForId(id);
-                                    } finally {
-                                        MDC.clear();
-                                    }
-                                }, executor)
-                                .orTimeout(3, TimeUnit.SECONDS)
-                                .whenComplete(((unused, throwable) -> {
-                                    if (Objects.nonNull(throwable)) {
-                                        try {
-                                            MDC.setContextMap(contextMap);
-                                            logger.error(throwable.getMessage(), throwable);
-                                        } finally {
-                                            MDC.clear();
-                                        }
-                                    }
-                                }))
-                );
-        return ResponseEntity.noContent()
-                .header(REQUEST_ID_KEY, requestId)
-                .build();
-    }
+	@RequestMapping(value = "fireAndForget", method = RequestMethod.POST)
+	public ResponseEntity<Void> fireAndForget(
+		@RequestAttribute(REQUEST_ID_KEY) String requestId,
+		@RequestBody List<Long> ids) {
+		Map<String, String> contextMap = MDC.getCopyOfContextMap();
+		Optional.ofNullable(ids)
+			.orElseGet(Collections::emptyList)
+			.forEach(id ->
+				CompletableFuture
+					.runAsync(() -> {
+						try {
+							MDC.setContextMap(contextMap);
+							sendForId(id);
+						} finally {
+							MDC.clear();
+						}
+					}, executor)
+					.orTimeout(3, TimeUnit.SECONDS)
+					.whenComplete(((unused, throwable) -> {
+						if (Objects.nonNull(throwable)) {
+							try {
+								MDC.setContextMap(contextMap);
+								logger.error(throwable.getMessage(), throwable);
+							} finally {
+								MDC.clear();
+							}
+						}
+					}))
+			);
+		return ResponseEntity.noContent()
+			.header(REQUEST_ID_KEY, requestId)
+			.build();
+	}
 
-    @RequestMapping(value = "executeAndWait", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> executeAndWait(
-            @RequestAttribute(REQUEST_ID_KEY) String requestId,
-            @RequestBody List<Long> values
-    ) {
-        Map<String, String> contextMap = MDC.getCopyOfContextMap();
-        List<CompletableFuture<FutureResult<Long, Long>>> futures = Optional.ofNullable(values)
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .map(value ->
-                        CompletableFuture
-                                .supplyAsync(() -> {
-                                    try {
-                                        MDC.setContextMap(contextMap);
-                                        return calculateSquare(value);
-                                    } finally {
-                                        MDC.clear();
-                                    }
-                                }, executor)
-                                .orTimeout(4, TimeUnit.SECONDS)
-                                .handle((result, throwable) -> {
-                                    try {
-                                        MDC.setContextMap(contextMap);
-                                        return Optional.ofNullable(throwable)
-                                                .map(ex -> new FutureResult<Long, Long>(value, null, throwable))
-                                                .orElseGet(() -> new FutureResult<>(value, result, null));
-                                    } finally {
-                                        MDC.clear();
-                                    }
-                                })
-                )
-                .toList();
-        Stream<FutureResult<Long, Long>> results = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
-                .thenApplyAsync(unused -> {
-                    try {
-                        MDC.setContextMap(contextMap);
-                        logger.info("Retrieving all future values");
-                        return futures.stream().map(CompletableFuture::join);
-                    } finally {
-                        MDC.clear();
-                    }
-                }, executor)
-                .join();
-        List<String> result = results.map(futureResult -> {
-                    Optional<Throwable> exception = futureResult.getException();
-                    exception.ifPresent(throwable -> logger.error("Exception for input: " + futureResult.getInput(), throwable));
-                    return futureResult.getResult().map(aLong -> futureResult.getInput() + "=" + aLong).orElse(null);
-                })
-                .filter(Objects::nonNull)
-                .toList();
-        return ResponseEntity.ok()
-                .header(REQUEST_ID_KEY, requestId)
-                .body(result);
-    }
+	@RequestMapping(value = "executeAndWait", method = RequestMethod.POST)
+	public ResponseEntity<List<String>> executeAndWait(
+		@RequestAttribute(REQUEST_ID_KEY) String requestId,
+		@RequestBody List<Long> values
+	) {
+		Map<String, String> contextMap = MDC.getCopyOfContextMap();
+		List<CompletableFuture<FutureResult<Long, Long>>> futures = Optional.ofNullable(values)
+			.orElseGet(Collections::emptyList)
+			.stream()
+			.map(value ->
+				CompletableFuture
+					.supplyAsync(() -> {
+						try {
+							MDC.setContextMap(contextMap);
+							return calculateSquare(value);
+						} finally {
+							MDC.clear();
+						}
+					}, executor)
+					.orTimeout(4, TimeUnit.SECONDS)
+					.handle((result, throwable) -> {
+						try {
+							MDC.setContextMap(contextMap);
+							return Optional.ofNullable(throwable)
+								.map(ex -> new FutureResult<Long, Long>(value, null, throwable))
+								.orElseGet(() -> new FutureResult<>(value, result, null));
+						} finally {
+							MDC.clear();
+						}
+					})
+			)
+			.toList();
+		Stream<FutureResult<Long, Long>> results = CompletableFuture
+			.allOf(futures.toArray(CompletableFuture[]::new))
+			.thenApplyAsync(unused -> {
+				try {
+					MDC.setContextMap(contextMap);
+					logger.info("Retrieving all future values");
+					return futures.stream().map(CompletableFuture::join);
+				} finally {
+					MDC.clear();
+				}
+			}, executor)
+			.join();
+		List<String> result = results.map(futureResult -> {
+				Optional<Throwable> exception = futureResult.getException();
+				exception.ifPresent(throwable -> logger.error("Exception for input: " + futureResult.getInput(), throwable));
+				return futureResult.getResult().map(aLong -> futureResult.getInput() + "=" + aLong).orElse(null);
+			})
+			.filter(Objects::nonNull)
+			.toList();
+		return ResponseEntity.ok()
+			.header(REQUEST_ID_KEY, requestId)
+			.body(result);
+	}
 
-    private void sendForId(Long id) {
-        try {
-            if (id == 1) {
-                Thread.sleep(4000L);
-            } else {
-                Thread.sleep(2000L);
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        if (id % 2 == 0) {
-            logger.info("Success for id: " + id);
-        } else {
-            throw new IllegalArgumentException("Invalid id: " + id);
-        }
-    }
+	private void sendForId(Long id) {
+		try {
+			if (id == 1) {
+				Thread.sleep(4000L);
+			} else {
+				Thread.sleep(2000L);
+			}
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		if (id % 2 == 0) {
+			logger.info("Success for id: " + id);
+		} else {
+			throw new IllegalArgumentException("Invalid id: " + id);
+		}
+	}
 
-    private Long calculateSquare(Long value) {
-        try {
-            if (value == 1) {
-                Thread.sleep(6000L);
-            } else if (value == 2) {
-                Thread.sleep(2000L);
-            } else {
-                Thread.sleep(1000L);
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        logger.info("Calculating for: {}", value);
-        if (value == 0) {
-            throw new IllegalArgumentException("Invalid value: " + value);
-        }
-        return value * value;
-    }
+	private Long calculateSquare(Long value) {
+		try {
+			if (value == 1) {
+				Thread.sleep(6000L);
+			} else if (value == 2) {
+				Thread.sleep(2000L);
+			} else {
+				Thread.sleep(1000L);
+			}
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		logger.info("Calculating for: {}", value);
+		if (value == 0) {
+			throw new IllegalArgumentException("Invalid value: " + value);
+		}
+		return value * value;
+	}
 }
