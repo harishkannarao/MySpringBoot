@@ -49,25 +49,9 @@ public class ExampleAsyncRestController {
 			.orElseGet(Collections::emptyList)
 			.forEach(id ->
 				CompletableFuture
-					.runAsync(() -> {
-						try {
-							MDC.setContextMap(contextMap);
-							sendForId(id);
-						} finally {
-							MDC.clear();
-						}
-					}, executor)
+					.runAsync(() -> runFireAndForget(contextMap, id), executor)
 					.orTimeout(3, TimeUnit.SECONDS)
-					.whenComplete(((unused, throwable) -> {
-						if (Objects.nonNull(throwable)) {
-							try {
-								MDC.setContextMap(contextMap);
-								logger.error(throwable.getMessage(), throwable);
-							} finally {
-								MDC.clear();
-							}
-						}
-					}))
+					.whenComplete(((unused, throwable) -> handleCompletion(contextMap, throwable)))
 			);
 		return ResponseEntity.noContent()
 			.header(REQUEST_ID_KEY, requestId)
@@ -85,38 +69,14 @@ public class ExampleAsyncRestController {
 			.stream()
 			.map(value ->
 				CompletableFuture
-					.supplyAsync(() -> {
-						try {
-							MDC.setContextMap(contextMap);
-							return calculateSquare(value);
-						} finally {
-							MDC.clear();
-						}
-					}, executor)
+					.supplyAsync(() -> runExecuteAndWait(contextMap, value), executor)
 					.orTimeout(4, TimeUnit.SECONDS)
-					.handle((result, throwable) -> {
-						try {
-							MDC.setContextMap(contextMap);
-							return Optional.ofNullable(throwable)
-								.map(ex -> new FutureResult<Long, Long>(value, null, throwable))
-								.orElseGet(() -> new FutureResult<>(value, result, null));
-						} finally {
-							MDC.clear();
-						}
-					})
+					.handle((result, throwable) -> handleResultAndException(contextMap, value, result, throwable))
 			)
 			.toList();
 		Stream<FutureResult<Long, Long>> results = CompletableFuture
 			.allOf(futures.toArray(CompletableFuture[]::new))
-			.thenApplyAsync(unused -> {
-				try {
-					MDC.setContextMap(contextMap);
-					logger.info("Retrieving all future values");
-					return futures.stream().map(CompletableFuture::join);
-				} finally {
-					MDC.clear();
-				}
-			}, executor)
+			.thenApplyAsync(unused -> joinAllFutureResult(contextMap, futures), executor)
 			.join();
 		List<String> result = results.map(futureResult -> {
 				Optional<Throwable> exception = futureResult.getException();
@@ -128,6 +88,56 @@ public class ExampleAsyncRestController {
 		return ResponseEntity.ok()
 			.header(REQUEST_ID_KEY, requestId)
 			.body(result);
+	}
+
+	private Stream<FutureResult<Long, Long>> joinAllFutureResult(Map<String, String> contextMap, List<CompletableFuture<FutureResult<Long, Long>>> futures) {
+		try {
+			MDC.setContextMap(contextMap);
+			logger.info("Retrieving all future values");
+			return futures.stream().map(CompletableFuture::join);
+		} finally {
+			MDC.clear();
+		}
+	}
+
+	private static FutureResult<Long, Long> handleResultAndException(Map<String, String> contextMap, Long value, Long result, Throwable throwable) {
+		try {
+			MDC.setContextMap(contextMap);
+			return Optional.ofNullable(throwable)
+				.map(ex -> new FutureResult<Long, Long>(value, null, throwable))
+				.orElseGet(() -> new FutureResult<>(value, result, null));
+		} finally {
+			MDC.clear();
+		}
+	}
+
+	private Long runExecuteAndWait(Map<String, String> contextMap, Long value) {
+		try {
+			MDC.setContextMap(contextMap);
+			return calculateSquare(value);
+		} finally {
+			MDC.clear();
+		}
+	}
+
+	private void runFireAndForget(Map<String, String> contextMap, Long id) {
+		try {
+			MDC.setContextMap(contextMap);
+			sendForId(id);
+		} finally {
+			MDC.clear();
+		}
+	}
+
+	private void handleCompletion(Map<String, String> contextMap, Throwable throwable) {
+		if (Objects.nonNull(throwable)) {
+			try {
+				MDC.setContextMap(contextMap);
+				logger.error(throwable.getMessage(), throwable);
+			} finally {
+				MDC.clear();
+			}
+		}
 	}
 
 	private void sendForId(Long id) {
