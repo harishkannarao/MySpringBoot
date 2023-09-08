@@ -32,7 +32,7 @@
         <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.11.0</common.io.version>
         <logback.access.version>2.7.1</logback.access.version>
-        <wiremock.version>2.33.2</wiremock.version>
+        <wiremock.version>2.35.1</wiremock.version>
         <springdoc.version>1.6.8</springdoc.version>
         <junit.version>5.8.2</junit.version>
     </properties>
