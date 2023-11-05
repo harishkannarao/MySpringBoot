@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${MINIKUBE_IP:localhost}:15432/myuser
+    url: jdbc:postgresql://localhost:15432/myuser
     username: myuser
     password: superpassword
     driver:
