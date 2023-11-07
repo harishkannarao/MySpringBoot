@@ -1,12 +1,11 @@
 package com.harishkannarao.rest.interceptor.request;
 
 import com.harishkannarao.rest.exception.EvilHeaderException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 

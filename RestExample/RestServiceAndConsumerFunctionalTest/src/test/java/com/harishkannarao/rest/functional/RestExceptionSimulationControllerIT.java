@@ -25,7 +25,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
     @Test
     public void shouldGet500StatusWithMessageForCheckedException() throws Exception {
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestCheckedExceptionUrl, HttpMethod.GET, null, String.class);
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(500, response.getStatusCode().value());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
         assertEquals("My Sample Checked Exception", errorResponse.getMessage());
     }
@@ -33,7 +33,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
     @Test
     public void shouldGet400StatusWithMessageForRuntimeException() throws Exception {
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestRuntimeExceptionUrl, HttpMethod.GET, null, String.class);
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
         assertEquals("My Sample Runtime Exception", errorResponse.getMessage());
     }
@@ -41,7 +41,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
     @Test
     public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomRuntimeException() throws Exception {
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestCustomRuntimeExceptionUrl, HttpMethod.GET, null, String.class);
-        assertEquals(403, response.getStatusCodeValue());
+        assertEquals(403, response.getStatusCode().value());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
         assertEquals("CustomRuntime:My Custom Runtime Exception", errorResponse.getMessage());
         assertEquals("CustomRuntime", errorResponse.getCode());
@@ -51,7 +51,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
     @Test
     public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomCheckedException() throws Exception {
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestCustomCheckedExceptionUrl, HttpMethod.GET, null, String.class);
-        assertEquals(403, response.getStatusCodeValue());
+        assertEquals(403, response.getStatusCode().value());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
         assertEquals("CustomChecked:My Custom Checked Exception", errorResponse.getMessage());
         assertEquals("CustomChecked", errorResponse.getCode());
@@ -65,7 +65,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
         requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
         HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplate.exchange(generateRestCustomCheckedExceptionUrl, HttpMethod.GET, requestEntity, String.class);
-        assertEquals(403, response.getStatusCodeValue());
+        assertEquals(403, response.getStatusCode().value());
         assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));
     }
 

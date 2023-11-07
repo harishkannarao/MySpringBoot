@@ -28,7 +28,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
         Subject entity = response.getBody();
 
-        assertThat(response.getStatusCodeValue(), equalTo(200));
+        assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(entity.getId(), equalTo("header-id"));
         assertThat(entity.getRoles(), containsInAnyOrder("header-role"));
     }
@@ -41,7 +41,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(401));
+            assertThat(result.getStatusCode().value(), equalTo(401));
             assertThat(result.getMessage(), containsString("Authentication required"));
         }
     }
@@ -55,7 +55,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(401));
+            assertThat(result.getStatusCode().value(), equalTo(401));
             assertThat(result.getMessage(), containsString("Authentication required"));
         }
     }
@@ -69,7 +69,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(403));
+            assertThat(result.getStatusCode().value(), equalTo(403));
             assertThat(result.getMessage(), containsString("Operation not permitted"));
         }
     }
@@ -82,7 +82,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
         Subject entity = response.getBody();
 
-        assertThat(response.getStatusCodeValue(), equalTo(200));
+        assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(entity.getId(), equalTo("cookie-id"));
         assertThat(entity.getRoles(), containsInAnyOrder("cookie-role"));
     }
@@ -95,7 +95,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(401));
+            assertThat(result.getStatusCode().value(), equalTo(401));
             assertThat(result.getMessage(), containsString("Authentication required"));
         }
     }
@@ -109,7 +109,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(401));
+            assertThat(result.getStatusCode().value(), equalTo(401));
             assertThat(result.getMessage(), containsString("Authentication required"));
         }
     }
@@ -123,7 +123,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
             restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
-            assertThat(result.getRawStatusCode(), equalTo(403));
+            assertThat(result.getStatusCode().value(), equalTo(403));
             assertThat(result.getMessage(), containsString("Operation not permitted"));
         }
     }

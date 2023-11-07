@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:21-slim
 
 # Install basic debugging packages
 RUN apt-get update

@@ -3,6 +3,7 @@ package com.harishkannarao.rest.interceptor.response;
 import com.harishkannarao.rest.exception.EvilHeaderException;
 import com.harishkannarao.rest.exception.MyCustomCheckedException;
 import com.harishkannarao.rest.exception.MyCustomRuntimeException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 

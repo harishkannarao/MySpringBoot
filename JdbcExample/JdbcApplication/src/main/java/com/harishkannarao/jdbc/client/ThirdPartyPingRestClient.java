@@ -26,7 +26,7 @@ public class ThirdPartyPingRestClient {
         ResponseEntity<Void> exchange = restTemplate.exchange(thirdPartyPingUrl, HttpMethod.GET, null, Void.class);
         ThirdPartyStatus status = new ThirdPartyStatus();
         status.setUrl(thirdPartyPingUrl);
-        status.setStatus(exchange.getStatusCodeValue());
+        status.setStatus(exchange.getStatusCode().value());
         return status;
     }
 }

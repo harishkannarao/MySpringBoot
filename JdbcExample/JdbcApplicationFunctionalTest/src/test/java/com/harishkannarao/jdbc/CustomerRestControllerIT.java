@@ -52,7 +52,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
         HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
         ResponseEntity<Void> createCustomerResponse = restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.POST, createRequest, Void.class);
 
-        assertEquals(200, createCustomerResponse.getStatusCodeValue());
+        assertEquals(200, createCustomerResponse.getStatusCode().value());
 
         Customer[] updatedListAfterCreate = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
         assertNotNull(updatedListAfterCreate);
@@ -72,7 +72,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
         HttpEntity<DeleteCustomerRequestDto> deleteRequest = new HttpEntity<>(deleteCustomerRequestDto);
         ResponseEntity<Void> deleteCustomerResponse = restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.DELETE, deleteRequest, Void.class);
 
-        assertEquals(200, deleteCustomerResponse.getStatusCodeValue());
+        assertEquals(200, deleteCustomerResponse.getStatusCode().value());
 
         Customer[] updatedListAfterDelete = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
         assertNotNull(updatedListAfterDelete);

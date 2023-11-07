@@ -16,12 +16,12 @@ public class RestTemplateAccessLoggingInterceptor implements ClientHttpRequestIn
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
         long startTime = System.currentTimeMillis();
         int statusCode = 0;
-        String method = httpRequest.getMethodValue();
+        String method = httpRequest.getMethod().name();
         String url = httpRequest.getURI().toString();
         ClientHttpResponse response;
         try {
             response = clientHttpRequestExecution.execute(httpRequest, bytes);
-            statusCode = response.getRawStatusCode();
+            statusCode = response.getStatusCode().value();
         } finally {
             long timeTaken = System.currentTimeMillis() - startTime;
             LOGGER.info("REST_CLIENT_ACCESS_LOG {} {} {} {}", timeTaken, statusCode, method, url);

@@ -37,7 +37,7 @@ public class HelloPageIT extends BaseIntegration {
         requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
         HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplateForHtml.exchange(helloPageEndpointUrl, HttpMethod.GET, requestEntity, String.class);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));
     }
 }

@@ -31,7 +31,7 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
         String requestUrl = fromHttpUrl(greetingEndpointUrl).queryParam("name", "Harish").toUriString();
         HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplate.exchange(requestUrl, HttpMethod.GET, requestEntity, String.class);
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         ErrorResponse errorResponse = objectMapper.readValue(response.getBody(), ErrorResponse.class);
         assertEquals("You are an evil request::/greeting/get?name=Harish", errorResponse.getDescription());
     }
@@ -43,7 +43,7 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
         requestHeaders.add(EVIL_HEADER_NAME, "Something");
         HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
         ResponseEntity<String> response = testRestTemplateForHtml.exchange(helloPageEndpointUrl, HttpMethod.GET, requestEntity, String.class);
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         assertThat(response.getBody(), containsString("You are an evil request::/hello"));
         assertThat(response.getBody(), containsString("Something went wrong in controller:"));
     }

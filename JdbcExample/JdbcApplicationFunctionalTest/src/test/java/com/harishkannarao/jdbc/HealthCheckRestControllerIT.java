@@ -19,7 +19,7 @@ public class HealthCheckRestControllerIT extends BaseIntegrationJdbc {
         ResponseEntity<HealthCheckRestController.HealthCheckResponse> response = restTemplate.exchange(healthCheckEndpointUrl, HttpMethod.GET, null, HealthCheckRestController.HealthCheckResponse.class);
         HealthCheckRestController.HealthCheckResponse entity = response.getBody();
 
-        assertThat(response.getStatusCodeValue(), equalTo(200));
+        assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(entity.getStatus(), equalTo("UP"));
         assertThat(entity.getCommit(), not(emptyOrNullString()));
     }

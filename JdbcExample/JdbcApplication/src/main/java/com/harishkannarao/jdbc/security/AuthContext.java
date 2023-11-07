@@ -1,10 +1,10 @@
 package com.harishkannarao.jdbc.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component
