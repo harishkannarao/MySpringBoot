@@ -26,7 +26,7 @@ EXPOSE $SSH_PORT
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=10 CMD curl -f http://localhost/health-check || exit 1
 
 # Run application
-CMD mkdir ~/.ssh && \
+CMD mkdir -p ~/.ssh && \
     echo $SSH_PUBLIC_KEY > ~/.ssh/authorized_keys && \
     service ssh start && \
     java \
