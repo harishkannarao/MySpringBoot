@@ -34,7 +34,7 @@
         <logback.access.version>2.7.1</logback.access.version>
         <wiremock.version>3.0.1</wiremock.version>
         <springdoc.version>1.7.0</springdoc.version>
-        <junit.version>5.10.1</junit.version>
+        <junit.version>5.8.2</junit.version>
     </properties>
 
     <build>
@@ -220,6 +220,20 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
