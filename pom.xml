@@ -31,7 +31,7 @@
         <html5shiv.version>3.7.3</html5shiv.version>
         <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.15.0</common.io.version>
-        <logback.access.version>2.7.1</logback.access.version>
+        <logback.access.version>4.0.0</logback.access.version>
         <wiremock.version>3.0.1</wiremock.version>
         <springdoc.version>1.7.0</springdoc.version>
         <junit.version>5.8.2</junit.version>
@@ -176,7 +176,7 @@
                     <generateBackupPoms>false</generateBackupPoms>
                     <excludes>
                         <exclude>org.webjars:*</exclude>
-                        <exclude>net.rakugakibox.spring.boot:logback-access-spring-boot-starter</exclude>
+                        <exclude>dev.akkinoc.spring.boot:logback-access-spring-boot-starter</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -239,7 +239,7 @@
             </dependency>
 
             <dependency>
-                <groupId>net.rakugakibox.spring.boot</groupId>
+                <groupId>dev.akkinoc.spring.boot</groupId>
                 <artifactId>logback-access-spring-boot-starter</artifactId>
                 <version>${logback.access.version}</version>
             </dependency>
