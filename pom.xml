@@ -33,7 +33,7 @@
         <common.io.version>2.15.0</common.io.version>
         <logback.access.version>4.0.0</logback.access.version>
         <wiremock.version>3.0.1</wiremock.version>
-        <springdoc.version>1.7.0</springdoc.version>
+        <springdoc.version>2.2.0</springdoc.version>
         <junit.version>5.8.2</junit.version>
     </properties>
 
@@ -368,7 +368,7 @@
 
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
 
