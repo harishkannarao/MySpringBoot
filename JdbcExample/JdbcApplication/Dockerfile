@@ -1,4 +1,4 @@
-FROM openjdk:21-slim
+FROM public.ecr.aws/docker/library/openjdk:21-slim
 
 # Install basic debugging packages
 RUN apt-get update

@@ -5,7 +5,7 @@ networks:
 services:
   springboot-jdbc-postgres:
     container_name: springboot-jdbc-postgres
-    image: "postgres:10"
+    image: "public.ecr.aws/docker/library/postgres:10"
     ports:
       - "15432:5432"
     environment:
