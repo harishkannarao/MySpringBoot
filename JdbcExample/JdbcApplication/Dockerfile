@@ -6,6 +6,7 @@ RUN apk upgrade
 RUN apk add --no-cache curl
 RUN apk add --no-cache jq
 RUN apk add --no-cache openssh
+RUN ssh-keygen -A
 
 # Set default values for environment variables
 ENV SERVER_PORT="80"
@@ -29,7 +30,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=10 CMD curl
 # Run application
 CMD mkdir -p ~/.ssh && \
     echo $SSH_PUBLIC_KEY > ~/.ssh/authorized_keys && \
-    service sshd start && \
+    /usr/sbin/sshd && \
     java \
     -XX:MaxRAMPercentage=75.0 \
     -XX:+PrintFlagsFinal \
