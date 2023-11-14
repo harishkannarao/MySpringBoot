@@ -1,10 +1,11 @@
-FROM public.ecr.aws/docker/library/openjdk:21-slim
+FROM public.ecr.aws/docker/library/eclipse-temurin:21-jre-alpine
 
 # Install basic debugging packages
-RUN apt-get update
-RUN apt-get install -y curl
-RUN apt-get install -y jq
-RUN apt-get install -y openssh-server
+RUN apk update
+RUN apk upgrade
+RUN apk add --no-cache curl
+RUN apk add --no-cache jq
+RUN apk add --no-cache openssh
 
 # Set default values for environment variables
 ENV SERVER_PORT="80"
@@ -28,7 +29,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=10 CMD curl
 # Run application
 CMD mkdir -p ~/.ssh && \
     echo $SSH_PUBLIC_KEY > ~/.ssh/authorized_keys && \
-    service ssh start && \
+    service sshd start && \
     java \
     -XX:MaxRAMPercentage=75.0 \
     -XX:+PrintFlagsFinal \
