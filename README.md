@@ -72,10 +72,18 @@ Type '\q' to quit the terminal and container
 
     docker build --pull -t com.harishkannarao/spring-boot-jdbc:latest -f JdbcExample/JdbcApplication/Dockerfile JdbcExample/JdbcApplication/target
     
-#### Run the dockerised jdbc application
+#### Run the jdbc application using docker
+
+Run without jmx
 
     docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+
+Run with jmx
+
+    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10006 -Dcom.sun.management.jmxremote.rmi.port=10006 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
     
+Sample url
+
     curl -s -X GET 'http://localhost:8180/menuentries'
     
 Swagger / Open API urls:
