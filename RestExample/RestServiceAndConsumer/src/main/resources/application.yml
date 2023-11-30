@@ -1,0 +1,38 @@
+spring:
+  main:
+    banner:
+      mode: off
+  velocity:
+    dateToolAttribute: dateTool
+
+server:
+  port: 8080
+
+quoteService:
+  url: "http://localhost:9000/thirdparty/quote"
+
+thirdparty:
+  ping:
+    url: "http://localhost:9000/thirdparty/ping"
+
+evil:
+  header:
+    message: "You are an evil request"
+
+custom:
+  feature:
+    toggle: true
+
+application:
+  message: "Hello Harish"
+
+logging:
+  level:
+    web: INFO
+    com:
+      harishkannarao:
+        rest: DEBUG
+  myapp:
+    filesize: 10MB
+    filehistory:
+      days: 10
