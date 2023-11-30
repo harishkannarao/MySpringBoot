@@ -7,7 +7,6 @@
 
     <!-- reading a custom property value from the property file -->
     <springProperty scope="context" name="myappFileSize" source="logging.myapp.filesize"/>
-    <springProperty scope="context" name="myappConsoleFilter" source="logging.myapp.console.appender.filter.level"/>
     <springProperty scope="context" name="myappFileHistory" source="logging.myapp.filehistory.days"/>
 
     <appender name="FILE"
