@@ -22,7 +22,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         properties = {
                 "server.port=${RANDOM_PORT_3:8180}",
                 "management.port=${RANDOM_PORT_4:8181}",
-                "logging.level.root=DEBUG",
                 "thirdparty.ping.url=http://localhost:${server.port}/thirdparty/ping",
                 "quoteService.url=http://localhost:${server.port}/thirdparty/quote"
         })

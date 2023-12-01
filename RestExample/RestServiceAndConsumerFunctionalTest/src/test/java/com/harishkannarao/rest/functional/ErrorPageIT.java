@@ -68,7 +68,7 @@ public class ErrorPageIT extends BaseIntegration {
     @Test
     public void shouldGetNotFoundMessageGivenNonExistentPageForHttpClients() throws Exception {
         ResponseEntity<String> response = testRestTemplate.getForEntity(nonExistentPageUrl, String.class);
-        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         ErrorDetails errorDetails = objectMapper.readValue(response.getBody(), ErrorDetails.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), errorDetails.getStatus());
         assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), errorDetails.getError());
