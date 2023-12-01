@@ -14,7 +14,7 @@
     </modules>
 
     <properties>
-        <spring.boot.version>3.1.5</spring.boot.version>
+        <spring.boot.version>3.2.0</spring.boot.version>
         <postgresql.driver.version>42.6.0</postgresql.driver.version>
         <postgresql.db.version>9.4.8</postgresql.db.version>
         <flyway.version>9.22.3</flyway.version>
@@ -34,7 +34,7 @@
         <logback.access.version>4.0.0</logback.access.version>
         <wiremock.version>3.0.1</wiremock.version>
         <springdoc.version>2.2.0</springdoc.version>
-        <junit.version>5.8.2</junit.version>
+        <junit.version>5.10.1</junit.version>
     </properties>
 
     <build>
