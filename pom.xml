@@ -32,7 +32,7 @@
         <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.15.0</common.io.version>
         <logback.access.version>4.0.0</logback.access.version>
-        <wiremock.version>3.0.1</wiremock.version>
+        <wiremock.version>3.3.1</wiremock.version>
         <springdoc.version>2.2.0</springdoc.version>
         <junit.version>5.10.1</junit.version>
     </properties>
@@ -361,8 +361,8 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.tomakehurst</groupId>
-                <artifactId>wiremock-jre8</artifactId>
+                <groupId>org.wiremock</groupId>
+                <artifactId>wiremock-standalone</artifactId>
                 <version>${wiremock.version}</version>
             </dependency>
 
