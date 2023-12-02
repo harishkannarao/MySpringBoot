@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,33 +24,38 @@ public class GlobalHtmlExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ModelAndView handleException(HttpServletRequest request, Exception e) {
-        Map<String, String> model = new HashMap<String, String>() {{
-            put(ERROR_MESSAGE_KEY, e.getMessage());
-        }};
+        Map<String, String> model = new HashMap<>() {{
+					put(ERROR_MESSAGE_KEY, e.getMessage());
+				}};
         return new ModelAndView(HTML_CONTROLLER_ERROR_VIEW, model, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
     public ModelAndView handleRuntimeException(HttpServletRequest request, Exception e) {
-        Map<String, String> model = new HashMap<String, String>() {{
-            put(ERROR_MESSAGE_KEY, e.getMessage());
-        }};
+        Map<String, String> model = new HashMap<>() {{
+					put(ERROR_MESSAGE_KEY, e.getMessage());
+				}};
         return new ModelAndView(HTML_CONTROLLER_ERROR_VIEW, model, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {MyCustomCheckedException.class, MyCustomRuntimeException.class})
     public ModelAndView handleCustomException(HttpServletRequest request, Exception e) {
-        Map<String, String> model = new HashMap<String, String>() {{
-            put(ERROR_MESSAGE_KEY, e.getMessage());
-        }};
+        Map<String, String> model = new HashMap<>() {{
+					put(ERROR_MESSAGE_KEY, e.getMessage());
+				}};
         return new ModelAndView(HTML_CONTROLLER_ERROR_VIEW, model, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = {EvilHeaderException.class})
     public ModelAndView handleEvilHeaderException(HttpServletRequest request, Exception e) {
-        Map<String, String> model = new HashMap<String, String>() {{
-            put(ERROR_MESSAGE_KEY, e.getMessage());
-        }};
+        Map<String, String> model = new HashMap<>() {{
+					put(ERROR_MESSAGE_KEY, e.getMessage());
+				}};
         return new ModelAndView(HTML_CONTROLLER_ERROR_VIEW, model, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {NoResourceFoundException.class})
+    public ModelAndView handleNoResourceFoundException(HttpServletRequest request, Exception e) throws Exception {
+        throw e;
     }
 }
