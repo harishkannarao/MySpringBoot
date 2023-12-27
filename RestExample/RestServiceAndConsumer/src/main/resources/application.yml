@@ -4,6 +4,9 @@ spring:
       mode: off
   velocity:
     dateToolAttribute: dateTool
+  threads:
+    virtual:
+      enabled: true
 
 server:
   port: 8080

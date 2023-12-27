@@ -4,6 +4,9 @@ spring:
       mode: off
   flyway:
     baseline-on-migrate: true
+  threads:
+    virtual:
+      enabled: true
 
 application:
   healthCheck:
