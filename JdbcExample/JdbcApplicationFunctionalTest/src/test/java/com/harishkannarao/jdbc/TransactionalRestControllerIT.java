@@ -37,6 +37,12 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 
         HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
         try {
+						// this endpoint creates the customer twice
+						// 1. In default request transaction
+						// 2. In isolated transaction
+						// The customer created using default request transaction will not be persisted due to
+					  // RuntimeException thrown in the request
+						// On the customer created using isolated transaction will be persisted
             restTemplate.exchange(transactionsEndpointUrl, HttpMethod.PUT, createRequest, Void.class);
             fail("should have thrown exception");
         } catch (RestClientException exception) {
