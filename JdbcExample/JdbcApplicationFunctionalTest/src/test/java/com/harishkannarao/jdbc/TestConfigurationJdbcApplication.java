@@ -2,6 +2,7 @@ package com.harishkannarao.jdbc;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.harishkannarao.jdbc.client.interceptor.RestClientAccessLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,9 @@ public class TestConfigurationJdbcApplication {
 
 	@Autowired
 	private JsonHeaderInterceptor jsonHeaderInterceptor;
+
+	@Autowired
+	private RequestResponseBodyLoggingInterceptor requestResponseBodyLoggingInterceptor;
 
 	@Value("${wiremock.port}")
 	int wireMockPort;
@@ -52,6 +56,8 @@ public class TestConfigurationJdbcApplication {
 		return RestClient.builder()
 			.requestFactory(clientHttpRequestFactory)
 			.requestInterceptor(jsonHeaderInterceptor)
+			.requestInterceptor(requestResponseBodyLoggingInterceptor)
+			.requestInterceptor(new RestClientAccessLoggingInterceptor())
 			.build();
 	}
 
