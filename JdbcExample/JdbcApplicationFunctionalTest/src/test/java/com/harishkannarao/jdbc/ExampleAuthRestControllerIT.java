@@ -8,7 +8,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("ConstantConditions")
 public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
@@ -34,49 +34,40 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_header_should_return_401_for_missing_header() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthHeaderEndpointUrl)
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(401));
-			assertThat(result.getMessage(), containsString("Authentication required"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthHeaderEndpointUrl)
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(401));
+		assertThat(result.getMessage(), containsString("Authentication required"));
 	}
 
 	@Test
 	public void auth_header_should_return_401_for_invalid_header() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthHeaderEndpointUrl)
-				.header("Authorization", "Bearer invalid-value")
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(401));
-			assertThat(result.getMessage(), containsString("Authentication required"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthHeaderEndpointUrl)
+			.header("Authorization", "Bearer invalid-value")
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(401));
+		assertThat(result.getMessage(), containsString("Authentication required"));
 	}
 
 	@Test
 	public void auth_header_should_return_403_for_incorrect_role() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthHeaderEndpointUrl)
-				.header("Cookie", "session_cookie=HELLO_COOKIE;")
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(403));
-			assertThat(result.getMessage(), containsString("Operation not permitted"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthHeaderEndpointUrl)
+			.header("Cookie", "session_cookie=HELLO_COOKIE;")
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(403));
+		assertThat(result.getMessage(), containsString("Operation not permitted"));
 	}
 
 	@Test
@@ -96,48 +87,39 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_cookie_should_return_401_for_missing_header() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthCookieEndpointUrl)
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(401));
-			assertThat(result.getMessage(), containsString("Authentication required"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthCookieEndpointUrl)
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(401));
+		assertThat(result.getMessage(), containsString("Authentication required"));
 	}
 
 	@Test
 	public void auth_cookie_should_return_401_for_invalid_header() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthCookieEndpointUrl)
-				.header("Cookie", "session_cookie=invalid_cookie;")
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(401));
-			assertThat(result.getMessage(), containsString("Authentication required"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthCookieEndpointUrl)
+			.header("Cookie", "session_cookie=invalid_cookie;")
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(401));
+		assertThat(result.getMessage(), containsString("Authentication required"));
 	}
 
 	@Test
 	public void auth_cookie_should_return_403_for_incorrect_role() {
-		try {
-			restClient
-				.get()
-				.uri(exampleAuthCookieEndpointUrl)
-				.header("Authorization", "Bearer HELLO_HEADER")
-				.retrieve()
-				.toBodilessEntity();
-			fail("Should have thrown exception");
-		} catch (HttpClientErrorException result) {
-			assertThat(result.getStatusCode().value(), equalTo(403));
-			assertThat(result.getMessage(), containsString("Operation not permitted"));
-		}
+		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
+			.get()
+			.uri(exampleAuthCookieEndpointUrl)
+			.header("Authorization", "Bearer HELLO_HEADER")
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result.getStatusCode().value(), equalTo(403));
+		assertThat(result.getMessage(), containsString("Operation not permitted"));
 	}
 }
