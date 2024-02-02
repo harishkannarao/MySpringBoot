@@ -3,8 +3,6 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.security.Subject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -36,8 +34,6 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_header_should_return_401_for_missing_header() {
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 		try {
 			restClient
 				.get()
@@ -53,13 +49,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_header_should_return_401_for_invalid_header() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "Bearer invalid-value");
-		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 		try {
 			restClient
 				.get()
 				.uri(exampleAuthHeaderEndpointUrl)
+				.header("Authorization", "Bearer invalid-value")
 				.retrieve()
 				.toBodilessEntity();
 			fail("Should have thrown exception");
@@ -102,8 +96,6 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_cookie_should_return_401_for_missing_header() {
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 		try {
 			restClient
 				.get()
@@ -119,13 +111,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void auth_cookie_should_return_401_for_invalid_header() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Cookie", "session_cookie=invalid_cookie;");
-		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 		try {
 			restClient
 				.get()
 				.uri(exampleAuthCookieEndpointUrl)
+				.header("Cookie", "session_cookie=invalid_cookie;")
 				.retrieve()
 				.toBodilessEntity();
 			fail("Should have thrown exception");
