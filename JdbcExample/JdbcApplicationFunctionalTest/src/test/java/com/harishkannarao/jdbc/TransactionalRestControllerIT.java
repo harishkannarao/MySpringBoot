@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientException;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
@@ -37,25 +38,22 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 		createCustomerRequestDto.setFirstName(firstName);
 		createCustomerRequestDto.setLastName(lastName);
 
-		try {
-			// this endpoint creates the customer twice
-			// 1. In default request transaction
-			// 2. In isolated transaction
-			// The customer created using default request transaction will not be persisted due to
-			// RuntimeException thrown in the request
-			// On the customer created using isolated transaction will be persisted
-			restClient
-				.put()
-				.uri(transactionsEndpointUrl)
-				.body(createCustomerRequestDto)
-				.retrieve()
-				.toBodilessEntity();
-			fail("should have thrown exception");
-		} catch (RestClientException exception) {
-			assertTrue(exception instanceof HttpServerErrorException);
-			HttpServerErrorException httpServerErrorException = (HttpServerErrorException) exception;
-			assertTrue(httpServerErrorException.getResponseBodyAsString().contains("Another Bang"));
-		}
+		// this endpoint creates the customer twice
+		// 1. In default request transaction
+		// 2. In isolated transaction
+		// The customer created using default request transaction will not be persisted due to
+		// RuntimeException thrown in the request
+		// On the customer created using isolated transaction will be persisted
+		RestClientException result = assertThrows(RestClientException.class, () -> restClient
+			.put()
+			.uri(transactionsEndpointUrl)
+			.body(createCustomerRequestDto)
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result).isInstanceOf(HttpServerErrorException.class);
+		HttpServerErrorException httpServerErrorException = (HttpServerErrorException) result;
+		assertThat(httpServerErrorException.getResponseBodyAsString()).contains("Another Bang");
 
 		Customer[] updatedCustomers = restClient
 			.get()

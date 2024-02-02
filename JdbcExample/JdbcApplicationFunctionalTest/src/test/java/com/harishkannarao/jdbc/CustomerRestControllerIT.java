@@ -6,20 +6,17 @@ import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -138,19 +135,16 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		createCustomerRequestDto.setFirstName(firstName);
 		createCustomerRequestDto.setLastName(lastName);
 
-		try {
-			restClient
-				.put()
-				.uri(allCustomersEndpointUrl)
-				.body(createCustomerRequestDto)
-				.retrieve()
-				.toBodilessEntity();
-			fail("should have thrown exception");
-		} catch (RestClientException exception) {
-			assertTrue(exception instanceof HttpServerErrorException);
-			HttpServerErrorException httpServerErrorException = (HttpServerErrorException) exception;
-			assertTrue(httpServerErrorException.getResponseBodyAsString().contains("Bang Bang"));
-		}
+		RestClientException result = assertThrows(RestClientException.class, () -> restClient
+			.put()
+			.uri(allCustomersEndpointUrl)
+			.body(createCustomerRequestDto)
+			.retrieve()
+			.toBodilessEntity());
+
+		assertThat(result).isInstanceOf(HttpServerErrorException.class);
+		HttpServerErrorException httpServerErrorException = (HttpServerErrorException) result;
+		assertThat(httpServerErrorException.getResponseBodyAsString()).contains("Bang Bang");
 
 		Customer[] updatedCustomers = restClient
 			.get()
