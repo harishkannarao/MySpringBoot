@@ -9,8 +9,8 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
-public class RestTemplateAccessLoggingInterceptor implements ClientHttpRequestInterceptor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestTemplateAccessLoggingInterceptor.class);
+public class RestClientAccessLoggingInterceptor implements ClientHttpRequestInterceptor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestClientAccessLoggingInterceptor.class);
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {

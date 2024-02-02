@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.configuration;
 
-import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
+import com.harishkannarao.jdbc.client.interceptor.RestClientAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.filter.RequestTracingFilter;
 import com.harishkannarao.jdbc.interceptor.AuthHeaderRequestInterceptor;
 import com.harishkannarao.jdbc.interceptor.CookieRequestInterceptor;
@@ -45,24 +45,9 @@ public class JdbcApplicationConfiguration {
 	private SubjectRoleInterceptor subjectRoleInterceptor;
 
 	@Bean
-	@Qualifier("myRestTemplate")
-	public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
-		RestTemplateAccessLoggingInterceptor restTemplateAccessLoggingInterceptor = new RestTemplateAccessLoggingInterceptor();
-
-		BufferingClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
-
-		return restTemplateBuilder
-			.setConnectTimeout(Duration.ofMillis(connectTimeoutMs))
-			.setReadTimeout(Duration.ofMillis(readTimeoutMs))
-			.requestFactory(() -> clientHttpRequestFactory)
-			.additionalInterceptors(List.of(restTemplateAccessLoggingInterceptor))
-			.build();
-	}
-
-	@Bean
 	@Qualifier("myRestClient")
 	public RestClient getRestClient(RestTemplateBuilder restTemplateBuilder) {
-		RestTemplateAccessLoggingInterceptor restTemplateAccessLoggingInterceptor = new RestTemplateAccessLoggingInterceptor();
+		RestClientAccessLoggingInterceptor restClientAccessLoggingInterceptor = new RestClientAccessLoggingInterceptor();
 		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
 		simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofMillis(connectTimeoutMs));
 		simpleClientHttpRequestFactory.setReadTimeout(Duration.ofMillis(readTimeoutMs));
@@ -70,7 +55,7 @@ public class JdbcApplicationConfiguration {
 
 		return RestClient.builder()
 			.requestFactory(clientHttpRequestFactory)
-			.requestInterceptor(restTemplateAccessLoggingInterceptor)
+			.requestInterceptor(restClientAccessLoggingInterceptor)
 			.build();
 	}
 

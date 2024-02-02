@@ -2,7 +2,7 @@ package com.harishkannarao.jdbc;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.harishkannarao.jdbc.client.interceptor.RestTemplateAccessLoggingInterceptor;
+import com.harishkannarao.jdbc.client.interceptor.RestClientAccessLoggingInterceptor;
 import com.harishkannarao.jdbc.domain.ThirdPartyStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${thirdparty.ping.url}")
     String thirdPartyPingRestUrl;
 
-    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestTemplateAccessLoggingInterceptor.class.getName(), Level.INFO);
+    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestClientAccessLoggingInterceptor.class.getName(), Level.INFO);
 
     @BeforeEach
     public void setUp() {
