@@ -42,7 +42,11 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
                         )
         );
 
-        ThirdPartyStatus status = restTemplate.getForObject(pingStatusEndpointUrl, ThirdPartyStatus.class);
+        ThirdPartyStatus status = restClient
+					.get()
+					.uri(pingStatusEndpointUrl)
+					.retrieve()
+					.body(ThirdPartyStatus.class);
 
         assertThat(status.getStatus()).isEqualTo(204);
         assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);
@@ -58,7 +62,11 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
                         )
         );
 
-        ThirdPartyStatus status = restTemplate.getForObject(pingStatusEndpointUrl, ThirdPartyStatus.class);
+        ThirdPartyStatus status = restClient
+					.get()
+					.uri(pingStatusEndpointUrl)
+					.retrieve()
+					.body(ThirdPartyStatus.class);
 
         assertThat(status.getStatus()).isEqualTo(204);
         assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);

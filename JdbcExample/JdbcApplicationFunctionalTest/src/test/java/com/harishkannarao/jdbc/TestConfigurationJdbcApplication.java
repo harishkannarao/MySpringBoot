@@ -9,9 +9,13 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,40 +23,44 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 
 @TestConfiguration
 @PropertySources({
-        @PropertySource("classpath:properties/${test.env:local}-test-config.properties")
+	@PropertySource("classpath:properties/${test.env:local}-test-config.properties")
 })
 public class TestConfigurationJdbcApplication {
 
-    @Autowired
-    private JsonHeaderInterceptor jsonHeaderInterceptor;
+	@Autowired
+	private JsonHeaderInterceptor jsonHeaderInterceptor;
 
-    @Value("${wiremock.port}")
-    int wireMockPort;
+	@Value("${wiremock.port}")
+	int wireMockPort;
 
-    @Bean(destroyMethod = "stop")
-    public WireMockServer createWireMockServer() {
-        WireMockServer wireMockServer = new WireMockServer(options().port(wireMockPort));
-        wireMockServer.start();
-        return wireMockServer;
-    }
+	@Bean(destroyMethod = "stop")
+	public WireMockServer createWireMockServer() {
+		WireMockServer wireMockServer = new WireMockServer(options().port(wireMockPort));
+		wireMockServer.start();
+		return wireMockServer;
+	}
 
-    @Bean
-    public WireMock createWireMockClient(WireMockServer wireMockServer) {
-        return new WireMock(wireMockServer.port());
-    }
+	@Bean
+	public WireMock createWireMockClient(WireMockServer wireMockServer) {
+		return new WireMock(wireMockServer.port());
+	}
 
-    @Bean
-    @Qualifier("myTestRestTemplate")
-    public RestTemplate getMyTestRestTemplate() {
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        interceptors.add(jsonHeaderInterceptor);
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(interceptors);
-        return restTemplate;
-    }
+	@Bean
+	@Qualifier("myTestRestClient")
+	public RestClient getMyTestRestClient() {
+		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+		simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofMillis(3000));
+		simpleClientHttpRequestFactory.setReadTimeout(Duration.ofMillis(15000));
+		BufferingClientHttpRequestFactory clientHttpRequestFactory = new BufferingClientHttpRequestFactory(simpleClientHttpRequestFactory);
 
-    @Bean
-    public WebDriverFactory createWebDriverFactorySingleton() {
-        return new WebDriverFactory();
-    }
+		return RestClient.builder()
+			.requestFactory(clientHttpRequestFactory)
+			.requestInterceptor(jsonHeaderInterceptor)
+			.build();
+	}
+
+	@Bean
+	public WebDriverFactory createWebDriverFactorySingleton() {
+		return new WebDriverFactory();
+	}
 }

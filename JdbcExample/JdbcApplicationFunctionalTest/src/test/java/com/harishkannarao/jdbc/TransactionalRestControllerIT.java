@@ -25,7 +25,11 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 
     @Test
     public void testTransaction() {
-        Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
+        Customer[] initialCustomers = restClient
+					.get()
+					.uri(allCustomersEndpointUrl)
+					.retrieve()
+					.body(Customer[].class);
         assertNotNull(initialCustomers);
         assertEquals(5, initialCustomers.length);
 
@@ -43,7 +47,11 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 						// The customer created using default request transaction will not be persisted due to
 					  // RuntimeException thrown in the request
 						// On the customer created using isolated transaction will be persisted
-            restTemplate.exchange(transactionsEndpointUrl, HttpMethod.PUT, createRequest, Void.class);
+            restClient
+							.put()
+							.uri(transactionsEndpointUrl)
+							.retrieve()
+							.toBodilessEntity();
             fail("should have thrown exception");
         } catch (RestClientException exception) {
             assertTrue(exception instanceof HttpServerErrorException);
@@ -51,7 +59,11 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
             assertTrue(httpServerErrorException.getResponseBodyAsString().contains("Another Bang"));
         }
 
-        Customer[] updatedCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
+        Customer[] updatedCustomers = restClient
+					.get()
+					.uri(allCustomersEndpointUrl)
+					.retrieve()
+					.body(Customer[].class);
         assertNotNull(updatedCustomers);
         assertEquals(6, updatedCustomers.length);
 

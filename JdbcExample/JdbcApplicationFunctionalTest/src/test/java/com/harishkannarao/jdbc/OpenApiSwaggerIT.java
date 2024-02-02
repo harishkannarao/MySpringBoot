@@ -18,13 +18,21 @@ public class OpenApiSwaggerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void testSwaggerUrl() {
-		ResponseEntity<Void> response = restTemplate.exchange(swaggerEndpointUrl, HttpMethod.GET, null, Void.class);
+		ResponseEntity<Void> response = restClient
+			.get()
+			.uri(swaggerEndpointUrl)
+			.retrieve()
+			.toBodilessEntity();
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 	}
 
 	@Test
 	public void testOpenApiUrl() {
-		ResponseEntity<Void> response = restTemplate.exchange(openApiEndpointUrl, HttpMethod.GET, null, Void.class);
+		ResponseEntity<Void> response = restClient
+			.get()
+			.uri(openApiEndpointUrl)
+			.retrieve()
+			.toBodilessEntity();
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 	}
 

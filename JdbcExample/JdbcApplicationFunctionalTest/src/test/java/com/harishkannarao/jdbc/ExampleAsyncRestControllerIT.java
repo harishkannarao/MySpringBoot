@@ -47,7 +47,12 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         headers.setContentType(MediaType.APPLICATION_JSON);
         List<Integer> body = List.of(1,2,3,4);
         HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(body, headers);
-        ResponseEntity<Void> response = restTemplate.exchange(fireAndForgetEndpointUrl, HttpMethod.POST, requestEntity, Void.class);
+        ResponseEntity<Void> response = restClient
+					.post()
+					.uri(fireAndForgetEndpointUrl)
+					.body(requestEntity)
+					.retrieve()
+					.toBodilessEntity();
         assertThat(response.getStatusCode().value()).isEqualTo(204);
         String requestId = response.getHeaders().getFirst("request_id");
         assertThat(requestId).isNotBlank();
@@ -79,7 +84,12 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         headers.setContentType(MediaType.APPLICATION_JSON);
         List<Long> body = List.of(0L,1L,2L,3L);
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>(body, headers);
-        ResponseEntity<String[]> response = restTemplate.exchange(executeAndWaitEndpointUrl, HttpMethod.POST, requestEntity, String[].class);
+        ResponseEntity<String[]> response = restClient
+					.post()
+					.uri(executeAndWaitEndpointUrl)
+					.body(requestEntity)
+					.retrieve()
+					.toEntity(String[].class);
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody())
                 .contains("2=4")

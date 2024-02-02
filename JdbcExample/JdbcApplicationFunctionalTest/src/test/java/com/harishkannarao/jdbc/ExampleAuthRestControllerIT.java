@@ -25,7 +25,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer HELLO_HEADER");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
+        ResponseEntity<Subject> response = restClient
+					.get()
+					.uri(exampleAuthHeaderEndpointUrl)
+					.retrieve()
+					.toEntity(Subject.class);
         Subject entity = response.getBody();
 
         assertThat(response.getStatusCode().value(), equalTo(200));
@@ -38,7 +42,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+					restClient
+						.get()
+						.uri(exampleAuthHeaderEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(401));
@@ -52,7 +60,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         headers.add("Authorization", "Bearer invalid-value");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+					restClient
+						.get()
+						.uri(exampleAuthHeaderEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(401));
@@ -66,7 +78,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         headers.add("Cookie", "session_cookie=HELLO_COOKIE;");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthHeaderEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+            					restClient
+						.get()
+						.uri(exampleAuthHeaderEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(403));
@@ -79,7 +95,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", "session_cookie=HELLO_COOKIE;");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Subject> response = restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Subject.class);
+        ResponseEntity<Subject> response = restClient
+					.get()
+					.uri(exampleAuthCookieEndpointUrl)
+					.retrieve()
+					.toEntity(Subject.class);
         Subject entity = response.getBody();
 
         assertThat(response.getStatusCode().value(), equalTo(200));
@@ -92,7 +112,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+					restClient
+						.get()
+						.uri(exampleAuthCookieEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(401));
@@ -106,7 +130,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         headers.add("Cookie", "session_cookie=invalid_cookie;");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+					restClient
+						.get()
+						.uri(exampleAuthCookieEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(401));
@@ -120,7 +148,11 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
         headers.add("Authorization", "Bearer HELLO_HEADER");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
-            restTemplate.exchange(exampleAuthCookieEndpointUrl, HttpMethod.GET, requestEntity, Void.class);
+					restClient
+						.get()
+						.uri(exampleAuthCookieEndpointUrl)
+						.retrieve()
+						.toBodilessEntity();
             fail("Should have thrown exception");
         } catch (HttpClientErrorException result) {
             assertThat(result.getStatusCode().value(), equalTo(403));
