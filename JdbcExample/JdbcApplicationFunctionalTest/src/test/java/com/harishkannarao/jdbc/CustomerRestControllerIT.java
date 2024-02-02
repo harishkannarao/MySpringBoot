@@ -70,10 +70,10 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		createCustomerRequestDto.setFirstName(firstName);
 		createCustomerRequestDto.setLastName(lastName);
 
-		HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
 		ResponseEntity<Void> createCustomerResponse = restClient
 			.post()
 			.uri(allCustomersEndpointUrl)
+			.body(createCustomerRequestDto)
 			.retrieve()
 			.toBodilessEntity();
 
@@ -98,10 +98,10 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto();
 		deleteCustomerRequestDto.setId(createdCustomer.getId());
 
-		HttpEntity<DeleteCustomerRequestDto> deleteRequest = new HttpEntity<>(deleteCustomerRequestDto);
 		ResponseEntity<Void> deleteCustomerResponse = restClient
-			.delete()
+			.method(HttpMethod.DELETE)
 			.uri(allCustomersEndpointUrl)
+			.body(deleteCustomerRequestDto)
 			.retrieve()
 			.toBodilessEntity();
 
@@ -138,11 +138,11 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		createCustomerRequestDto.setFirstName(firstName);
 		createCustomerRequestDto.setLastName(lastName);
 
-		HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
 		try {
 			restClient
 				.put()
 				.uri(allCustomersEndpointUrl)
+				.body(createCustomerRequestDto)
 				.retrieve()
 				.toBodilessEntity();
 			fail("should have thrown exception");
