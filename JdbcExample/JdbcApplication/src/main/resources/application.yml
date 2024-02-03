@@ -9,6 +9,11 @@ application:
   healthCheck:
     path: "/health-check"
 
+app:
+  rest-client:
+    connect-timeout-ms: "${APP_REST_CLIENT_CONNECT_TIMEOUT:3000}"
+    read-timeout-ms: "${APP_REST_CLIENT_READ_TIMEOUT:15000}"
+
 async:
   task:
     executor:

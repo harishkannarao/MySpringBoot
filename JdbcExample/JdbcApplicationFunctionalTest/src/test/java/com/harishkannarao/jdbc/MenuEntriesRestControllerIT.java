@@ -17,7 +17,11 @@ public class MenuEntriesRestControllerIT extends BaseIntegrationJdbc {
 
     @Test
     public void getAllMenuEntries_shouldReturnAllMenuEntries_fromDatabase() {
-        String[] menuEntriesArray = restTemplate.getForObject(allMenuEntriesEndpointUrl, String[].class);
+        String[] menuEntriesArray = restClient
+					.get()
+					.uri(allMenuEntriesEndpointUrl)
+					.retrieve()
+					.body(String[].class);
         List<String> menuEntries = Arrays.asList(requireNonNull(menuEntriesArray));
         assertEquals(3, menuEntries.size());
     }

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -23,8 +23,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles(value = {"default", "jdbc-functional-test"})
 public abstract class BaseIntegrationJdbc {
     @Autowired
-    @Qualifier("myTestRestTemplate")
-    protected RestTemplate restTemplate;
+    @Qualifier("myTestRestClient")
+    protected RestClient restClient;
     @Autowired
     protected DbFixturesPopulator dbFixturesPopulator;
     @Autowired

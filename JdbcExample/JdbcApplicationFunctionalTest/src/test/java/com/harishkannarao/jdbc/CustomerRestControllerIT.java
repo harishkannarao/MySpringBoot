@@ -6,115 +6,158 @@ import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CustomerRestControllerIT extends BaseIntegrationJdbc {
-    @Autowired
-    @Value("${allCustomersEndpointUrl}")
-    private String allCustomersEndpointUrl;
+	@Autowired
+	@Value("${allCustomersEndpointUrl}")
+	private String allCustomersEndpointUrl;
 
-    @Test
-    public void getAllCustomers_shouldReturnAllCustomers_fromDatabase() {
-        Customer[] customersArray = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(customersArray);
-        assertEquals(5, customersArray.length);
-    }
+	@Test
+	public void getAllCustomers_shouldReturnAllCustomers_fromDatabase() {
+		Customer[] customersArray = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(customersArray);
+		assertEquals(5, customersArray.length);
+	}
 
-    @Test
-    public void getAllCustomers_shouldReturn_customersWithMatchingName_fromDatabase() {
-        Customer[] customersArray = restTemplate.getForObject(allCustomersEndpointUrl + "?firstName=Josh", Customer[].class);
-        assertNotNull(customersArray);
-        assertEquals(2, customersArray.length);
-    }
+	@Test
+	public void getAllCustomers_shouldReturn_customersWithMatchingName_fromDatabase() {
+		URI uri = UriComponentsBuilder.fromHttpUrl(allCustomersEndpointUrl)
+			.queryParam("firstName", "Josh")
+			.build()
+			.toUri();
+		Customer[] customersArray = restClient
+			.get()
+			.uri(uri)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(customersArray);
+		assertEquals(2, customersArray.length);
+	}
 
-    @Test
-    public void canCreateAndDeleteCustomer() {
-        Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(initialCustomers);
-        assertEquals(5, initialCustomers.length);
+	@Test
+	public void canCreateAndDeleteCustomer() {
+		Customer[] initialCustomers = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(initialCustomers);
+		assertEquals(5, initialCustomers.length);
 
-        CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
-        String firstName = "testFirstName";
-        String lastName = "testLastName";
-        createCustomerRequestDto.setFirstName(firstName);
-        createCustomerRequestDto.setLastName(lastName);
+		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
+		String firstName = "testFirstName";
+		String lastName = "testLastName";
+		createCustomerRequestDto.setFirstName(firstName);
+		createCustomerRequestDto.setLastName(lastName);
 
-        HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
-        ResponseEntity<Void> createCustomerResponse = restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.POST, createRequest, Void.class);
+		ResponseEntity<Void> createCustomerResponse = restClient
+			.post()
+			.uri(allCustomersEndpointUrl)
+			.body(createCustomerRequestDto)
+			.retrieve()
+			.toBodilessEntity();
 
-        assertEquals(200, createCustomerResponse.getStatusCode().value());
+		assertEquals(200, createCustomerResponse.getStatusCode().value());
 
-        Customer[] updatedListAfterCreate = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(updatedListAfterCreate);
-        assertEquals(6, updatedListAfterCreate.length);
+		Customer[] updatedListAfterCreate = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(updatedListAfterCreate);
+		assertEquals(6, updatedListAfterCreate.length);
 
-        Optional<Customer> foundCustomer = Arrays.stream(updatedListAfterCreate)
-                .filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
-                .findFirst();
+		Optional<Customer> foundCustomer = Arrays.stream(updatedListAfterCreate)
+			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.findFirst();
 
-        assertTrue(foundCustomer.isPresent());
+		assertTrue(foundCustomer.isPresent());
 
-        Customer createdCustomer = foundCustomer.get();
+		Customer createdCustomer = foundCustomer.get();
 
-        DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto();
-        deleteCustomerRequestDto.setId(createdCustomer.getId());
+		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto();
+		deleteCustomerRequestDto.setId(createdCustomer.getId());
 
-        HttpEntity<DeleteCustomerRequestDto> deleteRequest = new HttpEntity<>(deleteCustomerRequestDto);
-        ResponseEntity<Void> deleteCustomerResponse = restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.DELETE, deleteRequest, Void.class);
+		ResponseEntity<Void> deleteCustomerResponse = restClient
+			.method(HttpMethod.DELETE)
+			.uri(allCustomersEndpointUrl)
+			.body(deleteCustomerRequestDto)
+			.retrieve()
+			.toBodilessEntity();
 
-        assertEquals(200, deleteCustomerResponse.getStatusCode().value());
+		assertEquals(200, deleteCustomerResponse.getStatusCode().value());
 
-        Customer[] updatedListAfterDelete = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(updatedListAfterDelete);
-        assertEquals(5, updatedListAfterDelete.length);
+		Customer[] updatedListAfterDelete = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(updatedListAfterDelete);
+		assertEquals(5, updatedListAfterDelete.length);
 
-        long checkCustomer = Arrays.stream(updatedListAfterDelete)
-                .filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
-                .count();
+		long checkCustomer = Arrays.stream(updatedListAfterDelete)
+			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.count();
 
-        assertEquals(0, checkCustomer);
-    }
+		assertEquals(0, checkCustomer);
+	}
 
-    @Test
-    public void testTransaction() {
-        Customer[] initialCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(initialCustomers);
-        assertEquals(5, initialCustomers.length);
+	@Test
+	public void testTransaction() {
+		Customer[] initialCustomers = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(initialCustomers);
+		assertEquals(5, initialCustomers.length);
 
-        CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
-        String firstName = "testFirstName";
-        String lastName = "testLastName";
-        createCustomerRequestDto.setFirstName(firstName);
-        createCustomerRequestDto.setLastName(lastName);
+		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
+		String firstName = "testFirstName";
+		String lastName = "testLastName";
+		createCustomerRequestDto.setFirstName(firstName);
+		createCustomerRequestDto.setLastName(lastName);
 
-        HttpEntity<CreateCustomerRequestDto> createRequest = new HttpEntity<>(createCustomerRequestDto);
-        try {
-            restTemplate.exchange(allCustomersEndpointUrl, HttpMethod.PUT, createRequest, Void.class);
-            fail("should have thrown exception");
-        } catch (RestClientException exception) {
-            assertTrue(exception instanceof HttpServerErrorException);
-            HttpServerErrorException httpServerErrorException = (HttpServerErrorException) exception;
-            assertTrue(httpServerErrorException.getResponseBodyAsString().contains("Bang Bang"));
-        }
+		RestClientException result = assertThrows(RestClientException.class, () -> restClient
+			.put()
+			.uri(allCustomersEndpointUrl)
+			.body(createCustomerRequestDto)
+			.retrieve()
+			.toBodilessEntity());
 
-        Customer[] updatedCustomers = restTemplate.getForObject(allCustomersEndpointUrl, Customer[].class);
-        assertNotNull(updatedCustomers);
-        assertEquals(5, updatedCustomers.length);
+		assertThat(result).isInstanceOf(HttpServerErrorException.class);
+		HttpServerErrorException httpServerErrorException = (HttpServerErrorException) result;
+		assertThat(httpServerErrorException.getResponseBodyAsString()).contains("Bang Bang");
 
-        long checkCustomer = Arrays.stream(updatedCustomers)
-                .filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
-                .count();
+		Customer[] updatedCustomers = restClient
+			.get()
+			.uri(allCustomersEndpointUrl)
+			.retrieve()
+			.body(Customer[].class);
+		assertNotNull(updatedCustomers);
+		assertEquals(5, updatedCustomers.length);
 
-        assertEquals(0, checkCustomer);
-    }
+		long checkCustomer = Arrays.stream(updatedCustomers)
+			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.count();
+
+		assertEquals(0, checkCustomer);
+	}
 }
