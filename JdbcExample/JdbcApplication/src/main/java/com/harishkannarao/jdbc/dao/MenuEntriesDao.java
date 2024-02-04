@@ -15,7 +15,7 @@ public class MenuEntriesDao {
     private final List<String> menuEntries;
 
     @Autowired
-    public MenuEntriesDao(JdbcTemplate jdbcTemplate) {
+    public MenuEntriesDao(@Qualifier("myJdbcTemplate") JdbcTemplate jdbcTemplate) {
         RowMapper<String> rowMapper = (rs, rowNum) -> rs.getString("entry");
         menuEntries = jdbcTemplate.query(
                 "SELECT entry FROM menu_entries",
