@@ -16,10 +16,10 @@ import javax.sql.DataSource;
 public class DataSourceConfiguration {
 
 	@Bean
-	@ConfigurationProperties("app.datasource")
+	@ConfigurationProperties("app.datasource.hikari")
 	@Qualifier("myDataSource")
 	@FlywayDataSource
-	public DataSource creatDataSource() {
+	public HikariDataSource createDataSource() {
 		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 
