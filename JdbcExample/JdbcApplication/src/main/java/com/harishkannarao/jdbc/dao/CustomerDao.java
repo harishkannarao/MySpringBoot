@@ -21,7 +21,7 @@ public class CustomerDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public CustomerDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public CustomerDao(@Qualifier("myNamedParameterJdbcTemplate") NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 

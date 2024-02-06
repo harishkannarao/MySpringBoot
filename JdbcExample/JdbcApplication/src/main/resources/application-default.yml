@@ -1,16 +1,16 @@
 server:
   port: 8180
 
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:15432/myuser
-    username: myuser
-    password: superpassword
-    driver:
-      class:
-        name: org.postgresql.Driver
-
 app:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql://localhost:15432/myuser
+      username: myuser
+      password: superpassword
+      maximum-pool-size: 30
+      driver:
+        class:
+          name: org.postgresql.Driver
   openapi:
     url: "http://localhost:8180"
   cors:

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import java.util.Objects;
 
 @Component
 public class RequestResponseBodyLoggingInterceptor implements ClientHttpRequestInterceptor {
@@ -18,20 +18,26 @@ public class RequestResponseBodyLoggingInterceptor implements ClientHttpRequestI
 	private static final Logger LOGGER = LoggerFactory.getLogger(RequestResponseBodyLoggingInterceptor.class);
 
 	public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] body, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
+		long startTime = System.currentTimeMillis();
+		String method = httpRequest.getMethod().name();
+		String url = httpRequest.getURI().toString();
+		String headers = httpRequest.getHeaders().toString();
+		String reqBody = new String(body, StandardCharsets.UTF_8);
 		ClientHttpResponse response = null;
 		try {
-			String reqBody = new String(body, StandardCharsets.UTF_8);
-			LOGGER.info("REST_CLIENT_REQUEST_BODY_LOG {}", reqBody);
+			LOGGER.info("TEST_REST_CLIENT_REQUEST {} {} {} {}", method, url, headers, reqBody);
 			response = clientHttpRequestExecution.execute(httpRequest, body);
 		} finally {
-			String resBody = Optional.ofNullable(response).map(clientHttpResponse -> {
-                try {
-                    return new String(clientHttpResponse.getBody().readAllBytes(), StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).orElse(null);
-			LOGGER.info("REST_CLIENT_RESPONSE_BODY_LOG {}", resBody);
+			long timeTaken = System.currentTimeMillis() - startTime;
+			String resBody = null;
+			String resHeaders = null;
+			int status = 0;
+			if (Objects.nonNull(response)) {
+				resBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
+				status = response.getStatusCode().value();
+				resHeaders = response.getHeaders().toString();
+			}
+			LOGGER.info("TEST_REST_CLIENT_RESPONSE {} {} {} {} {} {}", timeTaken, method, url, status, resHeaders, resBody);
 		}
 		return response;
 	}
