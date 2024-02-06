@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,12 +16,9 @@ public class MenuEntriesDao {
     private final List<String> menuEntries;
 
     @Autowired
-    public MenuEntriesDao(@Qualifier("myJdbcTemplate") JdbcTemplate jdbcTemplate) {
-        RowMapper<String> rowMapper = (rs, rowNum) -> rs.getString("entry");
-        menuEntries = jdbcTemplate.query(
-                "SELECT entry FROM menu_entries",
-                rowMapper
-        );
+    public MenuEntriesDao(@Qualifier("myJdbcClient") JdbcClient jdbcClient) {
+			menuEntries = jdbcClient.sql("SELECT entry FROM menu_entries")
+					.query(String.class).list();
     }
 
     public List<String> getMenuEntries() {
