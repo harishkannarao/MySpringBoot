@@ -11,18 +11,18 @@ import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MenuEntriesRestControllerIT extends BaseIntegrationJdbc {
-    @Autowired
-    @Value("${allMenuEntriesEndpointUrl}")
-    public String allMenuEntriesEndpointUrl;
+	@Autowired
+	@Value("${allMenuEntriesEndpointUrl}")
+	public String allMenuEntriesEndpointUrl;
 
-    @Test
-    public void getAllMenuEntries_shouldReturnAllMenuEntries_fromDatabase() {
-        String[] menuEntriesArray = restClient
-					.get()
-					.uri(allMenuEntriesEndpointUrl)
-					.retrieve()
-					.body(String[].class);
-        List<String> menuEntries = Arrays.asList(requireNonNull(menuEntriesArray));
-        assertEquals(3, menuEntries.size());
-    }
+	@Test
+	public void getAllMenuEntries_shouldReturnAllMenuEntries_fromDatabase() {
+		String[] menuEntriesArray = restClient
+			.get()
+			.uri(allMenuEntriesEndpointUrl)
+			.retrieve()
+			.body(String[].class);
+		List<String> menuEntries = Arrays.asList(requireNonNull(menuEntriesArray));
+		assertEquals(3, menuEntries.size());
+	}
 }
