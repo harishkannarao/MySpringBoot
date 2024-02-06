@@ -56,6 +56,7 @@ public class TestConfigurationJdbcApplication {
 		return RestClient.builder()
 			.requestFactory(clientHttpRequestFactory)
 			.requestInterceptor(jsonHeaderInterceptor)
+			.requestInterceptor(requestResponseBodyLoggingInterceptor)
 			.requestInterceptor(new RestClientAccessLoggingInterceptor())
 			.build();
 	}
