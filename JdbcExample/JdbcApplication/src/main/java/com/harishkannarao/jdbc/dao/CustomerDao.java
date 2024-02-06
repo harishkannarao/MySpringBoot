@@ -3,79 +3,54 @@ package com.harishkannarao.jdbc.dao;
 import com.harishkannarao.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Qualifier("myCustomerDao")
 public class CustomerDao {
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final JdbcClient jdbcClient;
 
-    @Autowired
-    public CustomerDao(@Qualifier("myNamedParameterJdbcTemplate") NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
+	@Autowired
+	public CustomerDao(@Qualifier("myJdbcClient") JdbcClient jdbcClient) {
+		this.jdbcClient = jdbcClient;
+	}
 
-    @SuppressWarnings("CodeBlock2Expr")
-    public List<Customer> getAllCustomers() {
-        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> {
-            return toCustomer(rs);
-        };
-        return namedParameterJdbcTemplate.query(
-                "SELECT id, first_name, last_name FROM customers",
-                customerRowMapper
-        );
-    }
+	public List<Customer> getAllCustomers() {
+		return jdbcClient
+			.sql("SELECT id, first_name, last_name FROM customers")
+			.query(Customer.class)
+			.list();
+	}
 
-    @SuppressWarnings("CodeBlock2Expr")
-    public List<Customer> getCustomersByFirstName(String firstName) {
-        Map<String, Object> params = Map.ofEntries(
-                Map.entry("first_name", firstName)
-        );
-        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> {
-            return toCustomer(rs);
-        };
-        return namedParameterJdbcTemplate.query(
-                "SELECT id, first_name, last_name FROM customers WHERE first_name = :first_name",
-                params,
-                customerRowMapper
-        );
-    }
+	public List<Customer> getCustomersByFirstName(String firstName) {
+		return jdbcClient
+			.sql("SELECT id, first_name, last_name FROM customers WHERE first_name = :first_name")
+			.param("first_name", firstName)
+			.query(Customer.class)
+			.list();
+	}
 
-    public void createCustomer(String firstName, String lastName) {
-        Map<String, Object> params = Map.ofEntries(
-                Map.entry("first_name", firstName),
-                Map.entry("last_name", lastName)
-        );
-        namedParameterJdbcTemplate.update("INSERT INTO customers(first_name, last_name) VALUES (:first_name,:last_name)", params);
-    }
+	public void createCustomer(String firstName, String lastName) {
+		jdbcClient.sql("INSERT INTO customers(first_name, last_name) VALUES (:first_name,:last_name)")
+			.param("first_name", firstName)
+			.param("last_name", lastName)
+			.update();
+	}
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void createCustomerInIsolation(String firstName, String lastName) {
-        createCustomer(firstName, lastName);
-    }
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void createCustomerInIsolation(String firstName, String lastName) {
+		createCustomer(firstName, lastName);
+	}
 
-    public void deleteCustomer(Long id) {
-        Map<String, Object> params = Map.ofEntries(
-                Map.entry("id", id)
-        );
-        namedParameterJdbcTemplate.update("DELETE FROM customers where id = :id", params);
-    }
-
-    private Customer toCustomer(ResultSet rs) throws SQLException {
-        return new Customer(
-                rs.getLong("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name")
-        );
-    }
+	public void deleteCustomer(Long id) {
+		jdbcClient.sql("DELETE FROM customers where id = :id")
+			.param("id", id)
+			.update();
+	}
 }
