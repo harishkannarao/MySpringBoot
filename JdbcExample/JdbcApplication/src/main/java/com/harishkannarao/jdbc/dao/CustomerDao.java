@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc.dao;
 
+import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,16 +37,15 @@ public class CustomerDao {
 			.list();
 	}
 
-	public void createCustomer(String firstName, String lastName) {
-		jdbcClient.sql("INSERT INTO customers(first_name, last_name) VALUES (:first_name,:last_name)")
-			.param("first_name", firstName)
-			.param("last_name", lastName)
+	public void createCustomer(CreateCustomerRequestDto createCustomerRequestDto) {
+		jdbcClient.sql("INSERT INTO customers(first_name, last_name) VALUES (:firstName,:lastName)")
+			.paramSource(createCustomerRequestDto)
 			.update();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void createCustomerInIsolation(String firstName, String lastName) {
-		createCustomer(firstName, lastName);
+	public void createCustomerInIsolation(CreateCustomerRequestDto createCustomerRequestDto) {
+		createCustomer(createCustomerRequestDto);
 	}
 
 	public void deleteCustomer(Long id) {

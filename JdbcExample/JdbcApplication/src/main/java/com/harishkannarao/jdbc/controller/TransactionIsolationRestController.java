@@ -21,13 +21,12 @@ public class TransactionIsolationRestController extends AbstractBaseController {
         this.customerDao = customerDao;
     }
 
-
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Void> createCustomerWithIsolatedTransaction(
             @RequestBody CreateCustomerRequestDto requestDto
     ) {
-        customerDao.createCustomer(requestDto.firstName(), requestDto.lastName());
-        customerDao.createCustomerInIsolation(requestDto.firstName(), requestDto.lastName());
+        customerDao.createCustomer(requestDto);
+        customerDao.createCustomerInIsolation(requestDto);
         throw new RuntimeException("Another Bang");
     }
 }
