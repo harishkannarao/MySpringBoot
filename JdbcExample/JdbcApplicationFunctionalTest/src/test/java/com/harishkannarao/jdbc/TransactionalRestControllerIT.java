@@ -32,11 +32,10 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 		assertNotNull(initialCustomers);
 		assertEquals(5, initialCustomers.length);
 
-		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
 		String firstName = "testFirstName";
 		String lastName = "testLastName";
-		createCustomerRequestDto.setFirstName(firstName);
-		createCustomerRequestDto.setLastName(lastName);
+		CreateCustomerRequestDto createCustomerRequestDto =
+			new CreateCustomerRequestDto(firstName, lastName);
 
 		// this endpoint creates the customer twice
 		// 1. In default request transaction

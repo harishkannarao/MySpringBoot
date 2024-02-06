@@ -61,11 +61,12 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertNotNull(initialCustomers);
 		assertEquals(5, initialCustomers.length);
 
-		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
+
 		String firstName = "testFirstName";
 		String lastName = "testLastName";
-		createCustomerRequestDto.setFirstName(firstName);
-		createCustomerRequestDto.setLastName(lastName);
+		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto(
+			firstName,
+			lastName);
 
 		ResponseEntity<Void> createCustomerResponse = restClient
 			.post()
@@ -129,11 +130,11 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertNotNull(initialCustomers);
 		assertEquals(5, initialCustomers.length);
 
-		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto();
 		String firstName = "testFirstName";
 		String lastName = "testLastName";
-		createCustomerRequestDto.setFirstName(firstName);
-		createCustomerRequestDto.setLastName(lastName);
+		CreateCustomerRequestDto createCustomerRequestDto = new CreateCustomerRequestDto(
+			firstName,
+			lastName);
 
 		RestClientException result = assertThrows(RestClientException.class, () -> restClient
 			.put()

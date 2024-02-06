@@ -26,8 +26,8 @@ public class TransactionIsolationRestController extends AbstractBaseController {
     public ResponseEntity<Void> createCustomerWithIsolatedTransaction(
             @RequestBody CreateCustomerRequestDto requestDto
     ) {
-        customerDao.createCustomer(requestDto.getFirstName(), requestDto.getLastName());
-        customerDao.createCustomerInIsolation(requestDto.getFirstName(), requestDto.getLastName());
+        customerDao.createCustomer(requestDto.firstName(), requestDto.lastName());
+        customerDao.createCustomerInIsolation(requestDto.firstName(), requestDto.lastName());
         throw new RuntimeException("Another Bang");
     }
 }

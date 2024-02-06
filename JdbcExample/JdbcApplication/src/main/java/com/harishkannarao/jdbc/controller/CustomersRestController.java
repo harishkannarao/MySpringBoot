@@ -49,7 +49,7 @@ public class CustomersRestController extends AbstractBaseController {
 	public ResponseEntity<Void> createCustomer(
 		@RequestBody CreateCustomerRequestDto requestDto
 	) {
-		customerDao.createCustomer(requestDto.getFirstName(), requestDto.getLastName());
+		customerDao.createCustomer(requestDto.firstName(), requestDto.lastName());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -57,7 +57,7 @@ public class CustomersRestController extends AbstractBaseController {
 	public ResponseEntity<Void> createCustomerWithTransaction(
 		@RequestBody CreateCustomerRequestDto requestDto
 	) {
-		customerDao.createCustomer(requestDto.getFirstName(), requestDto.getLastName());
+		customerDao.createCustomer(requestDto.firstName(), requestDto.lastName());
 		throw new RuntimeException("Bang Bang");
 	}
 
