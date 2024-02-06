@@ -4,6 +4,7 @@ import com.harishkannarao.jdbc.dao.CustomerDao;
 import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
 import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
+import com.harishkannarao.jdbc.domain.DeleteCustomerResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,10 @@ public class CustomersRestController extends AbstractBaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Void> deleteCustomer(
+	public ResponseEntity<DeleteCustomerResponseDto> deleteCustomer(
 		@RequestBody DeleteCustomerRequestDto requestDto
 	) {
-		customerDao.deleteCustomer(requestDto.getId());
-		return new ResponseEntity<>(HttpStatus.OK);
+		var responseEntity = new DeleteCustomerResponseDto(customerDao.deleteCustomer(requestDto.id()));
+		return new ResponseEntity<>(responseEntity, HttpStatus.OK);
 	}
 }

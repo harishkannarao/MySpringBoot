@@ -48,8 +48,8 @@ public class CustomerDao {
 		createCustomer(createCustomerRequestDto);
 	}
 
-	public void deleteCustomer(Long id) {
-		jdbcClient.sql("DELETE FROM customers where id = :id")
+	public int deleteCustomer(Long id) {
+		return jdbcClient.sql("DELETE FROM customers where id = :id")
 			.param("id", id)
 			.update();
 	}

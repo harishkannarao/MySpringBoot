@@ -3,6 +3,8 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
 import com.harishkannarao.jdbc.domain.DeleteCustomerRequestDto;
+import com.harishkannarao.jdbc.domain.DeleteCustomerResponseDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,17 +96,17 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 
 		Customer createdCustomer = foundCustomer.get();
 
-		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto();
-		deleteCustomerRequestDto.setId(createdCustomer.id());
+		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto(createdCustomer.id());
 
-		ResponseEntity<Void> deleteCustomerResponse = restClient
+		ResponseEntity<DeleteCustomerResponseDto> deleteCustomerResponse = restClient
 			.method(HttpMethod.DELETE)
 			.uri(allCustomersEndpointUrl)
 			.body(deleteCustomerRequestDto)
 			.retrieve()
-			.toBodilessEntity();
-
+			.toEntity(DeleteCustomerResponseDto.class);
 		assertEquals(200, deleteCustomerResponse.getStatusCode().value());
+		DeleteCustomerResponseDto deleteCustomerResponseDto = Objects.requireNonNull(deleteCustomerResponse.getBody());
+		Assertions.assertThat(deleteCustomerResponseDto.count()).isEqualTo(1);
 
 		Customer[] updatedListAfterDelete = restClient
 			.get()
@@ -118,6 +121,19 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 			.count();
 
 		assertEquals(0, checkCustomer);
+	}
+
+	@Test
+	public void deleteCustomer_returnCountAsZero_whenNoMatchingEntries() {
+		ResponseEntity<DeleteCustomerResponseDto> deleteCustomerResponse = restClient
+			.method(HttpMethod.DELETE)
+			.uri(allCustomersEndpointUrl)
+			.body(new DeleteCustomerRequestDto(0L))
+			.retrieve()
+			.toEntity(DeleteCustomerResponseDto.class);
+		assertEquals(200, deleteCustomerResponse.getStatusCode().value());
+		DeleteCustomerResponseDto deleteCustomerResponseDto = Objects.requireNonNull(deleteCustomerResponse.getBody());
+		Assertions.assertThat(deleteCustomerResponseDto.count()).isEqualTo(0);
 	}
 
 	@Test
