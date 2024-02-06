@@ -64,7 +64,7 @@ public class TransactionalRestControllerIT extends BaseIntegrationJdbc {
 		assertEquals(6, updatedCustomers.length);
 
 		long checkCustomer = Arrays.stream(updatedCustomers)
-			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.filter(it -> it.firstName().equals(firstName) && it.lastName().equals(lastName))
 			.count();
 
 		assertEquals(1, checkCustomer);

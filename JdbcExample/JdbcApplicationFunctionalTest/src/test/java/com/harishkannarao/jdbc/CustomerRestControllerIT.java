@@ -85,7 +85,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertEquals(6, updatedListAfterCreate.length);
 
 		Optional<Customer> foundCustomer = Arrays.stream(updatedListAfterCreate)
-			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.filter(it -> it.firstName().equals(firstName) && it.lastName().equals(lastName))
 			.findFirst();
 
 		assertTrue(foundCustomer.isPresent());
@@ -93,7 +93,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		Customer createdCustomer = foundCustomer.get();
 
 		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto();
-		deleteCustomerRequestDto.setId(createdCustomer.getId());
+		deleteCustomerRequestDto.setId(createdCustomer.id());
 
 		ResponseEntity<Void> deleteCustomerResponse = restClient
 			.method(HttpMethod.DELETE)
@@ -113,7 +113,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertEquals(5, updatedListAfterDelete.length);
 
 		long checkCustomer = Arrays.stream(updatedListAfterDelete)
-			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.filter(it -> it.firstName().equals(firstName) && it.lastName().equals(lastName))
 			.count();
 
 		assertEquals(0, checkCustomer);
@@ -155,7 +155,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertEquals(5, updatedCustomers.length);
 
 		long checkCustomer = Arrays.stream(updatedCustomers)
-			.filter(it -> it.getFirstName().equals(firstName) && it.getLastName().equals(lastName))
+			.filter(it -> it.firstName().equals(firstName) && it.lastName().equals(lastName))
 			.count();
 
 		assertEquals(0, checkCustomer);
