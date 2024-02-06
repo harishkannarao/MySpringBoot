@@ -25,21 +25,8 @@ public class DataSourceConfiguration {
 	}
 
 	@Bean
-	@Qualifier("myJdbcTemplate")
-	public JdbcTemplate createJdbcTemplate(@Qualifier("myDataSource") DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
-	}
-
-	@Bean
 	@Qualifier("myJdbcClient")
 	public JdbcClient createJdbcClient(@Qualifier("myDataSource") DataSource dataSource) {
 		return JdbcClient.create(dataSource);
-	}
-
-	@Bean
-	@Qualifier("myNamedParameterJdbcTemplate")
-	public NamedParameterJdbcTemplate createNamedParameterJdbcTemplate(
-		@Qualifier("myDataSource") DataSource dataSource) {
-		return new NamedParameterJdbcTemplate(dataSource);
 	}
 }

@@ -23,14 +23,14 @@ public class CustomerDao {
 
 	public List<Customer> getAllCustomers() {
 		return jdbcClient
-			.sql("SELECT id, first_name, last_name FROM customers")
+			.sql("SELECT * FROM customers")
 			.query(Customer.class)
 			.list();
 	}
 
 	public List<Customer> getCustomersByFirstName(String firstName) {
 		return jdbcClient
-			.sql("SELECT id, first_name, last_name FROM customers WHERE first_name = :first_name")
+			.sql("SELECT * FROM customers WHERE first_name = :first_name")
 			.param("first_name", firstName)
 			.query(Customer.class)
 			.list();
