@@ -29,9 +29,8 @@ public class ThirdPartyPingRestClient {
 					.uri(thirdPartyPingUrl)
 					.retrieve()
 					.toBodilessEntity();
-        ThirdPartyStatus status = new ThirdPartyStatus();
-        status.setUrl(thirdPartyPingUrl);
-        status.setStatus(exchange.getStatusCode().value());
-        return status;
+        return new ThirdPartyStatus(
+					thirdPartyPingUrl,
+					exchange.getStatusCode().value());
     }
 }

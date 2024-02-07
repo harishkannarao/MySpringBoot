@@ -48,8 +48,8 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
 					.retrieve()
 					.body(ThirdPartyStatus.class);
 
-        assertThat(status.getStatus()).isEqualTo(204);
-        assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);
+        assertThat(status.status()).isEqualTo(204);
+        assertThat(status.url()).isEqualTo(thirdPartyPingRestUrl);
     }
 
     @Test
@@ -68,8 +68,8 @@ public class PingStatusControllerIT extends BaseIntegrationJdbc {
 					.retrieve()
 					.body(ThirdPartyStatus.class);
 
-        assertThat(status.getStatus()).isEqualTo(204);
-        assertThat(status.getUrl()).isEqualTo(thirdPartyPingRestUrl);
+        assertThat(status.status()).isEqualTo(204);
+        assertThat(status.url()).isEqualTo(thirdPartyPingRestUrl);
 
         assertThat(logbackTestAppender.getLogs())
                         .extracting(ILoggingEvent::getFormattedMessage)
