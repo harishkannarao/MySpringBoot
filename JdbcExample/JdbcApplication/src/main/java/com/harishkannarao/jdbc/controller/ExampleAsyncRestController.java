@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.harishkannarao.jdbc.filter.RequestTracingFilter.REQUEST_ID_KEY;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @RestController
 @RequestMapping(value = "/async", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -79,9 +81,11 @@ public class ExampleAsyncRestController {
 			.thenApplyAsync(unused -> joinAllFutureResult(contextMap, futures), executor)
 			.join();
 		List<String> result = results.map(futureResult -> {
-				Optional<Throwable> exception = futureResult.getException();
-				exception.ifPresent(throwable -> logger.error("Exception for input: " + futureResult.getInput(), throwable));
-				return futureResult.getResult().map(aLong -> futureResult.getInput() + "=" + aLong).orElse(null);
+				Optional<Throwable> exception = futureResult.exception();
+				exception.ifPresent(throwable ->
+					logger.error("Exception for input: " + futureResult.input().orElseThrow(), throwable));
+				return futureResult.result()
+					.map(aLong -> futureResult.input().orElseThrow() + "=" + aLong).orElse(null);
 			})
 			.filter(Objects::nonNull)
 			.toList();
@@ -104,8 +108,8 @@ public class ExampleAsyncRestController {
 		try {
 			MDC.setContextMap(contextMap);
 			return Optional.ofNullable(throwable)
-				.map(ex -> new FutureResult<Long, Long>(value, null, throwable))
-				.orElseGet(() -> new FutureResult<>(value, result, null));
+				.map(ex -> new FutureResult<Long, Long>(of(value), empty(), of(throwable)))
+				.orElseGet(() -> new FutureResult<>(of(value), of(result), empty()));
 		} finally {
 			MDC.clear();
 		}
