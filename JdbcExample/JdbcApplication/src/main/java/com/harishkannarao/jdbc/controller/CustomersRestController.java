@@ -47,11 +47,11 @@ public class CustomersRestController extends AbstractBaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Void> createCustomer(
+	public ResponseEntity<Customer> createCustomer(
 		@RequestBody CreateCustomerRequestDto requestDto
 	) {
-		customerDao.createCustomer(requestDto);
-		return new ResponseEntity<>(HttpStatus.OK);
+		var customer = customerDao.createCustomer(requestDto);
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})

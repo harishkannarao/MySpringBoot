@@ -5,10 +5,12 @@ import com.harishkannarao.jdbc.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -37,10 +39,22 @@ public class CustomerDao {
 			.list();
 	}
 
-	public void createCustomer(CreateCustomerRequestDto createCustomerRequestDto) {
+
+	public Customer getCustomersById(long id) {
+		return jdbcClient
+			.sql("SELECT * FROM customers WHERE id = :id")
+			.param("id", id)
+			.query(Customer.class)
+			.single();
+	}
+
+	public Customer createCustomer(CreateCustomerRequestDto createCustomerRequestDto) {
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcClient.sql("INSERT INTO customers(first_name, last_name) VALUES (:firstName,:lastName)")
 			.paramSource(createCustomerRequestDto)
-			.update();
+			.update(keyHolder);
+		int id = (Integer) keyHolder.getKeyList().getFirst().get("id");
+		return getCustomersById(id);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -48,7 +62,7 @@ public class CustomerDao {
 		createCustomer(createCustomerRequestDto);
 	}
 
-	public int deleteCustomer(Long id) {
+	public int deleteCustomer(Integer id) {
 		return jdbcClient.sql("DELETE FROM customers where id = :id")
 			.param("id", id)
 			.update();

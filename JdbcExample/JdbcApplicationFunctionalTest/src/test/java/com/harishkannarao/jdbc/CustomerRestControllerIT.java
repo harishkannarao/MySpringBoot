@@ -71,14 +71,15 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 			firstName,
 			lastName);
 
-		ResponseEntity<Void> createCustomerResponse = restClient
+		ResponseEntity<Customer> createCustomerResponse = restClient
 			.post()
 			.uri(allCustomersEndpointUrl)
 			.body(createCustomerRequestDto)
 			.retrieve()
-			.toBodilessEntity();
+			.toEntity(Customer.class);
 
 		assertEquals(200, createCustomerResponse.getStatusCode().value());
+		var createdCustomer = Objects.requireNonNull(createCustomerResponse.getBody());
 
 		Customer[] updatedListAfterCreate = restClient
 			.get()
@@ -89,12 +90,12 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		assertEquals(6, updatedListAfterCreate.length);
 
 		Optional<Customer> foundCustomer = Arrays.stream(updatedListAfterCreate)
-			.filter(it -> it.firstName().equals(firstName) && it.lastName().equals(lastName))
-			.findFirst();
+			.filter(it -> it.id() == createdCustomer.id()
+				&& it.firstName().equals(firstName)
+				&& it.lastName().equals(lastName)
+			).findFirst();
 
 		assertTrue(foundCustomer.isPresent());
-
-		Customer createdCustomer = foundCustomer.get();
 
 		DeleteCustomerRequestDto deleteCustomerRequestDto = new DeleteCustomerRequestDto(createdCustomer.id());
 
@@ -128,7 +129,7 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 		ResponseEntity<DeleteCustomerResponseDto> deleteCustomerResponse = restClient
 			.method(HttpMethod.DELETE)
 			.uri(allCustomersEndpointUrl)
-			.body(new DeleteCustomerRequestDto(0L))
+			.body(new DeleteCustomerRequestDto(0))
 			.retrieve()
 			.toEntity(DeleteCustomerResponseDto.class);
 		assertEquals(200, deleteCustomerResponse.getStatusCode().value());
