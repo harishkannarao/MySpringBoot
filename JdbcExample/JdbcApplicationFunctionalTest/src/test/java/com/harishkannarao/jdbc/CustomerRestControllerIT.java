@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 	@Autowired
 	@Value("${allCustomersEndpointUrl}")
-	private String allCustomersEndpointUrl;
+	private URI allCustomersEndpointUrl;
 
 	@Test
 	public void getAllCustomers_shouldReturnAllCustomers_fromDatabase() {
@@ -41,7 +42,8 @@ public class CustomerRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void getAllCustomers_shouldReturn_customersWithMatchingName_fromDatabase() {
-		URI uri = UriComponentsBuilder.fromHttpUrl(allCustomersEndpointUrl)
+		URI uri = UriComponentsBuilder.fromUri(allCustomersEndpointUrl)
+			.uriVariables(Collections.emptyMap())
 			.queryParam("firstName", "Josh")
 			.build()
 			.toUri();

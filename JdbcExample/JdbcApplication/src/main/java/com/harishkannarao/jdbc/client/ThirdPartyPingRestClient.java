@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+
 @Component
 public class ThirdPartyPingRestClient {
     private final RestClient restClient;
-    private final String thirdPartyPingUrl;
+    private final URI thirdPartyPingUrl;
 
     @Autowired
     public ThirdPartyPingRestClient(
             @Qualifier("myRestClient") RestClient restClient,
-            @Value("${thirdparty.ping.url}") String thirdPartyPingRestUrl) {
+            @Value("${thirdparty.ping.url}") URI thirdPartyPingRestUrl) {
         this.restClient = restClient;
         this.thirdPartyPingUrl = thirdPartyPingRestUrl;
     }
@@ -30,7 +32,7 @@ public class ThirdPartyPingRestClient {
 					.retrieve()
 					.toBodilessEntity();
         return new ThirdPartyStatus(
-					thirdPartyPingUrl,
+					thirdPartyPingUrl.toString(),
 					exchange.getStatusCode().value());
     }
 }
