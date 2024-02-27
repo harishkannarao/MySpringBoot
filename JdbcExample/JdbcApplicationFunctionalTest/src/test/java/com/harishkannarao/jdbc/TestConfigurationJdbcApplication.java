@@ -3,6 +3,9 @@ package com.harishkannarao.jdbc;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.harishkannarao.jdbc.client.interceptor.RestClientAccessLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,20 +27,21 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 })
 public class TestConfigurationJdbcApplication {
 
-	@Autowired
-	private JsonHeaderInterceptor jsonHeaderInterceptor;
+	private static final Logger log = LoggerFactory.getLogger(TestConfigurationJdbcApplication.class);
 
-	@Autowired
-	private RequestResponseBodyLoggingInterceptor requestResponseBodyLoggingInterceptor;
-
-	@Value("${wiremock.port}")
-	int wireMockPort;
-
-	@Bean(destroyMethod = "stop")
-	public WireMockServer createWireMockServer() {
+	@Bean
+	public WireMockServer createWireMockServer(@Value("${wiremock.port}") int wireMockPort) {
 		WireMockServer wireMockServer = new WireMockServer(options().port(wireMockPort));
 		wireMockServer.start();
 		return wireMockServer;
+	}
+
+	@Bean
+	public DisposableBean stopWireMockServer(WireMockServer wireMockServer) {
+		return () -> {
+			log.info("Stopping wiremock");
+			wireMockServer.stop();
+		};
 	}
 
 	@Bean
@@ -47,7 +51,9 @@ public class TestConfigurationJdbcApplication {
 
 	@Bean
 	@Qualifier("myTestRestClient")
-	public RestClient getMyTestRestClient() {
+	public RestClient getMyTestRestClient(
+		JsonHeaderInterceptor jsonHeaderInterceptor,
+		RequestResponseBodyLoggingInterceptor requestResponseBodyLoggingInterceptor) {
 		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
 		simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofMillis(3000));
 		simpleClientHttpRequestFactory.setReadTimeout(Duration.ofMillis(15000));
