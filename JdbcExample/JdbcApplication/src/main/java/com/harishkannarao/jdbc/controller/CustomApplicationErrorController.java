@@ -51,7 +51,7 @@ public class CustomApplicationErrorController extends BasicErrorController {
         Map<String, Object> errorAttributes = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
         Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
         String message = String.format("Status: %s Attributes: %s", status.value(), errorAttributes);
-        logger.info(message, error);
+        logger.error(message, error);
         Map<String, Object> errorDetails = Map.ofEntries(
                 Map.entry("status", errorAttributes.get(STATUS_KEY)),
                 Map.entry("error", errorAttributes.get(ERROR_KEY)),
