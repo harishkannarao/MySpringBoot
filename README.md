@@ -33,7 +33,7 @@ Will skip unit tests, integration tests and docker commands
 
 ### Running single spring boot application
 
-    mvn spring-boot:run -pl JdbcExample/JdbcApplication
+    mvn clean spring-boot:run -pl JdbcExample/JdbcApplication
     
 Open URL in browser:
 
