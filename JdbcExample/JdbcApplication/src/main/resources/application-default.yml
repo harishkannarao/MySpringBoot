@@ -4,9 +4,9 @@ server:
 app:
   datasource:
     hikari:
-      jdbc-url: jdbc:postgresql://localhost:15432/myuser
-      username: myuser
-      password: superpassword
+      jdbc-url: "${APP_DATASOURCE_HIKARI_JDBC_URL:jdbc:postgresql://localhost:15432/myuser}"
+      username: "${APP_DATASOURCE_HIKARI_USERNAME:myuser}"
+      password: "${APP_DATASOURCE_HIKARI_PASSWORD:superpassword}"
       maximum-pool-size: 30
       driver:
         class:
