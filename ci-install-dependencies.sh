@@ -11,5 +11,5 @@ sudo apt-get -qq install -y jq
 
 mvn --version
 docker --version
-docker-compose --version
+docker compose version
 aws --version

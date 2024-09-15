@@ -9,18 +9,18 @@ This repository is a playground for learning and trying new ideas with Spring Bo
 * Apache Maven Version: 3.9.5 (Execute **_mvn -version_** in command line after installation)
 * Colima or Docker Desktop for Mac, Linux or Windows: latest
 * Docker Cli Version: latest (`docker --version`)
-* Docker Compose Version: latest (`docker-compose --version`)
+* Docker Compose Version: latest (`docker compose version`)
 * Git Client: Any latest version (`git --version`)
 * Integrated Development Environment: Any version IntelliJ Idea or Eclipse
 
 ### Docker dependencies
-Docker dependencies needs to be started using docker-compose before the build
+Docker dependencies needs to be started using docker compose before the build
 ##### Pull the latest images of docker services
-    docker-compose -f docker_local/docker-compose.yml pull
+    docker compose -f docker_local/docker-compose.yml pull
 ##### Start docker services
-    docker-compose -f docker_local/docker-compose.yml up --build -d
+    docker compose -f docker_local/docker-compose.yml up --build -d
 ##### Stop docker services
-    docker-compose -f docker_local/docker-compose.yml down -v
+    docker compose -f docker_local/docker-compose.yml down -v
 
 ### Running full build
 * Start Postgresql database through docker (steps given below)
