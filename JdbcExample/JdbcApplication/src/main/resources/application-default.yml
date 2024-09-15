@@ -23,3 +23,5 @@ springdoc:
 thirdparty:
   ping:
     url: "http://www.example.com"
+  proxy:
+    url: "http://www.example.com"

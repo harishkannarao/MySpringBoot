@@ -13,7 +13,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("ConstantConditions")
-public class PingStatusControllerIT extends BaseIntegrationJdbc {
+public class ThirdPartyPingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${pingStatusEndpointUrl}")
     String pingStatusEndpointUrl;
     @Value("${thirdparty.ping.url}")

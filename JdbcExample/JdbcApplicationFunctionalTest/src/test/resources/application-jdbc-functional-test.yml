@@ -10,3 +10,5 @@ wiremock:
 thirdparty:
   ping:
     url: "http://localhost:${wiremock.port}/ping"
+  proxy:
+    url: "http://localhost:${wiremock.port}/proxy"
