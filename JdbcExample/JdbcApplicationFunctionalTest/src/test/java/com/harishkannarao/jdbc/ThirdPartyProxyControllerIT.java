@@ -44,4 +44,29 @@ public class ThirdPartyProxyControllerIT extends BaseIntegrationJdbc {
 		assertThat(response.contentType()).isEqualTo("plain/text");
 		assertThat(response.responseContent()).isEqualTo("Hello!!!");
 	}
+
+	@Test
+	public void getPingStatus_shouldReturnStatusOfThirdPartUrl_onErrorStatus() {
+		wireMock.register(
+			get(urlEqualTo("/proxy"))
+				.willReturn(
+					aResponse()
+						.withBody("Exception!!!")
+						.withHeader(HttpHeaders.CONTENT_TYPE, "plain/text")
+						.withStatus(500)
+				)
+		);
+
+		ThirdPartyResponse response = restClient
+			.get()
+			.uri(proxyEndpointUrl)
+			.retrieve()
+			.body(ThirdPartyResponse.class);
+
+		assertThat(response.status()).isEqualTo(500);
+		assertThat(response.url()).isEqualTo(thirdPartyProxyRestUrl);
+		assertThat(response.contentType()).isEqualTo("plain/text");
+		assertThat(response.responseContent()).isEqualTo("Exception!!!");
+	}
+
 }
