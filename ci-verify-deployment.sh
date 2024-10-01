@@ -10,6 +10,8 @@ MIN_SUCCESS_COUNT=10
 SLEEP_SECS=1
 SUCCESS=-1
 
+curl --retry 300 --retry-delay 1 --retry-all-errors $VERSION_HOST
+
 while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
    VERSION="$(curl -s $VERSION_HOST | jq ".commit")"
    SUCCESS=$?
