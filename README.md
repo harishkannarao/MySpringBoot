@@ -76,11 +76,11 @@ Type '\q' to quit the terminal and container
 
 Run without jmx
 
-    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
 
 Run with jmx
 
-    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10006 -Dcom.sun.management.jmxremote.rmi.port=10006 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'SPRING_DATASOURCE_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'SPRING_DATASOURCE_USERNAME=myuser' -e 'SPRING_DATASOURCE_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10006 -Dcom.sun.management.jmxremote.rmi.port=10006 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
     
 Sample url
 
