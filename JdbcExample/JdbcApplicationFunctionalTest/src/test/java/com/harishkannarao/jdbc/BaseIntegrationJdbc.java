@@ -8,18 +8,20 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClient;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @SpringBootTest(
-        classes = {
-                JdbcApplication.class,
-                TestConfigurationJdbcApplication.class
-        },
+        classes = {JdbcApplication.class},
         webEnvironment = DEFINED_PORT
 )
+@Import(value = {
+	TestConfigurationJdbcApplication.class,
+	DbFixturesPopulator.class
+})
 @ActiveProfiles(value = {"default", "jdbc-functional-test"})
 public abstract class BaseIntegrationJdbc {
     @Autowired
