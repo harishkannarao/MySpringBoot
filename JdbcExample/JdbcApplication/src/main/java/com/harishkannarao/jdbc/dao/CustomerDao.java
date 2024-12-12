@@ -68,7 +68,8 @@ public class CustomerDao {
 		return jdbcClient.sql("""
 				UPDATE customers
 				 SET first_name=:firstName,last_name=:lastName
-				 WHERE id=:id RETURNING *
+				 WHERE id=:id
+				 RETURNING *
 				""")
 			.paramSource(customer)
 			.query(Customer.class)
