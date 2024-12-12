@@ -64,6 +64,17 @@ public class CustomerDao {
 			.single();
 	}
 
+	public Customer updateCustomerWithReturn(Customer customer) {
+		return jdbcClient.sql("""
+				UPDATE customers
+				 SET first_name=:firstName,last_name=:lastName
+				 WHERE id=:id RETURNING *
+				""")
+			.paramSource(customer)
+			.query(Customer.class)
+			.single();
+	}
+
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void createCustomerInIsolation(CreateCustomerRequestDto createCustomerRequestDto) {
 		createCustomerWithReturn(createCustomerRequestDto);
