@@ -66,7 +66,7 @@ public class CustomerDao {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void createCustomerInIsolation(CreateCustomerRequestDto createCustomerRequestDto) {
-		createCustomer(createCustomerRequestDto);
+		createCustomerWithReturn(createCustomerRequestDto);
 	}
 
 	public int deleteCustomer(Integer id) {
