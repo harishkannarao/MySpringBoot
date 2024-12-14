@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +70,50 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 
 		assertThat(ticketDao.getAvailableTickets())
 			.isEqualTo(0);
+	}
+
+	@Test
+	public void reserveTicket_forCustomer_successfully() {
+		Ticket ticket = TicketBuilder.from(createTicket())
+			.withStatus("AVAILABLE")
+			.build();
+		ticketDao.create(ticket);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(1);
+
+		UUID customerId = UUID.randomUUID();
+		Optional<UUID> ticketId = ticketDao.reserveTicket(customerId);
+
+		assertThat(ticketId)
+			.isNotEmpty()
+			.hasValue(ticket.id());
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(0);
+
+		assertThat(ticketTestSupportDao.getAll())
+			.anySatisfy(ticket1 -> {
+				assertThat(ticket1.id()).isEqualTo(ticket.id());
+				assertThat(ticket1.customerId()).isEqualTo(customerId);
+			});
+	}
+
+	@Test
+	public void reserveTicket_returnsEmpty_whenNoAvailableTickets() {
+		Ticket ticket = TicketBuilder.from(createTicket())
+			.withStatus("BOOKED")
+			.build();
+		ticketDao.create(ticket);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(0);
+
+		UUID customerId = UUID.randomUUID();
+		Optional<UUID> ticketId = ticketDao.reserveTicket(customerId);
+
+		assertThat(ticketId)
+			.isEmpty();
 	}
 
 	@Test
