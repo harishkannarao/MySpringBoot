@@ -20,7 +20,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 )
 @Import(value = {
 	TestConfigurationJdbcApplication.class,
-	DbFixturesPopulator.class
+	DbFixturesPopulator.class,
+	TicketTestSupportDao.class
 })
 @ActiveProfiles(value = {"default", "jdbc-functional-test"})
 public abstract class BaseIntegrationJdbc {

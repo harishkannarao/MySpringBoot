@@ -25,19 +25,4 @@ public class TicketDao {
 			.paramSource(ticket)
 			.update();
 	}
-
-	public List<Ticket> getAll() {
-		return jdbcClient.sql("""
-				SELECT * FROM tickets
-				""")
-			.query(Ticket.class)
-			.list();
-	}
-
-	public void deleteAll() {
-		jdbcClient.sql("""
-				DELETE FROM tickets
-				""")
-			.update();
-	}
 }
