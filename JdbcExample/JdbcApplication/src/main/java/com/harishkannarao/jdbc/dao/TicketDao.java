@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class TicketDao {
 	private final JdbcClient jdbcClient;
@@ -24,5 +22,14 @@ public class TicketDao {
 				""")
 			.paramSource(ticket)
 			.update();
+	}
+
+	public long getAvailableTickets() {
+		return jdbcClient.sql("""
+				SELECT COUNT(id) FROM tickets
+				WHERE status='AVAILABLE'
+				""")
+			.query(Long.class)
+			.single();
 	}
 }

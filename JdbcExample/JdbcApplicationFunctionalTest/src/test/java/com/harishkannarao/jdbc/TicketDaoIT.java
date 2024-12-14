@@ -2,6 +2,8 @@ package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.dao.TicketDao;
 import com.harishkannarao.jdbc.domain.Ticket;
+import com.harishkannarao.jdbc.domain.TicketBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +25,11 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 		this.ticketTestSupportDao = ticketTestSupportDao;
 	}
 
+	@BeforeEach
+	public void setUp() {
+		ticketTestSupportDao.deleteAll();
+	}
+
 	@Test
 	public void create_and_getAll_tickets() {
 		Ticket input = createTicket();
@@ -42,6 +49,26 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 						.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 				}
 			);
+	}
+
+	@Test
+	public void getAvailable_Tickets() {
+		Ticket ticket1 = TicketBuilder.from(createTicket())
+			.withStatus("AVAILABLE")
+			.build();
+		Ticket ticket2 = TicketBuilder.from(createTicket())
+			.withStatus("RESERVED")
+			.build();
+		ticketDao.create(ticket1);
+		ticketDao.create(ticket2);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(1);
+
+		ticketTestSupportDao.deleteAll();
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(0);
 	}
 
 	@Test
