@@ -33,4 +33,11 @@ public class TicketDao {
 			.query(Ticket.class)
 			.list();
 	}
+
+	public void deleteAll() {
+		jdbcClient.sql("""
+				DELETE FROM tickets
+				""")
+			.update();
+	}
 }

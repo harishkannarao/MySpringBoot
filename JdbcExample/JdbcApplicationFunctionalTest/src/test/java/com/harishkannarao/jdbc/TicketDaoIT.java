@@ -3,6 +3,7 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.dao.TicketDao;
 import com.harishkannarao.jdbc.domain.Ticket;
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,11 +25,7 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void create_and_getAll_tickets() {
-		Ticket input = new Ticket(
-			UUID.randomUUID(),
-			"AVAILABLE",
-			null,
-			null);
+		Ticket input = createTicket();
 		ticketDao.create(input);
 
 		List<Ticket> result = ticketDao.getAll();
@@ -45,5 +42,27 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 						.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 				}
 			);
+	}
+
+	@Test
+	public void deleteAll_tickets() {
+		Ticket input = createTicket();
+		ticketDao.create(input);
+
+		assertThat(ticketDao.getAll())
+			.isNotEmpty();
+
+		ticketDao.deleteAll();
+
+		assertThat(ticketDao.getAll())
+			.isEmpty();
+	}
+
+	private static Ticket createTicket() {
+		return new Ticket(
+			UUID.randomUUID(),
+			"AVAILABLE",
+			null,
+			null);
 	}
 }
