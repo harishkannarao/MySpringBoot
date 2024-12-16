@@ -8,9 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -114,6 +118,53 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 
 		assertThat(ticketId)
 			.isEmpty();
+	}
+
+	@Test
+	public void cleanUpExpiredReservation_releases_tickets_for_booking() {
+		List<Ticket> reservedTickets = IntStream.rangeClosed(1, 12)
+			.boxed()
+			.map(index -> createTicket())
+			.peek(ticketDao::create)
+			.peek(ticket -> ticketDao.reserveTicket(UUID.randomUUID()))
+			.toList();
+
+		List<UUID> reservedTicketIds = reservedTickets.stream()
+			.map(Ticket::id)
+			.toList();
+
+		List<Ticket> availableTickets = IntStream.rangeClosed(1, 5)
+			.boxed()
+			.map(index -> createTicket())
+			.peek(ticketDao::create)
+			.toList();
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(availableTickets.size());
+
+		ticketTestSupportDao.updateAllReservedTickets(Instant.now()
+				.minus(10, ChronoUnit.MINUTES)
+				.minusSeconds(10));
+
+		List<UUID> firstBatch = ticketDao.cleanUpExpiredReservations();
+		assertThat(firstBatch)
+			.hasSize(10);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(availableTickets.size() + 10);
+
+		List<UUID> secondBatch = ticketDao.cleanUpExpiredReservations();
+		assertThat(secondBatch)
+			.hasSize(2);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(availableTickets.size() + reservedTickets.size());
+
+		List<UUID> allReleasedTickets = Stream.of(firstBatch, secondBatch)
+			.flatMap(Collection::stream)
+			.toList();
+		assertThat(allReleasedTickets)
+			.containsExactlyInAnyOrderElementsOf(reservedTicketIds);
 	}
 
 	@Test

@@ -10,6 +10,9 @@ application:
     path: "/health-check"
 
 app:
+  clean-up-reservation:
+    batch-size: "${APP_CLEAN_UP_RESERVATION_BATCH_SIZE:10}"
+    expiry-duration: "${APP_CLEAN_UP_RESERVATION_EXPIRY:PT-10M}"
   rest-client:
     connect-timeout-ms: "${APP_REST_CLIENT_CONNECT_TIMEOUT:3000}"
     read-timeout-ms: "${APP_REST_CLIENT_READ_TIMEOUT:15000}"
