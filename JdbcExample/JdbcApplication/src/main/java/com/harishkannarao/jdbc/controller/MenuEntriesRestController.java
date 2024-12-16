@@ -12,16 +12,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/menuentries", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class MenuEntriesRestController extends AbstractBaseController{
-    private final MenuEntriesDao menuEntriesDao;
+public class MenuEntriesRestController {
+	private final MenuEntriesDao menuEntriesDao;
 
-    @Autowired
-    public MenuEntriesRestController(@Qualifier("myMenuEntriesDao") MenuEntriesDao menuEntriesDao) {
-        this.menuEntriesDao = menuEntriesDao;
-    }
+	@Autowired
+	public MenuEntriesRestController(@Qualifier("myMenuEntriesDao") MenuEntriesDao menuEntriesDao) {
+		this.menuEntriesDao = menuEntriesDao;
+	}
 
-    @GetMapping
-    public List<String> getAllMenuEntries() {
-        return menuEntriesDao.getMenuEntries();
-    }
+	@GetMapping
+	public List<String> getAllMenuEntries() {
+		return menuEntriesDao.getMenuEntries();
+	}
 }

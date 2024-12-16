@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RestController
 @RequestMapping(value = "/customers", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class CustomersRestController extends AbstractBaseController {
+public class CustomersRestController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomersRestController.class);
 
@@ -47,6 +48,7 @@ public class CustomersRestController extends AbstractBaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@Transactional
 	public ResponseEntity<Customer> createCustomer(
 		@RequestBody CreateCustomerRequestDto requestDto
 	) {
@@ -55,6 +57,7 @@ public class CustomersRestController extends AbstractBaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@Transactional
 	public ResponseEntity<Void> createCustomerWithTransaction(
 		@RequestBody CreateCustomerRequestDto requestDto
 	) {
