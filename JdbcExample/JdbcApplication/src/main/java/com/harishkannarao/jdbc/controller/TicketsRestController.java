@@ -41,7 +41,7 @@ public class TicketsRestController {
 	}
 
 	@RequestMapping(
-		value = "/create-tickets/{count}",
+		value = "/create/{count}",
 		method = RequestMethod.PUT)
 	public ResponseEntity<Set<UUID>> createTickets(
 		@PathVariable("count") int count
