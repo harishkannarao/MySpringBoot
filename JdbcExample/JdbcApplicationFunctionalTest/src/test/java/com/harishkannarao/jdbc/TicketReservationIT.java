@@ -66,6 +66,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 		List<CompletableFuture<ResponseEntity<TicketReservationResponseDto>>> reservationRequests =
 			IntStream.rangeClosed(1, 100)
 				.boxed()
+				.parallel()
 				.map(integer ->
 					CompletableFuture.supplyAsync(() ->
 						restClient

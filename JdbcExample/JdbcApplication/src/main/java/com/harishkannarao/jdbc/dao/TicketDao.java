@@ -1,6 +1,5 @@
 package com.harishkannarao.jdbc.dao;
 
-import com.harishkannarao.jdbc.domain.Customer;
 import com.harishkannarao.jdbc.domain.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.Temporal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -57,11 +55,18 @@ public class TicketDao {
 		Optional<UUID> selectedTicketId = jdbcClient.sql("""
 				SELECT id FROM tickets
 				WHERE status='AVAILABLE'
+				ORDER BY id ASC
 				LIMIT 1
-				FOR UPDATE
+				FOR UPDATE SKIP LOCKED
 				""")
 			.query(UUID.class)
 			.optional();
+		try {
+			// artificial random delay up to 1 second
+			Thread.sleep(new Random().nextInt(1000));
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		return selectedTicketId.flatMap((UUID ticketId) -> {
 				int rowsUpdated = jdbcClient.sql("""
 						UPDATE tickets
@@ -85,8 +90,9 @@ public class TicketDao {
 				SELECT id FROM tickets
 				WHERE status='RESERVED'
 				AND updated_time < :expiryTime
+				ORDER BY id ASC
 				LIMIT :limit
-				FOR UPDATE
+				FOR UPDATE SKIP LOCKED
 				""")
 			.param("limit", this.cleanUpBatchSize)
 			.param("expiryTime", Timestamp.from(expiryTime))

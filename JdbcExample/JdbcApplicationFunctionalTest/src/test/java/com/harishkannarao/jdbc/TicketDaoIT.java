@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -124,17 +125,23 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 	public void cleanUpExpiredReservation_releases_tickets_for_booking() {
 		List<Ticket> reservedTickets = IntStream.rangeClosed(1, 12)
 			.boxed()
+			.parallel()
 			.map(index -> createTicket())
 			.peek(ticketDao::create)
-			.peek(ticket -> ticketDao.reserveTicket(UUID.randomUUID()))
 			.toList();
 
 		List<UUID> reservedTicketIds = reservedTickets.stream()
-			.map(Ticket::id)
+			.parallel()
+			.map(ticket ->
+				CompletableFuture.supplyAsync(() ->
+					ticketDao.reserveTicket(UUID.randomUUID())))
+			.map(CompletableFuture::join)
+			.flatMap(Optional::stream)
 			.toList();
 
 		List<Ticket> availableTickets = IntStream.rangeClosed(1, 5)
 			.boxed()
+			.parallel()
 			.map(index -> createTicket())
 			.peek(ticketDao::create)
 			.toList();
@@ -143,8 +150,8 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 			.isEqualTo(availableTickets.size());
 
 		ticketTestSupportDao.updateAllReservedTickets(Instant.now()
-				.minus(10, ChronoUnit.MINUTES)
-				.minusSeconds(10));
+			.minus(10, ChronoUnit.MINUTES)
+			.minusSeconds(10));
 
 		List<UUID> firstBatch = ticketDao.cleanUpExpiredReservations();
 		assertThat(firstBatch)
