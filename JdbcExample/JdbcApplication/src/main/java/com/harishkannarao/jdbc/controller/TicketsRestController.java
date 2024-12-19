@@ -2,6 +2,7 @@ package com.harishkannarao.jdbc.controller;
 
 import com.harishkannarao.jdbc.dao.TicketDao;
 import com.harishkannarao.jdbc.domain.Ticket;
+import com.harishkannarao.jdbc.domain.TicketBookingResponseDto;
 import com.harishkannarao.jdbc.domain.TicketReservationResponseDto;
 import com.harishkannarao.jdbc.domain.TicketsAvailabilityResponseDto;
 import com.harishkannarao.jdbc.domain.TicketsCleanupResponseDto;
@@ -65,6 +66,20 @@ public class TicketsRestController {
 		return ResponseEntity.ok(
 			new TicketReservationResponseDto(
 				ticketDao.reserveTicket(customerId).orElse(null), customerId));
+	}
+
+	@RequestMapping(
+		value = "/book/{ticketId}/{customerId}",
+		method = RequestMethod.POST)
+	@Transactional
+	public ResponseEntity<TicketBookingResponseDto> bookTicketForCustomer(
+		@PathVariable("ticketId") UUID ticketId,
+		@PathVariable("customerId") UUID customerId
+	) {
+		return ResponseEntity.ok(
+			new TicketBookingResponseDto(
+				ticketId,
+				ticketDao.bookReservation(customerId, ticketId) ? customerId : null));
 	}
 
 	@RequestMapping(
