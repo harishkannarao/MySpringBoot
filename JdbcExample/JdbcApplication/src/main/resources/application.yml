@@ -1,4 +1,9 @@
 spring:
+  jdbc:
+    template:
+      query-timeout: 60 # 60 seconds
+  transaction:
+    default-timeout: 60 # 60 seconds
   flyway:
     baseline-on-migrate: true
   threads:
