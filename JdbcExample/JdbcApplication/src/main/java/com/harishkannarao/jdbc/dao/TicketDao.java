@@ -84,6 +84,43 @@ public class TicketDao {
 	}
 
 	@Transactional
+	public boolean bookReservation(UUID customerId, UUID ticketId) {
+		Optional<UUID> selectedTicketId = jdbcClient.sql("""
+				SELECT id FROM tickets
+				 WHERE id=:ticketId
+				 AND customer_id=:customerId
+				 AND status='RESERVED'
+				 FOR UPDATE
+				""")
+			.param("ticketId", ticketId)
+			.param("customerId", customerId)
+			.query(UUID.class)
+			.optional();
+		try {
+			// artificial random delay up to 1 second
+			Thread.sleep(new Random().nextInt(1000));
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		Optional<Boolean> updateResult = selectedTicketId.map((UUID id) -> {
+				int rowsUpdated = jdbcClient.sql("""
+						UPDATE tickets
+						 SET status='BOOKED',
+						 updated_time=timezone('utc', now())
+						 WHERE id=:ticketId
+						 AND customer_id=:customerId
+						 AND status='RESERVED'
+						""")
+					.param("customerId", customerId)
+					.param("ticketId", id)
+					.update();
+				return rowsUpdated == 1;
+			}
+		);
+		return updateResult.orElse(false);
+	}
+
+	@Transactional
 	public List<UUID> cleanUpExpiredReservations() {
 		Instant expiryTime = Instant.from(expiry.addTo(Instant.now()));
 		List<UUID> expiredReservationIds = jdbcClient.sql("""

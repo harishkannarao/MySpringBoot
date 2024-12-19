@@ -98,9 +98,10 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 			.isEqualTo(0);
 
 		assertThat(ticketTestSupportDao.getAll())
-			.anySatisfy(ticket1 -> {
-				assertThat(ticket1.id()).isEqualTo(ticket.id());
-				assertThat(ticket1.customerId()).isEqualTo(customerId);
+			.anySatisfy(tickedInDb -> {
+				assertThat(tickedInDb.id()).isEqualTo(ticket.id());
+				assertThat(tickedInDb.customerId()).isEqualTo(customerId);
+				assertThat(tickedInDb.status()).isEqualTo("RESERVED");
 			});
 	}
 
@@ -119,6 +120,63 @@ public class TicketDaoIT extends BaseIntegrationJdbc {
 
 		assertThat(ticketId)
 			.isEmpty();
+	}
+
+	@Test
+	public void bookTicket_afterReservation_forCustomer_successfully() {
+		Ticket ticket = TicketBuilder.from(createTicket())
+			.withStatus("AVAILABLE")
+			.build();
+		ticketDao.create(ticket);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(1);
+
+		UUID customerId = UUID.randomUUID();
+		Optional<UUID> ticketId = ticketDao.reserveTicket(customerId);
+
+		assertThat(ticketId)
+			.isNotEmpty()
+			.hasValue(ticket.id());
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(0);
+
+		assertThat(ticketDao.bookReservation(customerId, ticket.id()))
+			.isTrue();
+
+		assertThat(ticketTestSupportDao.getAll())
+			.anySatisfy(ticketInDb -> {
+				assertThat(ticketInDb.id()).isEqualTo(ticket.id());
+				assertThat(ticketInDb.customerId()).isEqualTo(customerId);
+				assertThat(ticketInDb.status()).isEqualTo("BOOKED");
+			});
+	}
+
+	@Test
+	public void bookTicket_beforeReservation_returns_false() {
+		Ticket ticket = TicketBuilder.from(createTicket())
+			.withStatus("AVAILABLE")
+			.build();
+		ticketDao.create(ticket);
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(1);
+
+		UUID customerId = UUID.randomUUID();
+
+		assertThat(ticketDao.bookReservation(customerId, ticket.id()))
+			.isFalse();
+
+		assertThat(ticketDao.getAvailableTickets())
+			.isEqualTo(1);
+
+		assertThat(ticketTestSupportDao.getAll())
+			.anySatisfy(ticketInDb -> {
+				assertThat(ticketInDb.id()).isEqualTo(ticket.id());
+				assertThat(ticketInDb.customerId()).isNull();
+				assertThat(ticketInDb.status()).isEqualTo("AVAILABLE");
+			});
 	}
 
 	@Test
