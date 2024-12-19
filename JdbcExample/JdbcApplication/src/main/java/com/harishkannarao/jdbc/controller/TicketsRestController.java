@@ -64,7 +64,7 @@ public class TicketsRestController {
 	) {
 		return ResponseEntity.ok(
 			new TicketReservationResponseDto(
-				ticketDao.reserveTicket(customerId).orElse(null)));
+				ticketDao.reserveTicket(customerId).orElse(null), customerId));
 	}
 
 	@RequestMapping(

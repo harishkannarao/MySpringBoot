@@ -84,6 +84,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 			.allSatisfy(resp -> {
 				assertThat(resp.getStatusCode().value()).isEqualTo(200);
 				assertThat(requireNonNull(resp.getBody()).ticketId()).isNotNull();
+				assertThat(requireNonNull(resp.getBody()).customerId()).isNotNull();
 			});
 
 		List<String> reservedTickedIds = reservationResponses.stream()
