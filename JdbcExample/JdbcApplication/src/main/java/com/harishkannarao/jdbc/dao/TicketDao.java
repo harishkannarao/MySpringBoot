@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -135,6 +136,9 @@ public class TicketDao {
 			.param("expiryTime", Timestamp.from(expiryTime))
 			.query(UUID.class)
 			.list();
+		if (expiredReservationIds.isEmpty()) {
+			return Collections.emptyList();
+		}
 		return jdbcClient.sql("""
 				UPDATE tickets
 				 SET status='AVAILABLE',
@@ -142,7 +146,6 @@ public class TicketDao {
 				 WHERE id IN (:ids) AND status='RESERVED'
 				 RETURNING id
 				""")
-			.param("ids", expiredReservationIds)
 			.param("ids", expiredReservationIds)
 			.query(UUID.class)
 			.list();

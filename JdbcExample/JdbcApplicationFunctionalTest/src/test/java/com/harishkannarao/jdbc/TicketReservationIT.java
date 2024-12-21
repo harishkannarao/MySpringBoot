@@ -3,13 +3,17 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.domain.TicketBookingResponseDto;
 import com.harishkannarao.jdbc.domain.TicketReservationResponseDto;
 import com.harishkannarao.jdbc.domain.TicketsAvailabilityResponseDto;
+import com.harishkannarao.jdbc.domain.TicketsCleanupResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +32,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 	private final String getTicketsAvailabilityEndpoint;
 	private final String reserveTicketEndpoint;
 	private final String bookTicketEndpoint;
+	private final String cleanUpReservationEndpoint;
 
 	@Autowired
 	public TicketReservationIT(
@@ -35,12 +40,14 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 		@Value("${createTicketEndpointUrl}") String createTicketsEndpoint,
 		@Value("${getTicketsAvailabilityEndpointUrl}") String getTicketsAvailabilityEndpoint,
 		@Value("${reserveTicketEndpointUrl}") String reserveTicketEndpoint,
-		@Value("${bookTicketEndpointUrl}") String bookTicketEndpoint) {
+		@Value("${bookTicketEndpointUrl}") String bookTicketEndpoint,
+		@Value("${cleanUpReservationEndpointUrl}") String cleanUpReservationEndpoint) {
 		this.ticketTestSupportDao = ticketTestSupportDao;
 		this.createTicketsEndpoint = createTicketsEndpoint;
 		this.getTicketsAvailabilityEndpoint = getTicketsAvailabilityEndpoint;
 		this.reserveTicketEndpoint = reserveTicketEndpoint;
 		this.bookTicketEndpoint = bookTicketEndpoint;
+		this.cleanUpReservationEndpoint = cleanUpReservationEndpoint;
 	}
 
 	@BeforeEach
@@ -196,9 +203,8 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 				.toList();
 
 		assertThat(reservationResponses)
-			.allSatisfy(resp -> {
-				assertThat(resp.getStatusCode().value()).isEqualTo(200);
-			});
+			.allSatisfy(resp ->
+				assertThat(resp.getStatusCode().value()).isEqualTo(200));
 
 
 		Map<Boolean, List<TicketReservationResponseDto>> reservationResponse = reservationResponses
@@ -236,5 +242,110 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 			.map(TicketReservationResponseDto::customerId)
 			.collect(Collectors.toUnmodifiableSet());
 		assertThat(uniqueReservedCustomerIds).hasSize(100);
+	}
+
+	@Test
+	public void cleanup_expired_reservations() {
+		ResponseEntity<String[]> createResp = restClient
+			.put()
+			.uri(createTicketsEndpoint, Map.of("count", 30L))
+			.retrieve()
+			.toEntity(String[].class);
+
+		assertThat(createResp.getStatusCode().value()).isEqualTo(200);
+		List<String> createdTicketIds = Arrays.stream(requireNonNull(createResp.getBody())).toList();
+		assertThat(createdTicketIds).hasSize(30);
+
+		ResponseEntity<TicketsAvailabilityResponseDto> availableTicketsBeforeReservation = restClient
+			.get()
+			.uri(getTicketsAvailabilityEndpoint)
+			.retrieve()
+			.toEntity(TicketsAvailabilityResponseDto.class);
+
+		assertThat(availableTicketsBeforeReservation.getStatusCode().value()).isEqualTo(200);
+		assertThat(requireNonNull(availableTicketsBeforeReservation.getBody()).available())
+			.isEqualTo(30);
+
+		List<ResponseEntity<TicketReservationResponseDto>> reservationResponses =
+			IntStream.rangeClosed(1, 30)
+				.boxed()
+				.parallel()
+				.map(integer ->
+					CompletableFuture.supplyAsync(() ->
+						restClient
+							.post()
+							.uri(reserveTicketEndpoint, UUID.randomUUID().toString())
+							.retrieve()
+							.toEntity(TicketReservationResponseDto.class)))
+				.toList()
+				.stream()
+				.map(CompletableFuture::join)
+				.toList();
+
+		assertThat(reservationResponses)
+			.allSatisfy(resp ->
+				assertThat(resp.getStatusCode().value()).isEqualTo(200));
+
+		ResponseEntity<TicketsAvailabilityResponseDto> availableTicketsAfterReservation = restClient
+			.get()
+			.uri(getTicketsAvailabilityEndpoint)
+			.retrieve()
+			.toEntity(TicketsAvailabilityResponseDto.class);
+
+		assertThat(availableTicketsAfterReservation.getStatusCode().value()).isEqualTo(200);
+		assertThat(requireNonNull(availableTicketsAfterReservation.getBody()).available())
+			.isEqualTo(0);
+
+		ticketTestSupportDao.updateAllReservedTickets(
+			Instant.now()
+				.minus(10, ChronoUnit.MINUTES)
+				.minusSeconds(10));
+
+		List<ResponseEntity<TicketsCleanupResponseDto>> cleanUpResponse = IntStream.rangeClosed(1, 5)
+			.boxed()
+			.parallel()
+			.map(integer ->
+				CompletableFuture.supplyAsync(() ->
+					restClient
+						.delete()
+						.uri(cleanUpReservationEndpoint)
+						.retrieve()
+						.toEntity(TicketsCleanupResponseDto.class)))
+			.toList()
+			.stream()
+			.map(CompletableFuture::join)
+			.toList();
+
+		assertThat(cleanUpResponse)
+			.allSatisfy(it ->
+				assertThat(it.getStatusCode().value()).isEqualTo(200));
+
+		Map<Boolean, List<ResponseEntity<TicketsCleanupResponseDto>>> cleanUpRespMapping = cleanUpResponse.stream()
+			.collect(Collectors.partitioningBy(it ->
+				!requireNonNull(it.getBody()).ticketIds().isEmpty()));
+
+		List<ResponseEntity<TicketsCleanupResponseDto>> nonEmptyCleanUp = cleanUpRespMapping.get(true);
+		List<ResponseEntity<TicketsCleanupResponseDto>> emptyCleanUp = cleanUpRespMapping.get(false);
+
+		assertThat(emptyCleanUp)
+			.hasSize(2)
+			.allSatisfy(it ->
+				assertThat(requireNonNull(it.getBody()).ticketIds()).isEmpty());
+
+		assertThat(nonEmptyCleanUp)
+			.hasSize(3)
+			.allSatisfy(it ->
+				assertThat(requireNonNull(it.getBody()).ticketIds()).hasSize(10));
+
+		Set<String> allCleanUpTickedIds = nonEmptyCleanUp.stream()
+			.map(it -> requireNonNull(it.getBody()))
+			.map(TicketsCleanupResponseDto::ticketIds)
+			.flatMap(Collection::stream)
+			.map(UUID::toString)
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertThat(allCleanUpTickedIds)
+			.hasSize(30)
+			.containsExactlyInAnyOrderElementsOf(createdTicketIds);
 	}
 }
