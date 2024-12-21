@@ -3,7 +3,6 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.domain.TicketBookingResponseDto;
 import com.harishkannarao.jdbc.domain.TicketReservationResponseDto;
 import com.harishkannarao.jdbc.domain.TicketsAvailabilityResponseDto;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +69,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 		assertThat(availableTicketsBeforeReservation.getStatusCode().value()).isEqualTo(200);
 		assertThat(requireNonNull(availableTicketsBeforeReservation.getBody()).available()).isEqualTo(100);
 
-		List<CompletableFuture<ResponseEntity<TicketReservationResponseDto>>> reservationRequests =
+		List<ResponseEntity<TicketReservationResponseDto>> reservationResponses =
 			IntStream.rangeClosed(1, 100)
 				.boxed()
 				.parallel()
@@ -81,11 +80,10 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 							.uri(reserveTicketEndpoint, UUID.randomUUID().toString())
 							.retrieve()
 							.toEntity(TicketReservationResponseDto.class)))
+				.toList()
+				.stream()
+				.map(CompletableFuture::join)
 				.toList();
-
-		List<ResponseEntity<TicketReservationResponseDto>> reservationResponses = reservationRequests.stream()
-			.map(CompletableFuture::join)
-			.toList();
 
 		assertThat(reservationResponses)
 			.allSatisfy(resp -> {
@@ -112,7 +110,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 		assertThat(availableTicketsAfterReservation.getStatusCode().value()).isEqualTo(200);
 		assertThat(requireNonNull(availableTicketsAfterReservation.getBody()).available()).isEqualTo(0);
 
-		var bookingRequests = reservationResponses.stream()
+		List<ResponseEntity<TicketBookingResponseDto>> bookingResponses = reservationResponses.stream()
 			.parallel()
 			.map(entity -> requireNonNull(entity.getBody()))
 			.map(reservation -> CompletableFuture.supplyAsync(() ->
@@ -122,9 +120,8 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 					.retrieve()
 					.toEntity(TicketBookingResponseDto.class))
 			)
-			.toList();
-
-		List<ResponseEntity<TicketBookingResponseDto>> bookingResponses = bookingRequests.stream()
+			.toList()
+			.stream()
 			.parallel()
 			.map(CompletableFuture::join)
 			.toList();
@@ -150,7 +147,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 
 		assertThat(uniqueCustomerIds).hasSize(100);
 
-		for(var reservationResponse : reservationResponses) {
+		for (var reservationResponse : reservationResponses) {
 			var reservation = requireNonNull(reservationResponse.getBody());
 			assertThat(successfulBookings)
 				.anySatisfy(booking -> {
@@ -182,7 +179,7 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 		assertThat(requireNonNull(availableTicketsBeforeReservation.getBody()).available())
 			.isEqualTo(100);
 
-		var reservationRequests =
+		var reservationResponses =
 			IntStream.rangeClosed(1, 150)
 				.boxed()
 				.parallel()
@@ -193,11 +190,10 @@ public class TicketReservationIT extends BaseIntegrationJdbc {
 							.uri(reserveTicketEndpoint, UUID.randomUUID().toString())
 							.retrieve()
 							.toEntity(TicketReservationResponseDto.class)))
+				.toList()
+				.stream()
+				.map(CompletableFuture::join)
 				.toList();
-
-		var reservationResponses = reservationRequests.stream()
-			.map(CompletableFuture::join)
-			.toList();
 
 		assertThat(reservationResponses)
 			.allSatisfy(resp -> {
