@@ -21,4 +21,16 @@ public record OrderBuilder(
 			)
 		);
 	}
+
+	public OrderBuilder version(Integer value) {
+		return new OrderBuilder(
+			new Order(
+				build().id(),
+				build.customerId(),
+				build.createdTime(),
+				build.updatedTime(),
+				value
+			)
+		);
+	}
 }
