@@ -1,6 +1,7 @@
 package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.entity.Order;
+import com.harishkannarao.jdbc.entity.OrderBuilder;
 import com.harishkannarao.jdbc.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,20 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			.isAfterOrEqualTo(Instant.now().minusSeconds(2))
 			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 		assertThat(created.version()).isEqualTo(0);
+
+		Order toUpdate = OrderBuilder.from(created)
+			.customerId(UUID.randomUUID())
+			.build();
+
+		Order updated = orderRepository.save(toUpdate);
+
+		assertThat(updated.id()).isEqualTo(created.id());
+		assertThat(updated.customerId()).isEqualTo(toUpdate.customerId());
+		assertThat(updated.createdTime())
+			.isEqualTo(created.createdTime());
+		assertThat(updated.updatedTime())
+			.isAfterOrEqualTo(created.updatedTime())
+			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
+		assertThat(updated.version()).isEqualTo(1);
 	}
 }
