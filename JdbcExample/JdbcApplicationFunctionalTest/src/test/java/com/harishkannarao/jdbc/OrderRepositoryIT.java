@@ -3,7 +3,9 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderBuilder;
 import com.harishkannarao.jdbc.repository.OrderRepository;
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -22,6 +24,12 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 	@Autowired
 	public OrderRepositoryIT(OrderRepository orderRepository) {
 		this.orderRepository = orderRepository;
+	}
+
+	@BeforeEach
+	@AfterEach
+	public void cleanUp() {
+		orderRepository.deleteAll();
 	}
 
 	@Test
@@ -114,15 +122,31 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		List<Order> result = orderRepository.findByCustomerId(customerId);
 
 		assertThat(result)
-			.anySatisfy(order -> assertThat(order)
-				.usingRecursiveComparison()
-				.ignoringCollectionOrder()
-				.isEqualTo(order1))
-			.anySatisfy(order -> assertThat(order)
-				.usingRecursiveComparison()
-				.ignoringCollectionOrder()
-				.isEqualTo(order2))
-			.hasSize(2);
+			.usingRecursiveFieldByFieldElementComparator(
+				RecursiveComparisonConfiguration.builder().withIgnoreCollectionOrder(true).build())
+			.containsExactlyInAnyOrderElementsOf(List.of(order1, order2));
+	}
+
+	@Test
+	public void test_findAll_by_customer_ids() {
+		UUID customerId1 = UUID.randomUUID();
+		UUID customerId2 = UUID.randomUUID();
+
+		Order order1 = orderRepository.save(
+			new Order(null, customerId1, null, null, null));
+		Order order2 = orderRepository.save(
+			new Order(null, customerId1, null, null, null));
+		Order order3 = orderRepository.save(
+			new Order(null, customerId2, null, null, null));
+		orderRepository.save(
+			new Order(null, UUID.randomUUID(), null, null, null));
+
+		List<Order> result = orderRepository.findAllByCustomerIds(List.of(customerId1, customerId2));
+
+		assertThat(result)
+			.usingRecursiveFieldByFieldElementComparator(
+				RecursiveComparisonConfiguration.builder().withIgnoreCollectionOrder(true).build())
+			.containsExactlyInAnyOrderElementsOf(List.of(order1, order2, order3));
 	}
 
 	@Test
