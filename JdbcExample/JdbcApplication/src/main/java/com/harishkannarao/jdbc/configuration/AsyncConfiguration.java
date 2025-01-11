@@ -19,9 +19,8 @@ public class AsyncConfiguration {
 		@Value("${async.task.executor.pool.size.max}") int maxPoolSize,
 		@Value("${async.task.executor.queue.capacity}") int queueCapacity
 	) {
-		log.debug("corePoolSize: " + corePoolSize
-			+ " maxPoolSize: " + maxPoolSize
-			+ " queueCapacity: " + queueCapacity);
+		log.info("corePoolSize: {} maxPoolSize: {} queueCapacity: {}",
+			corePoolSize, maxPoolSize, queueCapacity);
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(corePoolSize);
 		executor.setMaxPoolSize(maxPoolSize);

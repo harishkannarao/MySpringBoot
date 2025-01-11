@@ -11,6 +11,7 @@
     </appender>
 
     <logger level="TRACE" name="org.springframework.jdbc.core" />
+    <logger level="DEBUG" name="org.springframework.jdbc" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
