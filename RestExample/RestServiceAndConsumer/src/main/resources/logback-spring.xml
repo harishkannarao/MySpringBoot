@@ -19,7 +19,7 @@
             <!-- rollover daily -->
             <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFileNamingAndTriggeringPolicy">
                 <!-- or whenever the file size reaches the below -->
                 <maxFileSize>${myappFileSize}</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
