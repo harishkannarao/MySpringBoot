@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -97,5 +98,57 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			() -> orderRepository.save(futureUpdate),
 			OptimisticLockingFailureException.class);
 		assertThat(futureResult).isNotNull();
+	}
+
+	@Test
+	public void test_findAll_by_customer_id() {
+		UUID customerId = UUID.randomUUID();
+
+		Order order1 = orderRepository.save(
+			new Order(null, customerId, null, null, null));
+		Order order2 = orderRepository.save(
+			new Order(null, customerId, null, null, null));
+		orderRepository.save(
+			new Order(null, UUID.randomUUID(), null, null, null));
+
+		List<Order> result = orderRepository.findByCustomerId(customerId);
+
+		assertThat(result)
+			.anySatisfy(order -> assertThat(order)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.isEqualTo(order1))
+			.anySatisfy(order -> assertThat(order)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.isEqualTo(order2))
+			.hasSize(2);
+	}
+
+	@Test
+	public void test_delete_by_customer_ids() {
+		UUID customerId1 = UUID.randomUUID();
+		UUID customerId2 = UUID.randomUUID();
+		UUID customerId3 = UUID.randomUUID();
+
+		Order order1 = orderRepository.save(
+			new Order(null, customerId1, null, null, null));
+		Order order2 = orderRepository.save(
+			new Order(null, customerId1, null, null, null));
+		Order order3 = orderRepository.save(
+			new Order(null, customerId2, null, null, null));
+		Order order4 = orderRepository.save(
+			new Order(null, customerId3, null, null, null));
+
+		orderRepository.deleteAllByCustomerIdIn(
+			List.of(customerId1, customerId2));
+
+		List<Order> result = orderRepository.findAllById(
+			List.of(order1.id(), order2.id(), order3.id()));
+
+		assertThat(result).isEmpty();
+
+		assertThat(orderRepository.findById(order4.id()))
+			.isPresent();
 	}
 }
