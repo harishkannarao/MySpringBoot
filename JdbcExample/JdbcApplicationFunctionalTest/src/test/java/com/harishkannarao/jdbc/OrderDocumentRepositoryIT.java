@@ -10,9 +10,12 @@ import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguratio
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,7 +41,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_order_with_documents() {
+	void test_order_with_documents() throws SQLException {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
 
@@ -62,5 +65,38 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 					.withIgnoreCollectionOrder(true)
 					.build())
 			.containsExactlyInAnyOrder(expected);
+
+		String json = """
+			{"key": "value"}
+			""".trim();
+		PGobject jsondata = new PGobject();
+		jsondata.setType("jsonb");
+		jsondata.setValue(json);
+		OrderDocument toUpdate = OrderDocumentBuilder.from(savedDocument)
+			.data(jsondata)
+			.build();
+
+		OrderDocument expectedAfterUpdate = OrderDocumentBuilder.from(toUpdate)
+			.version(1)
+			.build();
+
+		orderDocumentRepository.save(toUpdate);
+
+		Optional<OrderDocument> updated = orderDocumentRepository.findById(savedDocument.id());
+
+		assertThat(updated)
+			.isPresent()
+			.hasValueSatisfying(value ->
+				assertThat(value)
+					.usingRecursiveComparison()
+					.ignoringCollectionOrder()
+					.isEqualTo(expectedAfterUpdate));
+	}
+
+	@Test
+	void test_find_by_order_id_returns_empty() {
+		List<OrderDocument> documentsForOrder = orderDocumentRepository.findByOrderIdIn(Set.of(0L));
+
+		assertThat(documentsForOrder).isEmpty();
 	}
 }
