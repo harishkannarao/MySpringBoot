@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS orders(
-    id SERIAL,
-    customer_id UUID,
+    id SERIAL NOT NULL,
+    customer_id UUID NOT NULL,
     created_time timestamp NOT NULL,
     updated_time timestamp NOT NULL,
-    version integer
+    version integer,
+    PRIMARY KEY (id)
 );
