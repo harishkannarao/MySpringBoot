@@ -86,6 +86,40 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
+	void test_query_by_json_key() throws SQLException {
+		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created = orderRepository.save(input);
+
+		String json1 = """
+			{"name": "test1", "department": "finance"}
+			""".trim();
+		PGobject jsondata1 = new PGobject();
+		jsondata1.setType("jsonb");
+		jsondata1.setValue(json1);
+		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), jsondata1);
+		orderDocumentRepository.insert(document1);
+
+		String json2 = """
+			{"name": "test2", "department": "hr"}
+			""".trim();
+		PGobject jsondata2 = new PGobject();
+		jsondata2.setType("jsonb");
+		jsondata2.setValue(json2);
+		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), jsondata2);
+		orderDocumentRepository.insert(document2);
+
+		List<OrderDocument> byName = orderDocumentRepository.findByJsonAttribute("name", "test1");
+		assertThat(byName)
+			.hasSize(1)
+			.anySatisfy(value -> assertThat(value.id()).isEqualTo(document1.id()));
+
+		List<OrderDocument> byDepartment = orderDocumentRepository.findByJsonAttribute("department", "hr");
+		assertThat(byDepartment)
+			.hasSize(1)
+			.anySatisfy(value -> assertThat(value.id()).isEqualTo(document2.id()));
+	}
+
+	@Test
 	void test_find_by_order_id_returns_empty() {
 		List<OrderDocument> documentsForOrder = orderDocumentRepository.findByOrderIdIn(Set.of(0L));
 
