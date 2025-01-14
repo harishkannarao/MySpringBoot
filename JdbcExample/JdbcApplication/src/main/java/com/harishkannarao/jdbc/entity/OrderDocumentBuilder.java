@@ -15,8 +15,7 @@ public record OrderDocumentBuilder(
 			new OrderDocument(
 				build.id(),
 				value,
-				build().data(),
-				build().version()
+				build().data()
 			)
 		);
 	}
@@ -26,18 +25,6 @@ public record OrderDocumentBuilder(
 			new OrderDocument(
 				build.id(),
 				build().orderId(),
-				value,
-				build().version()
-			)
-		);
-	}
-
-	public OrderDocumentBuilder version(Integer value) {
-		return new OrderDocumentBuilder(
-			new OrderDocument(
-				build.id(),
-				build().orderId(),
-				build.data(),
 				value
 			)
 		);

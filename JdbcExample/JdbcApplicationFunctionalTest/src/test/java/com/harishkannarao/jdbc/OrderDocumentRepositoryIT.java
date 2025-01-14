@@ -45,17 +45,13 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
 
-		OrderDocument document = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
-		OrderDocument savedDocument = orderDocumentRepository.save(document);
+		OrderDocument document = new OrderDocument(UUID.randomUUID(), created.id(), null);
+		OrderDocument createdDocument = orderDocumentRepository.insert(document);
 
-		OrderDocument expected = OrderDocumentBuilder.from(document)
-			.version(0)
-			.build();
-
-		assertThat(savedDocument)
+		assertThat(createdDocument)
 			.usingRecursiveComparison()
 			.ignoringCollectionOrder()
-			.isEqualTo(expected);
+			.isEqualTo(document);
 
 		List<OrderDocument> documentsForOrder = orderDocumentRepository.findByOrderIdIn(Set.of(created.id()));
 
@@ -64,7 +60,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 				RecursiveComparisonConfiguration.builder()
 					.withIgnoreCollectionOrder(true)
 					.build())
-			.containsExactlyInAnyOrder(expected);
+			.containsExactlyInAnyOrder(document);
 
 		String json = """
 			{"key": "value"}
@@ -72,17 +68,13 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		PGobject jsondata = new PGobject();
 		jsondata.setType("jsonb");
 		jsondata.setValue(json);
-		OrderDocument toUpdate = OrderDocumentBuilder.from(savedDocument)
+		OrderDocument toUpdate = OrderDocumentBuilder.from(createdDocument)
 			.data(jsondata)
-			.build();
-
-		OrderDocument expectedAfterUpdate = OrderDocumentBuilder.from(toUpdate)
-			.version(1)
 			.build();
 
 		orderDocumentRepository.save(toUpdate);
 
-		Optional<OrderDocument> updated = orderDocumentRepository.findById(savedDocument.id());
+		Optional<OrderDocument> updated = orderDocumentRepository.findById(createdDocument.id());
 
 		assertThat(updated)
 			.isPresent()
@@ -90,7 +82,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 				assertThat(value)
 					.usingRecursiveComparison()
 					.ignoringCollectionOrder()
-					.isEqualTo(expectedAfterUpdate));
+					.isEqualTo(toUpdate));
 	}
 
 	@Test

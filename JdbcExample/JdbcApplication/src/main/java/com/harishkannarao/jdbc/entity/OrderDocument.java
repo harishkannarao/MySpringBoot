@@ -2,7 +2,6 @@ package com.harishkannarao.jdbc.entity;
 
 import org.postgresql.util.PGobject;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
@@ -11,7 +10,6 @@ import java.util.UUID;
 public record OrderDocument(
 	@Id UUID id,
 	Long orderId,
-	PGobject data,
-	@Version Integer version
+	PGobject data
 	) {
 }
