@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	private final OrderRepository orderRepository;
@@ -124,5 +127,24 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		List<OrderDocument> documentsForOrder = orderDocumentRepository.findByOrderIdIn(Set.of(0L));
 
 		assertThat(documentsForOrder).isEmpty();
+	}
+
+	@Test
+	void test_insert_returns_duplicate_key_exception() {
+		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created = orderRepository.save(input);
+
+		UUID documentId = UUID.randomUUID();
+		OrderDocument document1 = new OrderDocument(documentId, created.id(), null);
+		OrderDocument document2 = new OrderDocument(documentId, created.id(), null);
+		orderDocumentRepository.insert(document1);
+
+		DbActionExecutionException result = catchThrowableOfType(
+			() -> orderDocumentRepository.insert(document2),
+			DbActionExecutionException.class);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getCause())
+			.isInstanceOf(DuplicateKeyException.class);
 	}
 }
