@@ -147,4 +147,22 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		assertThat(result.getCause())
 			.isInstanceOf(DuplicateKeyException.class);
 	}
+
+	@Test
+	void test_insert_multiple_entities() {
+		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created = orderRepository.save(input);
+
+		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), null);
+		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), null);
+
+		orderDocumentRepository.insertAll(List.of(document1, document2));
+
+		List<OrderDocument> result = orderDocumentRepository.findAllById(List.of(document1.id(), document2.id()));
+
+		assertThat(result)
+			.usingRecursiveFieldByFieldElementComparator(
+				RecursiveComparisonConfiguration.builder().withIgnoreCollectionOrder(true).build())
+			.containsExactlyInAnyOrder(document1, document2);
+	}
 }
