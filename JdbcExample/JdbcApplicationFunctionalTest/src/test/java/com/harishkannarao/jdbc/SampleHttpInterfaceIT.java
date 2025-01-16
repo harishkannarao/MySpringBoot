@@ -23,8 +23,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
-	@Value("${thirdparty.customer.url}")
-	private String thirdPartyCustomerRestUrl;
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
@@ -45,8 +43,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 				)
 		);
 
-		ResponseEntity<JsonNode> response = sampleHttpInterface.getCustomerDetails(
-			new DefaultUriBuilderFactory(thirdPartyCustomerRestUrl), customerId);
+		ResponseEntity<JsonNode> response = sampleHttpInterface.getCustomerDetails(customerId);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -69,8 +66,8 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 				)
 		);
 
-		ResponseEntity<JsonNode> response = sampleHttpInterface.getOrderDetails(
-			new DefaultUriBuilderFactory(thirdPartyCustomerRestUrl), customerId, orderId);
+		ResponseEntity<JsonNode> response = sampleHttpInterface
+			.getOrderDetails(customerId, orderId);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -93,8 +90,8 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 			{"orderId" : "some-order-id"}
 			""");
 
-		ResponseEntity<Void> response = sampleHttpInterface.createOrder(
-			new DefaultUriBuilderFactory(thirdPartyCustomerRestUrl), requestId, customerId, requestBody);
+		ResponseEntity<Void> response = sampleHttpInterface
+			.createOrder(requestId, customerId, requestBody);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 

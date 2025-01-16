@@ -25,3 +25,5 @@ thirdparty:
     url: "http://www.example.com"
   proxy:
     url: "http://www.example.com"
+  customer:
+    url: "http://www.example.com"

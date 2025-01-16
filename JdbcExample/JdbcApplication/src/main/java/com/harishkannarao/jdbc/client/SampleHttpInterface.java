@@ -19,18 +19,15 @@ public interface SampleHttpInterface {
 
 	@GetExchange
 	ResponseEntity<JsonNode> getCustomerDetails(
-		UriBuilderFactory uriBuilderFactory,
 		@PathVariable("customerId") String customerId);
 
 	@GetExchange(url = "/orders/{orderId}")
 	ResponseEntity<JsonNode> getOrderDetails(
-		UriBuilderFactory uriBuilderFactory,
 		@PathVariable("customerId") String customerId,
 		@PathVariable("orderId") String OrderId);
 
 	@PostExchange(url = "/orders")
 	ResponseEntity<Void> createOrder(
-		UriBuilderFactory uriBuilderFactory,
 		@RequestHeader("request-id") String requestId,
 		@PathVariable("customerId") String customerId,
 		@RequestBody JsonNode body);
