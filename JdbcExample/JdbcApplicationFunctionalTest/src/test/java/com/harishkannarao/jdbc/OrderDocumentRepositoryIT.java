@@ -156,7 +156,12 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), null);
 		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), null);
 
-		orderDocumentRepository.insertAll(List.of(document1, document2));
+		List<OrderDocument> insertResult = orderDocumentRepository.insertAll(List.of(document1, document2));
+
+		assertThat(insertResult)
+			.usingRecursiveFieldByFieldElementComparator(
+				RecursiveComparisonConfiguration.builder().withIgnoreCollectionOrder(true).build())
+			.containsExactlyInAnyOrder(document1, document2);
 
 		List<OrderDocument> result = orderDocumentRepository.findAllById(List.of(document1.id(), document2.id()));
 
