@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
-import org.springframework.web.util.UriBuilderFactory;
 
 @HttpExchange(
 	url = "/customer/{customerId}",
 	contentType = MediaType.APPLICATION_JSON_VALUE,
 	accept = MediaType.APPLICATION_JSON_VALUE)
-public interface SampleHttpInterface {
+public interface SampleHttpInterface extends WithRetries {
 
 	@GetExchange
 	ResponseEntity<JsonNode> getCustomerDetails(

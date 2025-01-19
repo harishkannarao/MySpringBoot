@@ -1,19 +1,15 @@
 package com.harishkannarao.jdbc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.harishkannarao.jdbc.client.SampleHttpInterface;
-import com.harishkannarao.jdbc.domain.ThirdPartyResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +17,7 @@ import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 	@Autowired
@@ -48,6 +45,50 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
 		assertThat(body.get("name").asText()).isEqualTo("test-customer");
+	}
+
+	@Test
+	public void getCustomerDetails_throwsException_withoutRetry_onInternalServerError() {
+		String customerId = UUID.randomUUID().toString();
+		wireMock.register(
+			get(urlPathEqualTo("/customer/" + customerId))
+				.willReturn(
+					aResponse()
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withStatus(500)
+				)
+		);
+
+		HttpServerErrorException.InternalServerError result = catchThrowableOfType(
+			() -> sampleHttpInterface.getCustomerDetails(customerId),
+			HttpServerErrorException.InternalServerError.class);
+		assertThat(result).isNotNull();
+
+		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
+		assertThat(loggedRequests)
+			.hasSize(1);
+	}
+
+	@Test
+	public void getCustomerDetails_throwsException_afterRetry_onHttpServerError() {
+		String customerId = UUID.randomUUID().toString();
+		wireMock.register(
+			get(urlPathEqualTo("/customer/" + customerId))
+				.willReturn(
+					aResponse()
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withStatus(503)
+				)
+		);
+
+		HttpServerErrorException.ServiceUnavailable result = catchThrowableOfType(
+			() -> sampleHttpInterface.getCustomerDetails(customerId),
+			HttpServerErrorException.ServiceUnavailable.class);
+		assertThat(result).isNotNull();
+
+		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
+		assertThat(loggedRequests)
+			.hasSize(4);
 	}
 
 	@Test
