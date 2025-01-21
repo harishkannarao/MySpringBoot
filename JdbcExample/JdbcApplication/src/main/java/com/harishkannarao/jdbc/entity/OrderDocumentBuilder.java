@@ -1,7 +1,5 @@
 package com.harishkannarao.jdbc.entity;
 
-import com.harishkannarao.jdbc.entity.type.JsonContent;
-
 public record OrderDocumentBuilder(
 	OrderDocument build
 ) {
@@ -15,7 +13,8 @@ public record OrderDocumentBuilder(
 			new OrderDocument(
 				build.id(),
 				value,
-				build().data()
+				build.data(),
+				build.inventory()
 			)
 		);
 	}
@@ -24,7 +23,19 @@ public record OrderDocumentBuilder(
 		return new OrderDocumentBuilder(
 			new OrderDocument(
 				build.id(),
-				build().orderId(),
+				build.orderId(),
+				value,
+				build.inventory()
+			)
+		);
+	}
+
+	public OrderDocumentBuilder inventory(InventoryDetails value) {
+		return new OrderDocumentBuilder(
+			new OrderDocument(
+				build.id(),
+				build.orderId(),
+				build.data(),
 				value
 			)
 		);

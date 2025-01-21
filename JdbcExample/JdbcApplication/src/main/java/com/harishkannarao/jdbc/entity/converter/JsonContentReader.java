@@ -1,5 +1,6 @@
-package com.harishkannarao.jdbc.entity.type;
+package com.harishkannarao.jdbc.entity.converter;
 
+import com.harishkannarao.jdbc.entity.JsonContent;
 import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGobject;
 import org.springframework.core.convert.converter.Converter;

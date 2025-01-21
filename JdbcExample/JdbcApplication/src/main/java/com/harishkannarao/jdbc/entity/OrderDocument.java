@@ -1,7 +1,7 @@
 package com.harishkannarao.jdbc.entity;
 
-import com.harishkannarao.jdbc.entity.type.JsonContent;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
@@ -10,6 +10,6 @@ import java.util.UUID;
 public record OrderDocument(
 	@Id UUID id,
 	Long orderId,
-	JsonContent data
-	) {
+	JsonContent data,
+	InventoryDetails inventory) {
 }

@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS order_documents(
     id UUID NOT NULL,
     order_id int NOT NULL,
     data jsonb,
+    inventory jsonb,
     PRIMARY KEY (id)
 );
 
