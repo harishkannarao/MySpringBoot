@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.entity;
 
-import org.postgresql.util.PGobject;
+import com.harishkannarao.jdbc.entity.type.JsonContent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -10,6 +10,6 @@ import java.util.UUID;
 public record OrderDocument(
 	@Id UUID id,
 	Long orderId,
-	PGobject data
+	JsonContent data
 	) {
 }

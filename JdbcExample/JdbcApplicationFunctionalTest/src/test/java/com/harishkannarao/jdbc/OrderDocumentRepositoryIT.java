@@ -3,14 +3,13 @@ package com.harishkannarao.jdbc;
 import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderDocument;
 import com.harishkannarao.jdbc.entity.OrderDocumentBuilder;
+import com.harishkannarao.jdbc.entity.type.JsonContent;
 import com.harishkannarao.jdbc.repository.OrderDocumentRepository;
 import com.harishkannarao.jdbc.repository.OrderRepository;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
@@ -68,11 +67,8 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		String json = """
 			{"key": "value"}
 			""".trim();
-		PGobject jsondata = new PGobject();
-		jsondata.setType("jsonb");
-		jsondata.setValue(json);
 		OrderDocument toUpdate = OrderDocumentBuilder.from(createdDocument)
-			.data(jsondata)
+			.data(new JsonContent(json))
 			.build();
 
 		orderDocumentRepository.save(toUpdate);
@@ -96,19 +92,13 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		String json1 = """
 			{"name": "test1", "department": "finance"}
 			""".trim();
-		PGobject jsondata1 = new PGobject();
-		jsondata1.setType("jsonb");
-		jsondata1.setValue(json1);
-		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), jsondata1);
+		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), new JsonContent(json1));
 		orderDocumentRepository.insert(document1);
 
 		String json2 = """
 			{"name": "test2", "department": "hr"}
 			""".trim();
-		PGobject jsondata2 = new PGobject();
-		jsondata2.setType("jsonb");
-		jsondata2.setValue(json2);
-		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), jsondata2);
+		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), new JsonContent(json2));
 		orderDocumentRepository.insert(document2);
 
 		List<OrderDocument> byName = orderDocumentRepository.findByJsonAttribute("name", "test1");

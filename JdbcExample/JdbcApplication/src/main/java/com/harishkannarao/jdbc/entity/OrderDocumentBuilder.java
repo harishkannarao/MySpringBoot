@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.entity;
 
-import org.postgresql.util.PGobject;
+import com.harishkannarao.jdbc.entity.type.JsonContent;
 
 public record OrderDocumentBuilder(
 	OrderDocument build
@@ -20,7 +20,7 @@ public record OrderDocumentBuilder(
 		);
 	}
 
-	public OrderDocumentBuilder data(PGobject value) {
+	public OrderDocumentBuilder data(JsonContent value) {
 		return new OrderDocumentBuilder(
 			new OrderDocument(
 				build.id(),
