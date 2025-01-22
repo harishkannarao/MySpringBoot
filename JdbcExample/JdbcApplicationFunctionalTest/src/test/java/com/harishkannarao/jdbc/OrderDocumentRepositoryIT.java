@@ -159,6 +159,48 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
+	void test_upsert_updates_or_inserts() {
+		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created = orderRepository.save(input);
+
+		UUID documentId = UUID.randomUUID();
+		OrderDocument document1 = new OrderDocument(documentId, created.id(), null, null);
+		OrderDocument document2 = new OrderDocument(
+			documentId,
+			created.id(),
+			null,
+			new InventoryDetails("abc", 2));
+		OrderDocument inserted = orderDocumentRepository.upsert(document1);
+		assertThat(inserted)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.isEqualTo(document1);
+
+		List<OrderDocument> listByIdAfterInsert = orderDocumentRepository.findAllById(List.of(documentId));
+		assertThat(listByIdAfterInsert)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.isEqualTo(document1));
+
+		OrderDocument finalUpdate = orderDocumentRepository.upsert(document2);
+
+		assertThat(finalUpdate)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.isEqualTo(document2);
+
+		List<OrderDocument> listByIdAfterUpdate = orderDocumentRepository.findAllById(List.of(documentId));
+		assertThat(listByIdAfterUpdate)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.isEqualTo(document2));
+	}
+
+	@Test
 	void test_insert_multiple_entities() {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
