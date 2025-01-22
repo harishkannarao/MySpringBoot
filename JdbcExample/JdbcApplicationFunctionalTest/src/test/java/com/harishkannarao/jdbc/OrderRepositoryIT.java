@@ -112,10 +112,14 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 	public void test_findAll_by_customer_id() {
 		UUID customerId = UUID.randomUUID();
 
-		Order order1 = orderRepository.save(
-			new Order(null, customerId, null, null, null));
-		Order order2 = orderRepository.save(
-			new Order(null, customerId, null, null, null));
+		Long orderId1 = orderRepository.save(
+				new Order(null, customerId, null, null, null))
+			.id();
+		Order order1 = orderRepository.findById(orderId1).orElseThrow();
+		Long orderId2 = orderRepository.save(
+				new Order(null, customerId, null, null, null))
+			.id();
+		Order order2 = orderRepository.findById(orderId2).orElseThrow();
 		orderRepository.save(
 			new Order(null, UUID.randomUUID(), null, null, null));
 
@@ -132,12 +136,18 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		UUID customerId1 = UUID.randomUUID();
 		UUID customerId2 = UUID.randomUUID();
 
-		Order order1 = orderRepository.save(
-			new Order(null, customerId1, null, null, null));
-		Order order2 = orderRepository.save(
-			new Order(null, customerId1, null, null, null));
-		Order order3 = orderRepository.save(
-			new Order(null, customerId2, null, null, null));
+		Long orderId1 = orderRepository.save(
+				new Order(null, customerId1, null, null, null))
+			.id();
+		Order order1 = orderRepository.findById(orderId1).orElseThrow();
+		Long orderId2 = orderRepository.save(
+				new Order(null, customerId1, null, null, null))
+			.id();
+		Order order2 = orderRepository.findById(orderId2).orElseThrow();
+		Long orderId3 = orderRepository.save(
+				new Order(null, customerId2, null, null, null))
+			.id();
+		Order order3 = orderRepository.findById(orderId3).orElseThrow();
 		orderRepository.save(
 			new Order(null, UUID.randomUUID(), null, null, null));
 
