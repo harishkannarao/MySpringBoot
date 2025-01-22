@@ -35,7 +35,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 	@Test
 	public void test_create_read_update_delete_order() {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
-		Order created = orderRepository.save(input);
+		Long id = orderRepository.save(input).id();
+		Order created = orderRepository.findById(id).orElseThrow();
 
 		assertThat(created.id()).isNotNull();
 		assertThat(created.customerId()).isEqualTo(input.customerId());
