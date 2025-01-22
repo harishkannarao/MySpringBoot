@@ -51,7 +51,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			.customerId(UUID.randomUUID())
 			.build();
 
-		Order updated = orderRepository.save(toUpdate);
+		orderRepository.save(toUpdate);
+		Order updated = orderRepository.findById(toUpdate.id()).orElseThrow();
 
 		assertThat(updated.id()).isEqualTo(created.id());
 		assertThat(updated.customerId()).isEqualTo(toUpdate.customerId());
