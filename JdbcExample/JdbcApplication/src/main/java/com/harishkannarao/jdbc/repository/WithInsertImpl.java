@@ -1,6 +1,7 @@
 package com.harishkannarao.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectUpdateSemanticsDataAccessException;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 
@@ -30,7 +31,10 @@ public class WithInsertImpl<T> implements WithInsert<T> {
 		try {
 			return jdbcAggregateTemplate.update(entity);
 		} catch (DbActionExecutionException e) {
-			return jdbcAggregateTemplate.insert(entity);
+			if (e.getCause() instanceof IncorrectUpdateSemanticsDataAccessException) {
+				return jdbcAggregateTemplate.insert(entity);
+			}
+			throw e;
 		}
 	}
 }
