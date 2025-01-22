@@ -26,7 +26,7 @@ public class WithInsertImpl<T> implements WithInsert<T> {
 	}
 
 	@Override
-	public <S extends T> S upsert(S entity) {
+	public <S extends T> S save(S entity) {
 		try {
 			return jdbcAggregateTemplate.update(entity);
 		} catch (DbActionExecutionException e) {

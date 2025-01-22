@@ -159,7 +159,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_upsert_updates_or_inserts() {
+	void test_save_updates_or_inserts() {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
 
@@ -170,7 +170,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 			created.id(),
 			null,
 			new InventoryDetails("abc", 2));
-		OrderDocument inserted = orderDocumentRepository.upsert(document1);
+		OrderDocument inserted = orderDocumentRepository.save(document1);
 		assertThat(inserted)
 			.usingRecursiveComparison()
 			.ignoringCollectionOrder()
@@ -184,7 +184,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 				.ignoringCollectionOrder()
 				.isEqualTo(document1));
 
-		OrderDocument finalUpdate = orderDocumentRepository.upsert(document2);
+		OrderDocument finalUpdate = orderDocumentRepository.save(document2);
 
 		assertThat(finalUpdate)
 			.usingRecursiveComparison()
