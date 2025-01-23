@@ -10,6 +10,7 @@ import java.util.UUID;
 public record OrderDocument(
 	@Id UUID id,
 	Long orderId,
+	@Column("json_data")
 	JsonContent data,
 	InventoryDetails inventory) {
 }

@@ -5,6 +5,7 @@ import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderDocument;
 import com.harishkannarao.jdbc.entity.OrderDocumentBuilder;
 import com.harishkannarao.jdbc.entity.JsonContent;
+import com.harishkannarao.jdbc.entity.Sku;
 import com.harishkannarao.jdbc.repository.OrderDocumentRepository;
 import com.harishkannarao.jdbc.repository.OrderRepository;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
@@ -70,7 +71,12 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 			""".trim();
 		OrderDocument toUpdate = OrderDocumentBuilder.from(createdDocument)
 			.data(new JsonContent(json))
-			.inventory(new InventoryDetails("abc", 4))
+			.inventory(new InventoryDetails(
+				"abc",
+				4,
+				List.of(new Sku("3434"), new Sku("235453")),
+				Set.of("234445", "2234243"))
+			)
 			.build();
 
 		orderDocumentRepository.save(toUpdate);
@@ -94,7 +100,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		String json1 = """
 			{"name": "test1", "department": "finance"}
 			""".trim();
-		InventoryDetails inventoryDetails1 = new InventoryDetails("abc", 2);
+		InventoryDetails inventoryDetails1 = new InventoryDetails("abc", 2, null, null);
 		OrderDocument document1 = new OrderDocument(
 			UUID.randomUUID(),
 			created.id(),
@@ -105,7 +111,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		String json2 = """
 			{"name": "test2", "department": "hr"}
 			""".trim();
-		InventoryDetails inventoryDetails2 = new InventoryDetails("xyz", 3);
+		InventoryDetails inventoryDetails2 = new InventoryDetails("xyz", 3, null, null);
 		OrderDocument document2 = new OrderDocument(
 			UUID.randomUUID(),
 			created.id(),
@@ -169,7 +175,13 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 			documentId,
 			created.id(),
 			null,
-			new InventoryDetails("abc", 2));
+			new InventoryDetails(
+				"abc",
+				2,
+				List.of(new Sku("3434"), new Sku("235453")),
+				Set.of("234445", "2234243")
+			)
+		);
 		OrderDocument inserted = orderDocumentRepository.save(document1);
 		assertThat(inserted)
 			.usingRecursiveComparison()
