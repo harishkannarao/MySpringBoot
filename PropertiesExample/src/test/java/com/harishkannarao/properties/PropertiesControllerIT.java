@@ -34,14 +34,14 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 
 	@Test
 	public void shouldGetStringListPropertyValues() throws JsonProcessingException {
-		ResponseEntity<String> response = testRestTemplate.getForEntity(propertiesEndpointUrl + "/list-of-string", String.class);
+		ResponseEntity<String> response = testRestTemplate.getForEntity(propertiesEndpointUrl + "/custom-strings", String.class);
 
 		assertEquals(200, response.getStatusCode().value());
 		String json = Objects.requireNonNull(response.getBody());
 		System.out.println("json = " + json);
-		StringListProperties entity = objectMapper.readValue(json, StringListProperties.class);
-		assertTrue(entity.listOfStrings().contains("list value 1"));
-		assertTrue(entity.listOfStrings().contains("list-value-2"));
-		assertEquals(2, entity.listOfStrings().size());
+		CustomStringsProperties entity = objectMapper.readValue(json, CustomStringsProperties.class);
+		assertTrue(entity.values().contains("list value 1"));
+		assertTrue(entity.values().contains("list-value-2"));
+		assertEquals(2, entity.values().size());
 	}
 }

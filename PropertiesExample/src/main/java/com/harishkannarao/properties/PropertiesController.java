@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class PropertiesController {
 
 	private final CustomProperties customProperties;
-	private final StringListProperties stringListProperties;
+	private final CustomStringsProperties customStringsProperties;
 
 	@Autowired
 	public PropertiesController(
 		CustomProperties customProperties,
-		StringListProperties stringListProperties) {
+		CustomStringsProperties customStringsProperties) {
 		this.customProperties = customProperties;
-		this.stringListProperties = stringListProperties;
+		this.customStringsProperties = customStringsProperties;
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -26,9 +26,9 @@ public class PropertiesController {
 		return customProperties;
 	}
 
-	@RequestMapping(value = "/list-of-string", method = RequestMethod.GET)
-	public StringListProperties getStringListProperties() {
-		return stringListProperties;
+	@RequestMapping(value = "/custom-strings", method = RequestMethod.GET)
+	public CustomStringsProperties getStringListProperties() {
+		return customStringsProperties;
 	}
 
 }

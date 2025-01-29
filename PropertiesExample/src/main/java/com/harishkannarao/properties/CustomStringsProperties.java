@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.bind.Name;
 import java.util.Set;
 
 @ConfigurationProperties
-public record StringListProperties(
+public record CustomStringsProperties(
 	@Name("custom-strings")
-	Set<String> listOfStrings
+	Set<String> values
 ) {
 }
