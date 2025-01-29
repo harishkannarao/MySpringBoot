@@ -7,8 +7,12 @@ spring:
       enabled: true
 
 custom:
-  property1: value1
-  property2: value2
+  prop1: value1
+  prop2: value2
+
+custom-strings:
+  - "list value 1"
+  - "list-value-2"
 
 endpoints:
   enabled: false
