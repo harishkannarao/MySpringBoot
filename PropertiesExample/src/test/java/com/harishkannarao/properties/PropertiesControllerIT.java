@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,5 +44,19 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 		assertTrue(entity.values().contains("list value 1"));
 		assertTrue(entity.values().contains("list-value-2"));
 		assertEquals(2, entity.values().size());
+	}
+
+	@Test
+	public void shouldGetStringListPropertyValues_usingAlternateApproach() throws JsonProcessingException {
+		ResponseEntity<String> response = testRestTemplate
+			.getForEntity(propertiesEndpointUrl + "/alternate-custom-strings", String.class);
+
+		assertEquals(200, response.getStatusCode().value());
+		String json = Objects.requireNonNull(response.getBody());
+		System.out.println("json = " + json);
+		List<String> entity = List.of(objectMapper.readValue(json, String[].class));
+		assertTrue(entity.contains("list value 1"));
+		assertTrue(entity.contains("list-value-2"));
+		assertEquals(2, entity.size());
 	}
 }
