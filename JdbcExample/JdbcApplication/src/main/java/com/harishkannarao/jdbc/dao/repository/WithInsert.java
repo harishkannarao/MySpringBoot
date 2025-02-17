@@ -1,4 +1,4 @@
-package com.harishkannarao.jdbc.repository;
+package com.harishkannarao.jdbc.dao.repository;
 
 import java.util.List;
 

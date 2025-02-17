@@ -1,4 +1,4 @@
-package com.harishkannarao.jdbc.repository;
+package com.harishkannarao.jdbc.dao.repository;
 
 import com.harishkannarao.jdbc.entity.OrderDocument;
 import org.springframework.data.jdbc.repository.query.Query;

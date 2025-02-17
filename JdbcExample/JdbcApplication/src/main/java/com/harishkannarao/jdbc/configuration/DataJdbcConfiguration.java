@@ -20,7 +20,7 @@ import java.util.List;
 @Configuration
 @EnableJdbcAuditing
 @EnableJdbcRepositories(
-	basePackages = "com.harishkannarao.jdbc.repository",
+	basePackages = "com.harishkannarao.jdbc.dao.repository",
 	jdbcOperationsRef = "myJdbcOperations",
 	transactionManagerRef = "myTransactionManager"
 )

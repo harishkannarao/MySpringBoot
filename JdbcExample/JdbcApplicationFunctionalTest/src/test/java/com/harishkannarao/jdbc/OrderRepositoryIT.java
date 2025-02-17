@@ -2,7 +2,7 @@ package com.harishkannarao.jdbc;
 
 import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderBuilder;
-import com.harishkannarao.jdbc.repository.OrderRepository;
+import com.harishkannarao.jdbc.dao.repository.OrderRepository;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
