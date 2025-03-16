@@ -23,13 +23,15 @@ Docker dependencies needs to be started using docker compose before the build
     docker compose -f docker_local/docker-compose.yml down -v
 
 ### Running full build
-* Start Postgresql database through docker (steps given below)
-* Execute ```mvn clean install```
+
+Start Postgresql database through docker (steps given above) and execute
+    
+    mvn clean install
 
 ### Generate artifacts only
 Will skip unit tests, integration tests and docker commands
     
-```mvn clean install -DskipTests=true```
+    mvn clean install -DskipTests=true
 
 ### Running single spring boot application
 

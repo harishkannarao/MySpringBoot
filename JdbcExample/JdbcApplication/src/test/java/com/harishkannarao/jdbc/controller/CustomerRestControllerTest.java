@@ -25,7 +25,8 @@ import static org.mockito.Mockito.when;
 
 public class CustomerRestControllerTest {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+		.findAndRegisterModules();
 
 	private final CustomerDao customerDao = Mockito.mock(CustomerDao.class);
 
