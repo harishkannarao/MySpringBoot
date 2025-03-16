@@ -31,13 +31,6 @@ jobs:
         java-version: '21'
         java-package: jdk
         architecture: x64
-    - name: Cache maven dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-maven-cache-master-v1
-        restore-keys: |
-          ${{ runner.os }}-maven-cache-master-v1
     - name: 'Install dependencies'
       run: |
         ./ci-install-dependencies.sh
