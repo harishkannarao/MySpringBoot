@@ -24,11 +24,6 @@
         <webdrivermanager.version>5.6.2</webdrivermanager.version>
         <guava.version>32.1.3-jre</guava.version>
         <commons.lang3.version>3.13.0</commons.lang3.version>
-        <angularjs.version>1.4.1</angularjs.version>
-        <bootstrap.version>3.3.7</bootstrap.version>
-        <jquery.version>1.12.4</jquery.version>
-        <html5shiv.version>3.7.3</html5shiv.version>
-        <respondjs.version>1.4.2</respondjs.version>
         <common.io.version>2.15.0</common.io.version>
         <wiremock.version>3.3.1</wiremock.version>
     </properties>
@@ -221,36 +216,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${common.io.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>angularjs</artifactId>
-                <version>${angularjs.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>bootstrap</artifactId>
-                <version>${bootstrap.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>jquery</artifactId>
-                <version>${jquery.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>html5shiv</artifactId>
-                <version>${html5shiv.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>respond</artifactId>
-                <version>${respondjs.version}</version>
             </dependency>
 
             <dependency>
