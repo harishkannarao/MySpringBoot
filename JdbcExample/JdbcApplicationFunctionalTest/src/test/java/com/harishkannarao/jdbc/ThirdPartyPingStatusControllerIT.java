@@ -73,6 +73,6 @@ public class ThirdPartyPingStatusControllerIT extends BaseIntegrationJdbc {
 
         assertThat(logbackTestAppender.getLogs())
                         .extracting(ILoggingEvent::getFormattedMessage)
-                                .anySatisfy(s -> assertThat(s).matches("REST_CLIENT_ACCESS_LOG .* 204 GET http://localhost:9010/ping"));
+                                .anySatisfy(s -> assertThat(s).matches("REST_CLIENT_ACCESS_LOG .* 204 GET http://localhost:.*/ping"));
     }
 }

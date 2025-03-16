@@ -1,12 +1,3 @@
-randomServerPort1: 8280
-randomServerPort2: 8281
-
-server:
-  port: ${randomServerPort1}
-
-management:
-  port: ${randomServerPort2}
-
 properties:
   endpoint:
     url: http://localhost:${server.port}

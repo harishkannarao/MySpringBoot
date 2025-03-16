@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.util.TestSocketUtils;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -20,8 +23,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = DEFINED_PORT,
         properties = {
-                "server.port=${RANDOM_PORT_3:8180}",
-                "management.port=${RANDOM_PORT_4:8181}",
                 "thirdparty.ping.url=http://localhost:${server.port}/thirdparty/ping",
                 "quoteService.url=http://localhost:${server.port}/thirdparty/quote"
         })
@@ -48,4 +49,13 @@ public abstract class BaseIntegration {
     protected WebDriver newWebDriver() {
         return webDriverFactory.newWebDriver();
     }
+
+	@DynamicPropertySource
+	static void registerTestProperties(DynamicPropertyRegistry registry) {
+		final int RANDOM_SERVER_PORT = TestSocketUtils.findAvailableTcpPort();
+		final int RANDOM_MANAGEMENT_PORT = TestSocketUtils.findAvailableTcpPort();
+		registry.add("server.port", () -> String.valueOf(RANDOM_SERVER_PORT));
+		registry.add("management.port", () -> String.valueOf(RANDOM_MANAGEMENT_PORT));
+	}
+
 }
