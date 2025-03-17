@@ -45,6 +45,16 @@ public class TestConfigurationJdbcApplication {
 	}
 
 	@Bean
+	public DisposableBean stopPostgres() {
+		return () -> {
+			log.info("Stopping postgres");
+			if (Postgres.CONTAINER.isRunning()) {
+				Postgres.CONTAINER.stop();
+			}
+		};
+	}
+
+	@Bean
 	public WireMock createWireMockClient(WireMockServer wireMockServer) {
 		return new WireMock(wireMockServer.port());
 	}

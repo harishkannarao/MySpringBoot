@@ -12,7 +12,7 @@ public class DbFixturesIT extends BaseIntegrationJdbc {
         dbFixturesPopulator.insertData();
         dbFixturesPopulator.resetData();
 
-        // should be able to re run in the same sequence
+        // should be able to rerun in the same sequence
         dbFixturesPopulator.insertData();
         dbFixturesPopulator.resetData();
     }

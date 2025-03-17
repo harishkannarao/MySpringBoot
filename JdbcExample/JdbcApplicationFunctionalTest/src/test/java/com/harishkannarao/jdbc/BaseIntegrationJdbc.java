@@ -58,11 +58,23 @@ public abstract class BaseIntegrationJdbc {
 
 	@DynamicPropertySource
 	static void registerTestProperties(DynamicPropertyRegistry registry) {
-		final int RANDOM_SERVER_PORT = TestSocketUtils.findAvailableTcpPort();
-		final int RANDOM_MANAGEMENT_PORT = TestSocketUtils.findAvailableTcpPort();
-		final int RANDOM_WIREMOCK_PORT = TestSocketUtils.findAvailableTcpPort();
-		registry.add("server.port", () -> String.valueOf(RANDOM_SERVER_PORT));
-		registry.add("management.port", () -> String.valueOf(RANDOM_MANAGEMENT_PORT));
-		registry.add("wiremock.port", () -> String.valueOf(RANDOM_WIREMOCK_PORT));
+		final int randomServerPort = TestSocketUtils.findAvailableTcpPort();
+		final int randomManagementPort = TestSocketUtils.findAvailableTcpPort();
+		final int randomWiremockPort = TestSocketUtils.findAvailableTcpPort();
+		registry.add("server.port", () -> String.valueOf(randomServerPort));
+		registry.add("management.port", () -> String.valueOf(randomManagementPort));
+		registry.add("wiremock.port", () -> String.valueOf(randomWiremockPort));
+
+		if (!Postgres.CONTAINER.isRunning()) {
+			Postgres.CONTAINER.start();
+		}
+		registry.add("app.datasource.hikari.jdbc-url",
+			() -> String.format("jdbc:postgresql://localhost:%s/%s",
+				Postgres.CONTAINER.getMappedPort(5432),
+				Postgres.CONTAINER.getEnvMap().get("POSTGRES_USER")));
+		registry.add("app.datasource.hikari.username", () ->
+			Postgres.CONTAINER.getEnvMap().get("POSTGRES_USER"));
+		registry.add("app.datasource.hikari.password", () ->
+			Postgres.CONTAINER.getEnvMap().get("POSTGRES_PASSWORD"));
 	}
 }
