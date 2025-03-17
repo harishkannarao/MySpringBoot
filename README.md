@@ -56,9 +56,14 @@ Open URL in browser:
     mvn versions:update-parent
 
 ### Running multiple spring boot application in parallel
-* Open terminal in root folder
-* Execute the following to start rest third party stub and service ```mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer```
-* Verify all applications are running ```curl --header "Content-Type: application/json" -X GET "http://localhost:8080/quote"```
+
+Open terminal in root folder and execute the following to start rest third party stub and service 
+
+    mvn exec:exec@run-third-party antrun:run@wait-for-ping spring-boot:run -pl RestExample/RestServiceAndConsumer
+
+Verify all applications are running 
+
+    curl --header "Content-Type: application/json" -X GET "http://localhost:8080/rest-service/quote"
 
 ### Docker Commands
 

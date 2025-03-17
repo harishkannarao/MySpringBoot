@@ -23,8 +23,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = DEFINED_PORT,
         properties = {
-                "thirdparty.ping.url=http://localhost:${server.port}/thirdparty/ping",
-                "quoteService.url=http://localhost:${server.port}/thirdparty/quote"
+                "thirdparty.ping.url=http://localhost:${server.port}/rest-service/thirdparty/ping",
+                "quoteService.url=http://localhost:${server.port}/rest-service/thirdparty/quote"
         })
 public abstract class BaseIntegration {
     @Autowired

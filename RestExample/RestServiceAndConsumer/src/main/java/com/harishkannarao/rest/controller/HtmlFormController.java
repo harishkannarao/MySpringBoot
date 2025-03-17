@@ -30,7 +30,7 @@ public class HtmlFormController {
 	public ModelAndView submitForm(@RequestBody MultiValueMap<String, Object> formData) {
 		ModelAndView modelAndView;
 		if (formData != null && formData.containsKey("favoritePet") && formData.get("favoritePet").size() > 1) {
-			modelAndView = new ModelAndView(new RedirectView("/form/success"));
+			modelAndView = new ModelAndView(new RedirectView("/form/success", true));
 		} else {
 			modelAndView = new ModelAndView("form/form_template");
 			modelAndView.addObject("formData", formData);

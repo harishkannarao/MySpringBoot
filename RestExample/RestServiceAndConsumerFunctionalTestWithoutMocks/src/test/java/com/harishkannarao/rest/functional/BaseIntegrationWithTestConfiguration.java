@@ -18,7 +18,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = DEFINED_PORT,
         properties = {
-                "quoteService.url=http://localhost:${server.port}/thirdparty/quote"
+                "quoteService.url=http://localhost:${server.port}/rest-service/thirdparty/quote"
         })
 public abstract class BaseIntegrationWithTestConfiguration {
     @Autowired
