@@ -5,10 +5,30 @@ import org.testcontainers.utility.DockerImageName;
 
 public final class Postgres {
 
-	public final static GenericContainer<?> CONTAINER = new GenericContainer<>(
+	private final int port = 5432;
+	private final String userEnvVar = "POSTGRES_USER";
+	private final String passEnvVar = "POSTGRES_PASSWORD";
+
+	private final GenericContainer<?> container = new GenericContainer<>(
 		DockerImageName.parse("public.ecr.aws/docker/library/postgres:16"))
 		.withReuse(true)
-		.withExposedPorts(5432)
-		.withEnv("POSTGRES_USER", "myuser")
-		.withEnv("POSTGRES_PASSWORD", "superpassword");
+		.withExposedPorts(port)
+		.withEnv(userEnvVar, "myuser")
+		.withEnv(passEnvVar, "superpassword");
+
+	public GenericContainer<?> getContainer() {
+		return container;
+	}
+
+	public Integer getMappedPort() {
+		return container.getMappedPort(port);
+	}
+
+	public String getUsername() {
+		return container.getEnvMap().get(userEnvVar);
+	}
+
+	public String getPassword() {
+		return container.getEnvMap().get(passEnvVar);
+	}
 }

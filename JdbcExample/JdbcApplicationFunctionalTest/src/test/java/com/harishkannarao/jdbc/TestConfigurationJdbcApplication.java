@@ -6,9 +6,7 @@ import com.harishkannarao.jdbc.client.interceptor.RestClientAccessLoggingInterce
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -21,7 +19,8 @@ import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @TestConfiguration
 @PropertySources({
@@ -60,12 +59,35 @@ public class TestConfigurationJdbcApplication {
 	}
 
 	@Bean
-	public DisposableBean stopPostgres() {
+	public Postgres startPostgres() {
+		log.info("Starting Postgres");
+		Postgres postgres = new Postgres();
+		postgres.getContainer().start();
+		await()
+			.atMost(Duration.ofMinutes(2))
+			.untilAsserted(() -> assertThat(postgres.getContainer().isRunning()).isTrue());
+		log.info("Started Postgres on port {}", postgres.getMappedPort());
+		return postgres;
+	}
+
+	@Bean
+	public DisposableBean stopPostgres(Postgres postgres) {
 		return () -> {
-			log.info("Stopping postgres");
-			if (Postgres.CONTAINER.isRunning()) {
-				Postgres.CONTAINER.stop();
-			}
+			log.info("Stopping postgres on port {}", postgres.getMappedPort());
+			postgres.getContainer().stop();
+			log.info("Stopped postgres");
+		};
+	}
+
+	@Bean
+	public DynamicPropertyRegistrar registerPostgres(Postgres postgres) {
+		return (DynamicPropertyRegistry registry) -> {
+			log.info("Registering postgres properties");
+			String jdbcUrl = String.format("jdbc:postgresql://localhost:%s/%s",
+				postgres.getMappedPort(), postgres.getUsername());
+			registry.add("app.datasource.hikari.jdbc-url", () -> jdbcUrl);
+			registry.add("app.datasource.hikari.username", postgres::getUsername);
+			registry.add("app.datasource.hikari.password", postgres::getPassword);
 		};
 	}
 

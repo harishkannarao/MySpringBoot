@@ -62,17 +62,5 @@ public abstract class BaseIntegrationJdbc {
 		final int randomManagementPort = TestSocketUtils.findAvailableTcpPort();
 		registry.add("server.port", () -> String.valueOf(randomServerPort));
 		registry.add("management.port", () -> String.valueOf(randomManagementPort));
-
-		if (!Postgres.CONTAINER.isRunning()) {
-			Postgres.CONTAINER.start();
-		}
-		registry.add("app.datasource.hikari.jdbc-url",
-			() -> String.format("jdbc:postgresql://localhost:%s/%s",
-				Postgres.CONTAINER.getMappedPort(5432),
-				Postgres.CONTAINER.getEnvMap().get("POSTGRES_USER")));
-		registry.add("app.datasource.hikari.username", () ->
-			Postgres.CONTAINER.getEnvMap().get("POSTGRES_USER"));
-		registry.add("app.datasource.hikari.password", () ->
-			Postgres.CONTAINER.getEnvMap().get("POSTGRES_PASSWORD"));
 	}
 }
