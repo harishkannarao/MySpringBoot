@@ -15,6 +15,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.test.context.DynamicPropertyRegistrar;
+import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
@@ -30,17 +32,30 @@ public class TestConfigurationJdbcApplication {
 	private static final Logger log = LoggerFactory.getLogger(TestConfigurationJdbcApplication.class);
 
 	@Bean
-	public WireMockServer createWireMockServer(@Value("${wiremock.port}") int wireMockPort) {
-		WireMockServer wireMockServer = new WireMockServer(options().port(wireMockPort));
+	public WireMockServer createWireMockServer() {
+		WireMockServer wireMockServer = new WireMockServer(0);
 		wireMockServer.start();
 		return wireMockServer;
 	}
 
 	@Bean
+	public WireMock createWireMockClient(WireMockServer wireMockServer) {
+		return new WireMock(wireMockServer.port());
+	}
+
+	@Bean
 	public DisposableBean stopWireMockServer(WireMockServer wireMockServer) {
 		return () -> {
-			log.info("Stopping wiremock");
+			log.info("Stopping wiremock.port as {}", wireMockServer.port());
 			wireMockServer.stop();
+		};
+	}
+
+	@Bean
+	public DynamicPropertyRegistrar registerWireMockPort(WireMockServer wireMockServer) {
+		return (DynamicPropertyRegistry registry) -> {
+			log.info("Registering wiremock.port property as {}", wireMockServer.port());
+			registry.add("wiremock.port", wireMockServer::port);
 		};
 	}
 
@@ -52,11 +67,6 @@ public class TestConfigurationJdbcApplication {
 				Postgres.CONTAINER.stop();
 			}
 		};
-	}
-
-	@Bean
-	public WireMock createWireMockClient(WireMockServer wireMockServer) {
-		return new WireMock(wireMockServer.port());
 	}
 
 	@Bean

@@ -60,10 +60,8 @@ public abstract class BaseIntegrationJdbc {
 	static void registerTestProperties(DynamicPropertyRegistry registry) {
 		final int randomServerPort = TestSocketUtils.findAvailableTcpPort();
 		final int randomManagementPort = TestSocketUtils.findAvailableTcpPort();
-		final int randomWiremockPort = TestSocketUtils.findAvailableTcpPort();
 		registry.add("server.port", () -> String.valueOf(randomServerPort));
 		registry.add("management.port", () -> String.valueOf(randomManagementPort));
-		registry.add("wiremock.port", () -> String.valueOf(randomWiremockPort));
 
 		if (!Postgres.CONTAINER.isRunning()) {
 			Postgres.CONTAINER.start();
