@@ -69,6 +69,9 @@
                         <server.port>${randomPort1}</server.port>
                         <management.port>${randomPort2}</management.port>
                     </systemPropertyVariables>
+                    <parallel>all</parallel>
+                    <forkCount>5</forkCount>
+                    <threadCount>5</threadCount>
                 </configuration>
             </plugin>
         </plugins>
