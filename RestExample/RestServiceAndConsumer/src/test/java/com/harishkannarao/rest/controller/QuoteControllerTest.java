@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class QuoteControllerTest {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+	private final ObjectMapper objectMapper = new ObjectMapper()
 		.findAndRegisterModules();
 
 	private final ThirdPartyRestQuoteClient thirdPartyRestQuoteClient = mock();
@@ -57,7 +57,7 @@ public class QuoteControllerTest {
 
 		assertThat(response.getStatus()).isEqualTo(200);
 
-		JsonNode json = OBJECT_MAPPER.readTree(response.getContentAsString());
+		JsonNode json = objectMapper.readTree(response.getContentAsString());
 		assertThat(json.getNodeType()).isEqualTo(JsonNodeType.OBJECT);
 		assertThat(json.get("type").asText()).isEqualTo("test");
 		assertThat(json.get("value").get("id").asLong()).isEqualTo(2L);

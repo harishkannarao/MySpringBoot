@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 public class WebDriverFactory {
 
     private static final Logger LOGGER = Logger.getLogger(WebDriverFactory.class.getName());
-    private static final List<WebDriver> WEB_DRIVERS = new ArrayList<>();
+    private final List<WebDriver> webDrivers = new ArrayList<>();
 
     public WebDriver newWebDriver() {
         WebDriver webDriver = createHtmlUnitDriver();
-        WEB_DRIVERS.add(webDriver);
+        webDrivers.add(webDriver);
         return webDriver;
     }
 
@@ -23,15 +23,15 @@ public class WebDriverFactory {
     }
 
     public void closeAllWebDrivers() {
-        WEB_DRIVERS.forEach(WebDriver::close);
-        WEB_DRIVERS.forEach(webDriver -> {
+        webDrivers.forEach(WebDriver::close);
+        webDrivers.forEach(webDriver -> {
             try {
                 webDriver.quit();
             } catch (Exception e) {
                 LOGGER.warning("Exception while closing WebDriver: " + e.getMessage());
             }
         });
-        WEB_DRIVERS.clear();
+        webDrivers.clear();
     }
 
 }
