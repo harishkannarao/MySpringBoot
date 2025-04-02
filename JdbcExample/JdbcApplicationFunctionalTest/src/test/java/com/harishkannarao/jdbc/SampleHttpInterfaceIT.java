@@ -107,12 +107,30 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 				)
 		);
 
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("request-id", UUID.randomUUID().toString());
+		headers.add("correlation-id", UUID.randomUUID().toString());
+
 		ResponseEntity<JsonNode> response = sampleHttpInterface
-			.getOrderDetails(customerId, orderId);
+			.getOrderDetails(headers, customerId, orderId);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
 		assertThat(body.get("orderDescription").asText()).isEqualTo("test-order");
+
+		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
+
+		assertThat(requests)
+			.hasSize(1)
+			.anySatisfy(request -> {
+				assertThat(request.getHeader("request-id"))
+					.as("verifying request id")
+					.isEqualTo(headers.getFirst("request-id"));
+				assertThat(request.getHeader("correlation-id"))
+					.as("verifying correlation id")
+					.isEqualTo(headers.getFirst("correlation-id"));
+			});
 	}
 
 	@Test

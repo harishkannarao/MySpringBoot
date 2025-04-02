@@ -1,6 +1,7 @@
 package com.harishkannarao.jdbc;
 
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 public final class Postgres {
@@ -14,7 +15,8 @@ public final class Postgres {
 		.withReuse(true)
 		.withExposedPorts(port)
 		.withEnv(userEnvVar, "myuser")
-		.withEnv(passEnvVar, "superpassword");
+		.withEnv(passEnvVar, "superpassword")
+		.waitingFor(Wait.forLogMessage(".*database system is ready to accept connections.*", 1));
 
 	public GenericContainer<?> getContainer() {
 		return container;
