@@ -63,11 +63,13 @@ public class TestConfigurationJdbcApplication {
 		log.info("Starting Postgres");
 		Postgres postgres = new Postgres();
 		postgres.getContainer().start();
+		try {
+			Thread.sleep(Duration.ofSeconds(1));
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		await()
-			.atMost(Duration.ofMinutes(2))
-			.untilAsserted(() -> assertThat(postgres.getContainer().isRunning()).isTrue());
-		await()
-			.atMost(Duration.ofMinutes(2))
+			.atMost(Duration.ofMinutes(1))
 			.untilAsserted(() -> assertThat(postgres.getContainer().getLogs()).contains("database system is ready to accept connections"));
 		log.info("Started Postgres on port {}", postgres.getMappedPort());
 		return postgres;
