@@ -5,9 +5,7 @@ import com.harishkannarao.jdbc.dao.CustomerDao;
 import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
 import jakarta.servlet.ServletException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,8 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class CustomerRestControllerTest {
@@ -29,16 +26,13 @@ public class CustomerRestControllerTest {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
 		.findAndRegisterModules();
 
-	private final CustomerDao customerDao = Mockito.mock(CustomerDao.class);
+	private final CustomerDao customerDao = mock();
+	private final CustomersRestController customersRestController =
+		new CustomersRestController(customerDao);
 
-	private MockMvc mockMvc;
-
-	@BeforeEach
-	public void setUp() {
-		mockMvc = MockMvcBuilders
-			.standaloneSetup(new CustomersRestController(customerDao))
-			.build();
-	}
+	private final MockMvc mockMvc = MockMvcBuilders
+		.standaloneSetup(customersRestController)
+		.build();
 
 	@Test
 	public void test_createCustomer() throws Exception {

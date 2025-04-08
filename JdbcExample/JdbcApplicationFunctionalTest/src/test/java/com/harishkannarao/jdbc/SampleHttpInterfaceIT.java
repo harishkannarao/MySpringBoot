@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -131,6 +132,113 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 					.as("verifying correlation id")
 					.isEqualTo(headers.getFirst("correlation-id"));
 			});
+	}
+
+	@Test
+	public void getOptionalOrderDetails_returns_details() {
+		String customerId = UUID.randomUUID().toString();
+		String orderId = UUID.randomUUID().toString();
+		wireMock.register(
+			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
+				.willReturn(
+					aResponse()
+						.withBody("""
+							{"orderDescription": "test-order"}
+							""")
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withStatus(200)
+				)
+		);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("request-id", UUID.randomUUID().toString());
+		headers.add("correlation-id", UUID.randomUUID().toString());
+
+		Optional<JsonNode> response = sampleHttpInterface
+			.getOptionalOrderDetails(headers, customerId, orderId);
+
+		assertThat(response.isPresent()).isTrue();
+		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
+
+		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
+
+		assertThat(requests)
+			.hasSize(1)
+			.anySatisfy(request -> {
+				assertThat(request.getHeader("request-id"))
+					.as("verifying request id")
+					.isEqualTo(headers.getFirst("request-id"));
+				assertThat(request.getHeader("correlation-id"))
+					.as("verifying correlation id")
+					.isEqualTo(headers.getFirst("correlation-id"));
+			});
+	}
+
+	@Test
+	public void getOptionalOrderDetails_returns_empty_for_404() {
+		String customerId = UUID.randomUUID().toString();
+		String orderId = UUID.randomUUID().toString();
+		wireMock.register(
+			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
+				.willReturn(
+					aResponse()
+						.withStatus(404)
+				)
+		);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("request-id", UUID.randomUUID().toString());
+		headers.add("correlation-id", UUID.randomUUID().toString());
+
+		Optional<JsonNode> response = sampleHttpInterface
+			.getOptionalOrderDetails(headers, customerId, orderId);
+
+		assertThat(response).isEmpty();
+
+		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
+
+		assertThat(requests)
+			.hasSize(1)
+			.anySatisfy(request -> {
+				assertThat(request.getHeader("request-id"))
+					.as("verifying request id")
+					.isEqualTo(headers.getFirst("request-id"));
+				assertThat(request.getHeader("correlation-id"))
+					.as("verifying correlation id")
+					.isEqualTo(headers.getFirst("correlation-id"));
+			});
+	}
+
+	@Test
+	public void getOptionalOrderDetails_throws_exception_after_retry() {
+		String customerId = UUID.randomUUID().toString();
+		String orderId = UUID.randomUUID().toString();
+		wireMock.register(
+			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
+				.willReturn(
+					aResponse()
+						.withStatus(502)
+				)
+		);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("request-id", UUID.randomUUID().toString());
+		headers.add("correlation-id", UUID.randomUUID().toString());
+
+		HttpServerErrorException result = catchThrowableOfType(
+			HttpServerErrorException.class,
+			() -> sampleHttpInterface
+				.getOptionalOrderDetails(headers, customerId, orderId));
+
+		assertThat(result.getStatusCode().value()).isEqualTo(502);
+
+		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
+
+		assertThat(requests)
+			.hasSize(4);
 	}
 
 	@Test
