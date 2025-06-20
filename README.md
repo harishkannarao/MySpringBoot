@@ -71,7 +71,7 @@ Verify all applications are running
     docker logs -t -f  springboot-jdbc-postgres
     
 #### Connect to PostgreSql Database
-    docker run --network=docker_local_main -it --rm -e PGPASSWORD=superpassword postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
+    docker run --network=my-spring-boot-network -it --rm -e PGPASSWORD=superpassword postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
 Type '\q' to quit the terminal and container
 
@@ -83,11 +83,11 @@ Type '\q' to quit the terminal and container
 
 Run without jmx
 
-    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    docker run --network=my-spring-boot-network -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
 
 Run with jmx
 
-    docker run --network=docker_local_main -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10006 -Dcom.sun.management.jmxremote.rmi.port=10006 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
+    docker run --network=my-spring-boot-network -e SSH_PUBLIC_KEY -e 'REMOTE_JMX_OPTIONS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10006 -Dcom.sun.management.jmxremote.rmi.port=10006 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost' -e 'THIRDPARTY_PING_URL=http://www.example.org' -e 'APP_DATASOURCE_HIKARI_JDBC_URL=jdbc:postgresql://springboot-jdbc-postgres:5432/myuser' -e 'APP_DATASOURCE_HIKARI_USERNAME=myuser' -e 'APP_DATASOURCE_HIKARI_PASSWORD=superpassword' --rm -it --name spring-boot-jdbc -p '10022:22' -p '10006:10006' -p '8180:80' com.harishkannarao/spring-boot-jdbc:latest
     
 Sample url
 
