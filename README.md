@@ -71,7 +71,7 @@ Verify all applications are running
     docker logs -t -f  springboot-jdbc-postgres
     
 #### Connect to PostgreSql Database
-    docker run --network=my-spring-boot-network -it --rm -e PGPASSWORD=superpassword postgres:10 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
+    docker run --network=my-spring-boot-network -it --rm -e PGPASSWORD=superpassword public.ecr.aws/docker/library/postgres:16 psql --host springboot-jdbc-postgres --username myuser --dbname myuser --port 5432
     
 Type '\q' to quit the terminal and container
 
