@@ -64,7 +64,7 @@ public class TestConfigurationJdbcApplication {
 		Postgres postgres = new Postgres();
 		postgres.getContainer().start();
 		try {
-			Thread.sleep(Duration.ofSeconds(1));
+			Thread.sleep(Duration.ofSeconds(2));
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

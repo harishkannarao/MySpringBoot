@@ -165,7 +165,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_save_updates_or_inserts() {
+	void test_save_inserts_or_updates_existing() {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
 
