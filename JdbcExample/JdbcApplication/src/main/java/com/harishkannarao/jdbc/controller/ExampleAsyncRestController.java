@@ -175,7 +175,7 @@ public class ExampleAsyncRestController {
 		}
 		logger.info("Calculating for: {}", value);
 		if (value == 0) {
-			throw new IllegalArgumentException("Invalid value: " + value);
+			throw new IllegalArgumentException("Invalid build: " + value);
 		}
 		return value * value;
 	}

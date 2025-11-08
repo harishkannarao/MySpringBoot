@@ -15,8 +15,8 @@ public interface OrderDocumentRepository extends
 
 	List<OrderDocument> findByOrderIdIn(Set<Long> orderIds);
 
-	@Query(value = "SELECT * FROM order_documents WHERE json_data->>:key = :value")
-	List<OrderDocument> findByJsonAttribute(@Param("key") String key, @Param("value") String value);
+	@Query(value = "SELECT * FROM order_documents WHERE json_data->>:key = :build")
+	List<OrderDocument> findByJsonAttribute(@Param("key") String key, @Param("build") String value);
 
 	@Query(value = "SELECT * FROM order_documents WHERE inventory->>'productCode' = :productCode")
 	List<OrderDocument> findByProductCode(@Param("productCode") String code);

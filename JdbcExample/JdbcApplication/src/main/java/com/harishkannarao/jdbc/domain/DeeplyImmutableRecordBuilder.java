@@ -1,29 +1,20 @@
 package com.harishkannarao.jdbc.domain;
 
 public record DeeplyImmutableRecordBuilder(
-	DeeplyImmutableRecord value
+	DeeplyImmutableRecord build
 ) {
-	public static DeeplyImmutableRecordBuilder from(
-		DeeplyImmutableRecord input
-	) {
-		return new DeeplyImmutableRecordBuilder(input);
-	}
 
 	public DeeplyImmutableRecordBuilder text(String newValue) {
-		return from(
+		return new DeeplyImmutableRecordBuilder(
 			new DeeplyImmutableRecord(
-				value().intField(),
+				this.build.intField(),
 				newValue,
-				value().optionalText(),
-				value().stringList(),
-				value().stringSet(),
-				value().stringMap()
+				this.build.optionalText(),
+				this.build.stringList(),
+				this.build.stringSet(),
+				this.build.stringMap()
 			)
 		);
-	}
-
-	public DeeplyImmutableRecord build() {
-		return value;
 	}
 
 }

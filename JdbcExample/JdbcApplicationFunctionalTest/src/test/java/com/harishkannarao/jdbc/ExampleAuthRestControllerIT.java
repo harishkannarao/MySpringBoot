@@ -49,7 +49,7 @@ public class ExampleAuthRestControllerIT extends BaseIntegrationJdbc {
 		HttpClientErrorException result = assertThrows(HttpClientErrorException.class, () -> restClient
 			.get()
 			.uri(exampleAuthHeaderEndpointUrl)
-			.header("Authorization", "Bearer invalid-value")
+			.header("Authorization", "Bearer invalid-build")
 			.retrieve()
 			.toBodilessEntity());
 

@@ -22,7 +22,7 @@ public class DeeplyImmutableRecordTest {
 			Map.of("ghi", "jkl")
 		);
 
-		final DeeplyImmutableRecord result = DeeplyImmutableRecordBuilder.from(input)
+		final DeeplyImmutableRecord result = new DeeplyImmutableRecordBuilder(input)
 			.text("new-test-name")
 			.build();
 
