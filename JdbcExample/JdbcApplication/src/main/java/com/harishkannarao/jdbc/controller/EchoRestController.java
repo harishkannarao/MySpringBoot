@@ -1,0 +1,22 @@
+package com.harishkannarao.jdbc.controller;
+
+import com.harishkannarao.jdbc.domain.DeeplyImmutableRecord;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "/echo", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+public class EchoRestController {
+
+	@RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<DeeplyImmutableRecord> echo(
+		@RequestBody DeeplyImmutableRecord input
+	) {
+		return new ResponseEntity<>(input, HttpStatus.OK);
+	}
+}
