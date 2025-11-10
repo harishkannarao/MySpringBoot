@@ -65,11 +65,11 @@ public class DeeplyImmutableRecordTest {
 		final DeeplyImmutableRecord record2Copy = new DeeplyImmutableRecordBuilder(record2).build();
 
 		List<DeeplyImmutableRecord> actual = List.of(record1, record2);
-		List<DeeplyImmutableRecord> expected = List.of(record1Copy, record2Copy);
+		List<DeeplyImmutableRecord> expected = List.of(record2Copy, record1Copy);
 
 		assertThat(actual)
 			.usingRecursiveFieldByFieldElementComparator(
 				RecursiveComparisonConfiguration.builder().withIgnoreCollectionOrder(true).build())
-			.containsExactlyElementsOf(expected);
+			.containsExactlyInAnyOrderElementsOf(expected);
 	}
 }
