@@ -9,6 +9,9 @@ spring:
   threads:
     virtual:
       enabled: true
+  servlet:
+    multipart:
+      enabled: true
 
 application:
   healthCheck:

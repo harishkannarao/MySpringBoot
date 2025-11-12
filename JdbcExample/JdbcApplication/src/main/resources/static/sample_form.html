@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sample Form</title>
+</head>
+<body>
+
+<h1>Sample Form with multiple files upload</h1>
+<form action="/form-submit" method="post" enctype="multipart/form-data">
+    <label for="fname">First name:</label><br>
+    <input type="text" id="fname" name="firstName"><br>
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lastName">
+    <br/>
+    <label for="myfile">Select a file(s):</label>
+    <input type="file" id="myfile" name="files" multiple>
+    <br/>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
