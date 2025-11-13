@@ -18,6 +18,7 @@ application:
     path: "/health-check"
 
 app:
+  uploads-dir: "/tmp"
   clean-up-reservation:
     batch-size: "${APP_CLEAN_UP_RESERVATION_BATCH_SIZE:10}"
     expiry-duration: "${APP_CLEAN_UP_RESERVATION_EXPIRY:PT-10M}"
