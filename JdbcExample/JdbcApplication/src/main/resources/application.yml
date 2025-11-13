@@ -12,6 +12,9 @@ spring:
   servlet:
     multipart:
       enabled: true
+      file-size-threshold: 0B
+      max-file-size: 3GB # set it to -1 for no max file size limit per file in the request
+      max-request-size: 5GB # set it to -1 for no max request size limit for entire request that can include multiple files
 
 application:
   healthCheck:
