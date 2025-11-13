@@ -47,17 +47,10 @@ public class SampleFormController {
 		@RequestPart(value = "lastName", required = false) String lastName,
 		@RequestPart(value = "files", required = false) List<MultipartFile> files)
 		throws IOException {
-		List<String> fileNames = Objects.<List<MultipartFile>>requireNonNullElse(
-				files,
-				Collections.emptyList())
-			.stream()
-			.map(multipartFile -> Objects.requireNonNull(multipartFile.getOriginalFilename()))
-			.sorted()
-			.toList();
-		logger.info("{}", uploadsPath.toAbsolutePath());
-		logger.info("{}, {}, {}", firstName, lastName, fileNames);
-
+		logger.info("Upload Location {}", uploadsPath.toAbsolutePath());
+		logger.info("Text fields {}, {}", firstName, lastName);
 		for (MultipartFile file : files) {
+			logger.info("Uploading file {}", file.getOriginalFilename());
 			Path targetPath = uploadsPath.resolve(requireNonNull(file.getOriginalFilename()));
 			Files.createDirectories(targetPath.getParent());
 			try (InputStream inputStream = file.getInputStream();
@@ -74,6 +67,7 @@ public class SampleFormController {
 
 	@GetMapping("/files/{name}")
 	public void getArchive(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+		logger.info("Downloading file {}", name);
 		Path file = uploadsPath.resolve(name);
 
 		if (!Files.exists(file)) {
