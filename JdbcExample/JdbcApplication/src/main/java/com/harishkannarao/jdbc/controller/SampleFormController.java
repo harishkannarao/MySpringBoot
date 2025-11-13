@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +39,7 @@ public class SampleFormController {
 	}
 
 	@PostMapping(path = "/form-submit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public RedirectView handleForm(
+	public ResponseEntity<Void> handleForm(
 		@RequestPart(value = "firstName", required = false) String firstName,
 		@RequestPart(value = "lastName", required = false) String lastName,
 		@RequestPart(value = "files", required = false) List<MultipartFile> files)
@@ -61,6 +64,8 @@ public class SampleFormController {
 				bufferedInputStream.transferTo(outputStream);
 			}
 		}
-		return new RedirectView("/sample_form.html");
+		return ResponseEntity.status(HttpStatus.FOUND)
+			.header(HttpHeaders.LOCATION, "/sample_form.html")
+			.build();
 	}
 }
