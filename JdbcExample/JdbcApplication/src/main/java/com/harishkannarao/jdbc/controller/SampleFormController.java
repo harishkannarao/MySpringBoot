@@ -1,17 +1,25 @@
 package com.harishkannarao.jdbc.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.BufferedInputStream;
@@ -67,5 +75,25 @@ public class SampleFormController {
 		return ResponseEntity.status(HttpStatus.FOUND)
 			.header(HttpHeaders.LOCATION, "/sample_form.html")
 			.build();
+	}
+
+	@GetMapping("/files/{name}")
+	public void getArchive(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+		Path file = uploadsPath.resolve(name);
+
+		if (!Files.exists(file)) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+
+		try (InputStream inputStream = Files.newInputStream(file);
+				 // buffer 16 bytes from input and write it to output, buffered input stream allows to control buffer size
+				 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 16 * 1024);
+				 OutputStream outputStream = response.getOutputStream()) {
+			response.setStatus(HttpStatus.OK.value());
+			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"%s\"".formatted(name));
+			response.setContentLengthLong(Files.size(file));
+			response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+			bufferedInputStream.transferTo(outputStream);
+		}
 	}
 }
