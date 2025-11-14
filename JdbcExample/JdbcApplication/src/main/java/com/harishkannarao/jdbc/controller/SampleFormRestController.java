@@ -24,19 +24,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
 @RestController
-public class SampleFormController {
+public class SampleFormRestController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final Path uploadsPath;
 
 	@Autowired
-	public SampleFormController(
+	public SampleFormRestController(
 		@Value("${app.uploads-dir}") String uploadsDir) {
 		this.uploadsPath = Paths.get(uploadsDir);
 	}

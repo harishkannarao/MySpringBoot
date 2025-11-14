@@ -1,0 +1,2 @@
+Sample file to verify form upload.
+Also to verify download of file.
