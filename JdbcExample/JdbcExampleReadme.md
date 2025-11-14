@@ -9,7 +9,7 @@ This module demonstrates accessing data using Jdbc template from within a Rest S
 
 Upload file
 
-    curl --header "Content-Type: multipart/form-data" \
+    curl -v --header "Content-Type: multipart/form-data" \
         -X POST "http://localhost:8180/form-submit" \
         -F "firstName=first" \
         -F "lastName=last" \
@@ -18,4 +18,4 @@ Upload file
 
 Download a file
 
-    curl -O "http://localhost:8180/files/video1.mp4"
+    curl -v -O "http://localhost:8180/files/video1.mp4"
