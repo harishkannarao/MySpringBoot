@@ -5,16 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,5 +56,24 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 			.toBodilessEntity();
 
 		assertThat(uploadResult.getStatusCode().value()).isEqualTo(302);
+
+		Path downloadedFile = Files.createTempDirectory("test" + UUID.randomUUID()).resolve("downloaded_form_file_upload_1.txt");
+		restClient.method(HttpMethod.GET)
+			.uri(fileDownloadEndpointUrl + "/{fileName}", Map.of("fileName", "form_file_upload_1.txt"))
+			.exchange((clientRequest, clientResponse) -> {
+				try (
+					InputStream resStream = clientResponse.getBody();
+					BufferedInputStream bufferedInputStream = new BufferedInputStream(resStream, 16 * 1024);
+					OutputStream outputStream = Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND)
+				) {
+					bufferedInputStream.transferTo(outputStream);
+				}
+				return null;
+			});
+
+		String downloadedFile1Content = Files.readString(downloadedFile);
+
+		assertThat(downloadedFile1Content)
+			.isEqualTo(file1Content);
 	}
 }
