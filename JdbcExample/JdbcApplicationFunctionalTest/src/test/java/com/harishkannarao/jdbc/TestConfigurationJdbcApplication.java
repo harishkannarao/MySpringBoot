@@ -114,6 +114,19 @@ public class TestConfigurationJdbcApplication {
 			.build();
 	}
 
+
+	@Bean
+	@Qualifier("nonBufferingRestClient")
+	public RestClient nonBufferingRestClient() {
+		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+		simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofMillis(3000));
+		simpleClientHttpRequestFactory.setReadTimeout(Duration.ofMillis(15000));
+
+		return RestClient.builder()
+			.requestFactory(simpleClientHttpRequestFactory)
+			.build();
+	}
+
 	@Bean
 	public WebDriverFactory createWebDriverFactorySingleton() {
 		return new WebDriverFactory();

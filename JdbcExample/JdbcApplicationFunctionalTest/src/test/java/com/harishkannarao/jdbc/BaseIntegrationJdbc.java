@@ -32,6 +32,9 @@ public abstract class BaseIntegrationJdbc {
 	@Qualifier("myTestRestClient")
 	protected RestClient restClient;
 	@Autowired
+	@Qualifier("nonBufferingRestClient")
+	protected RestClient nonBufferingRestClient;
+	@Autowired
 	protected DbFixturesPopulator dbFixturesPopulator;
 	@Autowired
 	protected WireMock wireMock;

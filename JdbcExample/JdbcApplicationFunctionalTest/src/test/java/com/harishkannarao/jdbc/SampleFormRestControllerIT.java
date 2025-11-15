@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,27 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 	@Value("${fileDownloadEndpointUrl}")
 	private URI fileDownloadEndpointUrl;
 
+	@Autowired
+	@Value("${app.uploads-dir}")
+	private String uploadsDir;
+
 	@Test
 	public void test_file_upload_and_download() throws IOException {
-		Path file1 = Paths.get(new ClassPathResource("form_file_upload_1.txt").getFile().getAbsolutePath());
-		Path file2 = Paths.get(new ClassPathResource("form_file_upload_2.txt").getFile().getAbsolutePath());
+		String fileName1 = "form_file_upload_1.txt";
+		String fileName2 = "form_file_upload_2.txt";
+
+		Path existingUploadedFile1 = Paths.get(uploadsDir).resolve(fileName1);
+		if (Files.exists(existingUploadedFile1)) {
+			Files.delete(existingUploadedFile1);
+		}
+
+		Path existingUploadedFile2 = Paths.get(uploadsDir).resolve(fileName2);
+		if (Files.exists(existingUploadedFile2)) {
+			Files.delete(existingUploadedFile2);
+		}
+
+		Path file1 = Paths.get(new ClassPathResource(fileName1).getFile().getAbsolutePath());
+		Path file2 = Paths.get(new ClassPathResource(fileName2).getFile().getAbsolutePath());
 		String file1Content = Files.readString(file1);
 		assertThat(file1Content).contains(
 			"Sample file to verify form upload",
@@ -48,7 +66,7 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 		parts.add("files", new FileSystemResource(file1));
 		parts.add("files", new FileSystemResource(file2));
 
-		ResponseEntity<Void> uploadResult = restClient.post()
+		ResponseEntity<Void> uploadResult = nonBufferingRestClient.post()
 			.uri(formUploadEndpointUrl)
 			.contentType(MediaType.MULTIPART_FORM_DATA)
 			.body(parts)
@@ -58,8 +76,8 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 		assertThat(uploadResult.getStatusCode().value()).isEqualTo(302);
 
 		Path downloadedFile = Files.createTempDirectory("test" + UUID.randomUUID()).resolve("downloaded_form_file_upload_1.txt");
-		restClient.method(HttpMethod.GET)
-			.uri(fileDownloadEndpointUrl + "/{fileName}", Map.of("fileName", "form_file_upload_1.txt"))
+		nonBufferingRestClient.method(HttpMethod.GET)
+			.uri(fileDownloadEndpointUrl + "/{fileName}", Map.of("fileName", fileName1))
 			.exchange((clientRequest, clientResponse) -> {
 				try (
 					InputStream resStream = clientResponse.getBody();
