@@ -1,11 +1,15 @@
 package com.harishkannarao.jdbc;
 
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.client5.http.fluent.Response;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,5 +97,44 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 
 		assertThat(downloadedFile1Content)
 			.isEqualTo(file1Content);
+	}
+
+	@Test
+	public void test_file_upload_download_using_streaming_apache_http_client() throws IOException {
+		String fileName1 = "form_file_upload_1.txt";
+		String fileName2 = "form_file_upload_2.txt";
+
+		Path existingUploadedFile1 = Paths.get(uploadsDir).resolve(fileName1);
+		if (Files.exists(existingUploadedFile1)) {
+			Files.delete(existingUploadedFile1);
+		}
+
+		Path existingUploadedFile2 = Paths.get(uploadsDir).resolve(fileName2);
+		if (Files.exists(existingUploadedFile2)) {
+			Files.delete(existingUploadedFile2);
+		}
+
+		Path file1 = Paths.get(new ClassPathResource(fileName1).getFile().getAbsolutePath());
+		Path file2 = Paths.get(new ClassPathResource(fileName2).getFile().getAbsolutePath());
+
+		try (
+			InputStream file1Stream = Files.newInputStream(file1);
+			BufferedInputStream file1BufStream = new BufferedInputStream(file1Stream, 16 * 1024);
+			InputStream file2Stream = Files.newInputStream(file2);
+			BufferedInputStream file2BufStream = new BufferedInputStream(file2Stream, 16 * 1024);
+		) {
+			final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			builder.addTextBody("firstName", "first");
+			builder.addTextBody("lastName", "last");
+			builder.addBinaryBody("files", file1BufStream, ContentType.TEXT_PLAIN, fileName1);
+			builder.addBinaryBody("files", file2BufStream, ContentType.TEXT_PLAIN, fileName2);
+			try (HttpEntity entity = builder.build()) {
+				Response response = Request.post(formUploadEndpointUrl)
+					.body(entity)
+					.execute();
+
+				assertThat(response.returnResponse().getCode()).isEqualTo(302);
+			}
+		}
 	}
 }
