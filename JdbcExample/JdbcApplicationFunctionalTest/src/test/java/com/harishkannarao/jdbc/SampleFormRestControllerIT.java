@@ -15,12 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -116,6 +119,7 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 
 		Path file1 = Paths.get(new ClassPathResource(fileName1).getFile().getAbsolutePath());
 		Path file2 = Paths.get(new ClassPathResource(fileName2).getFile().getAbsolutePath());
+		String file1Content = Files.readString(file1);
 
 		try (
 			InputStream file1Stream = Files.newInputStream(file1);
@@ -136,5 +140,26 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 				assertThat(response.returnResponse().getCode()).isEqualTo(302);
 			}
 		}
+
+		Path downloadedFile = Files.createTempDirectory("test" + UUID.randomUUID()).resolve("downloaded_form_file_upload_1.txt");
+		String url = UriComponentsBuilder.fromUri(fileDownloadEndpointUrl)
+			.pathSegment(fileName1)
+			.toUriString();
+		Request.get(url).execute().handleResponse(response -> {
+			assertThat(response.getCode()).isEqualTo(200);
+			try (
+				InputStream resStream = response.getEntity().getContent();
+				BufferedInputStream bufferedInputStream = new BufferedInputStream(resStream, 16 * 1024);
+				OutputStream outputStream = Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND)
+			) {
+				bufferedInputStream.transferTo(outputStream);
+			}
+			return null;
+		});
+
+		String downloadedFile1Content = Files.readString(downloadedFile);
+
+		assertThat(downloadedFile1Content)
+			.isEqualTo(file1Content);
 	}
 }
