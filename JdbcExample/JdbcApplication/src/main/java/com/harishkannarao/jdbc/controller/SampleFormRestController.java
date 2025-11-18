@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,11 +52,12 @@ public class SampleFormRestController {
 			logger.info("Uploading file {}", file.getOriginalFilename());
 			Path targetPath = uploadsPath.resolve(requireNonNull(file.getOriginalFilename()));
 			Files.createDirectories(targetPath.getParent());
-			try (InputStream inputStream = file.getInputStream();
-					 // buffer 16 bytes from input and write it to output, buffered input stream allows to control buffer size
-					 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 16 * 1024);
-					 OutputStream outputStream = Files.newOutputStream(targetPath)) {
-				bufferedInputStream.transferTo(outputStream);
+			// buffer 16 bytes from input and write it to output, buffered input and output stream allows to control buffer size
+			try (
+					 BufferedInputStream inputStream = new BufferedInputStream(file.getInputStream(), 16 * 1024);
+					 BufferedOutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(targetPath), 16 * 1024)
+			) {
+				inputStream.transferTo(outputStream);
 			}
 		}
 		return ResponseEntity.status(HttpStatus.FOUND)
@@ -72,15 +74,14 @@ public class SampleFormRestController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 
-		try (InputStream inputStream = Files.newInputStream(file);
-				 // buffer 16 bytes from input and write it to output, buffered input stream allows to control buffer size
-				 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 16 * 1024);
-				 OutputStream outputStream = response.getOutputStream()) {
+		// buffer 16 bytes from input and write it to output, buffered input and output stream allows to control buffer size
+		try (BufferedInputStream inputStream = new BufferedInputStream(Files.newInputStream(file), 16 * 1024);
+				 BufferedOutputStream outputStream = new BufferedOutputStream(response.getOutputStream(), 16 * 1024)) {
 			response.setStatus(HttpStatus.OK.value());
 			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"%s\"".formatted(name));
 			response.setContentLengthLong(Files.size(file));
 			response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-			bufferedInputStream.transferTo(outputStream);
+			inputStream.transferTo(outputStream);
 		}
 	}
 }

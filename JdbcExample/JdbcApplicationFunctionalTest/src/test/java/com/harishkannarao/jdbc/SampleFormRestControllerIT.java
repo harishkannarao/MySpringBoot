@@ -15,15 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -87,11 +86,10 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 			.uri(fileDownloadEndpointUrl + "/{fileName}", Map.of("fileName", fileName1))
 			.exchange((clientRequest, clientResponse) -> {
 				try (
-					InputStream resStream = clientResponse.getBody();
-					BufferedInputStream bufferedInputStream = new BufferedInputStream(resStream, 16 * 1024);
-					OutputStream outputStream = Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND)
+					BufferedInputStream inputStream = new BufferedInputStream(clientResponse.getBody(), 16 * 1024);
+					BufferedOutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND), 16 * 1024)
 				) {
-					bufferedInputStream.transferTo(outputStream);
+					inputStream.transferTo(outputStream);
 				}
 				return null;
 			});
@@ -122,10 +120,8 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 		String file1Content = Files.readString(file1);
 
 		try (
-			InputStream file1Stream = Files.newInputStream(file1);
-			BufferedInputStream file1BufStream = new BufferedInputStream(file1Stream, 16 * 1024);
-			InputStream file2Stream = Files.newInputStream(file2);
-			BufferedInputStream file2BufStream = new BufferedInputStream(file2Stream, 16 * 1024);
+			BufferedInputStream file1BufStream = new BufferedInputStream(Files.newInputStream(file1), 16 * 1024);
+			BufferedInputStream file2BufStream = new BufferedInputStream(Files.newInputStream(file2), 16 * 1024);
 		) {
 			final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.addTextBody("firstName", "first");
@@ -148,9 +144,8 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 		Request.get(url).execute().handleResponse(response -> {
 			assertThat(response.getCode()).isEqualTo(200);
 			try (
-				InputStream resStream = response.getEntity().getContent();
-				BufferedInputStream bufferedInputStream = new BufferedInputStream(resStream, 16 * 1024);
-				OutputStream outputStream = Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND)
+				BufferedInputStream bufferedInputStream = new BufferedInputStream(response.getEntity().getContent(), 16 * 1024);
+				BufferedOutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(downloadedFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND), 16 * 1024)
 			) {
 				bufferedInputStream.transferTo(outputStream);
 			}
