@@ -61,7 +61,7 @@ public class SampleFormRestController {
 			}
 		}
 		return ResponseEntity.status(HttpStatus.FOUND)
-			.header(HttpHeaders.LOCATION, "/sample_form.html")
+			.header(HttpHeaders.LOCATION, "/sample_form_submit_success.html")
 			.build();
 	}
 
