@@ -33,18 +33,18 @@ public class MockingStaticExampleTest {
 
 	@Test
 	public void test_mock_static_with_arguments() {
-		assertThat(Instant.ofEpochSecond(1000)).isEqualTo("1970-01-01T00:16:40Z");
+		assertThat(Instant.ofEpochSecond(1000L)).isEqualTo("1970-01-01T00:16:40Z");
 
 		Instant mockedValue = Instant.parse("2024-04-01T10:20:30Z");
 		try (MockedStatic<Instant> utilities = Mockito.mockStatic(Instant.class)) {
-			utilities.when(() -> Instant.ofEpochSecond(1000)).thenReturn(mockedValue);
-			assertThat(Instant.ofEpochSecond(1000)).isEqualTo(mockedValue);
+			utilities.when(() -> Instant.ofEpochSecond(Mockito.eq(1000L))).thenReturn(mockedValue);
+			assertThat(Instant.ofEpochSecond(1000L)).isEqualTo(mockedValue);
 
 			utilities.verify(
-				() -> Instant.ofEpochSecond(1000),
+				() -> Instant.ofEpochSecond(Mockito.eq(1000L)),
 				times(1));
 		}
 
-		assertThat(Instant.ofEpochSecond(1000)).isEqualTo("1970-01-01T00:16:40Z");
+		assertThat(Instant.ofEpochSecond(1000L)).isEqualTo("1970-01-01T00:16:40Z");
 	}
 }
