@@ -37,11 +37,15 @@ public class MockingStaticExampleTest {
 
 		Instant mockedValue = Instant.parse("2024-04-01T10:20:30Z");
 		try (MockedStatic<Instant> utilities = Mockito.mockStatic(Instant.class)) {
-			utilities.when(() -> Instant.ofEpochSecond(Mockito.eq(1000L))).thenReturn(mockedValue);
+			utilities.when(() -> Instant.ofEpochSecond(Mockito.anyLong())).thenReturn(mockedValue);
+
 			assertThat(Instant.ofEpochSecond(1000L)).isEqualTo(mockedValue);
 
 			utilities.verify(
-				() -> Instant.ofEpochSecond(Mockito.eq(1000L)),
+				() -> Instant.ofEpochSecond(Mockito.longThat(aLong -> {
+					assertThat(aLong).isEqualTo(1000L);
+					return true;
+				})),
 				times(1));
 		}
 
