@@ -3,26 +3,31 @@ package com.harishkannarao.properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.TestSocketUtils;
 import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @SpringBootTest(
-        classes = {
-                PropertiesApplication.class,
-                TestConfigurationPropertiesApplication.class
-        },
-        webEnvironment = DEFINED_PORT
+	webEnvironment = DEFINED_PORT,
+	classes = {PropertiesApplication.class}
 )
-@ActiveProfiles(value = {"default", "properties-test"})
+@Import({TestConfigurationPropertiesApplication.class})
+@ActiveProfiles(value = {"default"})
+@TestPropertySource(
+	properties = {
+		"properties.endpoint.url=http://localhost:${server.port}",
+	}
+)
 public abstract class BaseIntegrationWithDefaultProperties {
-    @Autowired
-    @Qualifier("myTestRestTemplate")
-    protected RestTemplate testRestTemplate;
+	@Autowired
+	@Qualifier("myTestRestTemplate")
+	protected RestTemplate testRestTemplate;
 
 	@DynamicPropertySource
 	static void registerTestProperties(DynamicPropertyRegistry registry) {
