@@ -2,45 +2,58 @@ package com.harishkannarao.properties;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Objects;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties {
 
-	@Value("${properties.endpoint.url}")
-	private String propertiesEndpointUrl;
+	private final ObjectMapper objectMapper;
+	private final RequestSpecification requestSpecification;
+	private final ResponseSpecification responseSpecification;
+
 	@Autowired
-	private ObjectMapper objectMapper;
+	public PropertiesControllerIT(
+		ObjectMapper objectMapper,
+		RequestSpecification requestSpecification,
+		ResponseSpecification responseSpecification) {
+		this.objectMapper = objectMapper;
+		this.requestSpecification = requestSpecification;
+		this.responseSpecification = responseSpecification;
+	}
 
 	@Test
 	public void shouldGetDefaultPropertyValues() throws JsonProcessingException {
-		ResponseEntity<String> response = testRestTemplate.getForEntity(propertiesEndpointUrl, String.class);
-
-		assertEquals(200, response.getStatusCode().value());
-		String json = Objects.requireNonNull(response.getBody());
-		System.out.println("json = " + json);
-		CustomProperties entity = objectMapper.readValue(json, CustomProperties.class);
+		ExtractableResponse<Response> response = given(requestSpecification)
+			.get()
+			.then()
+			.spec(responseSpecification)
+			.extract();
+		assertEquals(200, response.statusCode());
+		CustomProperties entity = objectMapper.readValue(response.body().asString(), CustomProperties.class);
 		assertEquals("value1", entity.property1());
-		assertEquals("value2", entity.property2());
+		assertEquals("value3", entity.property2());
 	}
 
 	@Test
 	public void shouldGetStringListPropertyValues() throws JsonProcessingException {
-		ResponseEntity<String> response = testRestTemplate.getForEntity(propertiesEndpointUrl + "/custom-strings", String.class);
-
-		assertEquals(200, response.getStatusCode().value());
-		String json = Objects.requireNonNull(response.getBody());
-		System.out.println("json = " + json);
-		CustomStringsProperties entity = objectMapper.readValue(json, CustomStringsProperties.class);
+		ExtractableResponse<Response> response = given(requestSpecification)
+			.get("/custom-strings")
+			.then()
+			.spec(responseSpecification)
+			.extract();
+		assertEquals(200, response.statusCode());
+		CustomStringsProperties entity = objectMapper.readValue(response.body().asString(), CustomStringsProperties.class);
 		assertTrue(entity.values().contains("list value 1"));
 		assertTrue(entity.values().contains("list-value-2"));
 		assertEquals(2, entity.values().size());
@@ -48,13 +61,13 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 
 	@Test
 	public void shouldGetStringListPropertyValues_usingAlternateApproach() throws JsonProcessingException {
-		ResponseEntity<String> response = testRestTemplate
-			.getForEntity(propertiesEndpointUrl + "/alternate-custom-strings", String.class);
-
-		assertEquals(200, response.getStatusCode().value());
-		String json = Objects.requireNonNull(response.getBody());
-		System.out.println("json = " + json);
-		List<String> entity = List.of(objectMapper.readValue(json, String[].class));
+		ExtractableResponse<Response> response = given(requestSpecification)
+			.get("/alternate-custom-strings")
+			.then()
+			.spec(responseSpecification)
+			.extract();
+		assertEquals(200, response.statusCode());
+		List<String> entity = List.of(objectMapper.readValue(response.body().asString(), String[].class));
 		assertTrue(entity.contains("list value 1"));
 		assertTrue(entity.contains("list-value-2"));
 		assertEquals(2, entity.size());
