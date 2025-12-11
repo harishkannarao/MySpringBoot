@@ -1,8 +1,5 @@
 package com.harishkannarao.rest.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.harishkannarao.rest.client.ThirdPartyRestQuoteClient;
 import com.harishkannarao.rest.domain.Quote;
 import com.harishkannarao.rest.domain.Value;
@@ -13,6 +10,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.JsonNodeType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -21,8 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class QuoteControllerTest {
 
-	private final ObjectMapper objectMapper = new ObjectMapper()
-		.findAndRegisterModules();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	private final ThirdPartyRestQuoteClient thirdPartyRestQuoteClient = mock();
 	private final QuoteController quoteController = new QuoteController(thirdPartyRestQuoteClient);

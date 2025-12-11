@@ -1,6 +1,5 @@
 package com.harishkannarao.rest.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harishkannarao.rest.client.ThirdPartyPingRestClient;
 import com.harishkannarao.rest.client.ThirdPartyRestQuoteClient;
 import com.harishkannarao.rest.filter.ErrorSimulationFilter;
@@ -8,15 +7,16 @@ import com.harishkannarao.rest.util.PropertiesBasedFeatureToggler;
 import com.harishkannarao.rest.util.FeatureToggler;
 import com.harishkannarao.rest.util.TestFeatureToggler;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.Ordered;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 

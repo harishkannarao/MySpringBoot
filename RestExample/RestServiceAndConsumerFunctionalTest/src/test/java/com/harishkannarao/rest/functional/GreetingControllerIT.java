@@ -1,11 +1,11 @@
 package com.harishkannarao.rest.functional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.harishkannarao.rest.domain.Greeting;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Arrays;
 import java.util.HashMap;

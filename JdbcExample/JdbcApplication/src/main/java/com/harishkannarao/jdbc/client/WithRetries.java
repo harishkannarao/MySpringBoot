@@ -1,19 +1,17 @@
 package com.harishkannarao.jdbc.client;
 
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.web.client.HttpServerErrorException;
 
 @Retryable(
-	maxAttemptsExpression="#{${app.rest-client.retry.max-retry}}",
-	backoff=@Backoff(
-		delayExpression="#{${app.rest-client.retry.delay}}",
-		maxDelayExpression="#{${app.rest-client.retry.max-delay}}",
-		multiplierExpression = "#{${app.rest-client.retry.multiplier}}"),
-	noRetryFor = {
+	maxRetriesString="#{${app.rest-client.retry.max-retry}}",
+	delayString="#{${app.rest-client.retry.delay}}",
+	maxDelayString="#{${app.rest-client.retry.max-delay}}",
+	multiplierString="#{${app.rest-client.retry.multiplier}}",
+	excludes = {
 		HttpServerErrorException.InternalServerError.class
 	},
-	retryFor = {
+	includes = {
 		HttpServerErrorException.class
 	})
 public interface WithRetries {

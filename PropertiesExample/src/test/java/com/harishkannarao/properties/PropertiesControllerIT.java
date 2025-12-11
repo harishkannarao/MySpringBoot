@@ -1,13 +1,12 @@
 package com.harishkannarao.properties;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 	}
 
 	@Test
-	public void shouldGetDefaultPropertyValues() throws JsonProcessingException {
+	public void shouldGetDefaultPropertyValues() {
 		ExtractableResponse<Response> response = given(requestSpecification)
 			.get()
 			.then()
@@ -46,7 +45,7 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 	}
 
 	@Test
-	public void shouldGetStringListPropertyValues() throws JsonProcessingException {
+	public void shouldGetStringListPropertyValues() {
 		ExtractableResponse<Response> response = given(requestSpecification)
 			.get("/custom-strings")
 			.then()
@@ -60,7 +59,7 @@ public class PropertiesControllerIT extends BaseIntegrationWithDefaultProperties
 	}
 
 	@Test
-	public void shouldGetStringListPropertyValues_usingAlternateApproach() throws JsonProcessingException {
+	public void shouldGetStringListPropertyValues_usingAlternateApproach() {
 		ExtractableResponse<Response> response = given(requestSpecification)
 			.get("/alternate-custom-strings")
 			.then()
