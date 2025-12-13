@@ -1,0 +1,16 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+app:
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:h2:mem:testdb;MODE=PostgreSQL;INIT=CREATE DOMAIN IF NOT EXISTS JSONB AS JSON;IGNORECASE=TRUE;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;"
+      username: "sa"
+      password: ""
+      maximum-pool-size: 30
+      driver:
+        class:
+          name: org.h2.Driver
