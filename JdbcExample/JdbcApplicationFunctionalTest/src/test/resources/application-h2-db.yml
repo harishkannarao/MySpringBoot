@@ -4,6 +4,17 @@ spring:
       enabled: true
       path: /h2-console
 
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            # view the generated Prepared SQL statement
+            JdbcTemplate: DEBUG
+            # view the values passed to the Prepared SQL statement for substitution
+            StatementCreatorUtils: TRACE
+
 app:
   datasource:
     hikari:
