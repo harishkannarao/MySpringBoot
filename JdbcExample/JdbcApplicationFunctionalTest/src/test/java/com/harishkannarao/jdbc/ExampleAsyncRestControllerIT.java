@@ -21,7 +21,7 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
 
     private final String fireAndForgetEndpointUrl;
     private final String executeAndWaitEndpointUrl;
-    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(ExampleAsyncRestController.class.getName(), Level.INFO);
+    private final LogbackTestListAppender logbackTestListAppender = new LogbackTestListAppender(ExampleAsyncRestController.class.getName(), Level.INFO);
 
     @Autowired
     public ExampleAsyncRestControllerIT(
@@ -33,12 +33,12 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
 
     @BeforeEach
     public void setUp() {
-        logbackTestAppender.startLogsCapture();
+        logbackTestListAppender.startLogsCapture();
     }
 
     @AfterEach
     public void tearDown() {
-        logbackTestAppender.stopLogsCapture();
+        logbackTestListAppender.stopLogsCapture();
     }
 
     @Test
@@ -56,21 +56,21 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         assertThat(requestId).isNotBlank();
 
         await().atMost(Duration.ofSeconds(6))
-                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                .untilAsserted(() -> assertThat(logbackTestListAppender.getLogs())
                         .extracting(ILoggingEvent::getFormattedMessage)
                         .anySatisfy(s -> assertThat(s).contains("Success for id: 2"))
                         .anySatisfy(s -> assertThat(s).contains("Invalid id: 3"))
                         .anySatisfy(s -> assertThat(s).contains("Success for id: 4")));
 
         await().atMost(Duration.ofSeconds(6))
-                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                .untilAsserted(() -> assertThat(logbackTestListAppender.getLogs())
                         .filteredOn(iLoggingEvent -> iLoggingEvent.getThrowableProxy() != null)
                         .extracting(ILoggingEvent::getThrowableProxy)
                         .extracting(IThrowableProxy::getClassName)
                         .anySatisfy(s -> assertThat(s).contains("java.util.concurrent.TimeoutException")));
 
         await().atMost(Duration.ofSeconds(6))
-                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                .untilAsserted(() -> assertThat(logbackTestListAppender.getLogs())
                         .extracting(ILoggingEvent::getMDCPropertyMap)
                         .allSatisfy(mdc -> assertThat(mdc.get("request_id")).isEqualTo(requestId)));
     }
@@ -95,7 +95,7 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
         assertThat(requestId).isNotBlank();
 
         await().atMost(Duration.ofSeconds(8))
-                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                .untilAsserted(() -> assertThat(logbackTestListAppender.getLogs())
                         .extracting(ILoggingEvent::getFormattedMessage)
                         .anySatisfy(s -> assertThat(s).contains("Calculating for: 0"))
                         .anySatisfy(s -> assertThat(s).contains("Calculating for: 1"))
@@ -105,7 +105,7 @@ public class ExampleAsyncRestControllerIT extends BaseIntegrationJdbc {
                         .anySatisfy(s -> assertThat(s).contains("Exception for input: 1")));
 
         await().atMost(Duration.ofSeconds(8))
-                .untilAsserted(() -> assertThat(logbackTestAppender.getLogs())
+                .untilAsserted(() -> assertThat(logbackTestListAppender.getLogs())
                         .extracting(ILoggingEvent::getMDCPropertyMap)
                         .allSatisfy(mdc -> assertThat(mdc.get("request_id")).isEqualTo(requestId)));
     }

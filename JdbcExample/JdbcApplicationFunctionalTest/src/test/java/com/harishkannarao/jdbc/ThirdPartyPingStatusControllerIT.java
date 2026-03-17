@@ -19,16 +19,16 @@ public class ThirdPartyPingStatusControllerIT extends BaseIntegrationJdbc {
     @Value("${thirdparty.ping.url}")
     String thirdPartyPingRestUrl;
 
-    private final LogbackTestAppender logbackTestAppender = new LogbackTestAppender(RestClientAccessLoggingInterceptor.class.getName(), Level.INFO);
+    private final LogbackTestListAppender logbackTestListAppender = new LogbackTestListAppender(RestClientAccessLoggingInterceptor.class.getName(), Level.INFO);
 
     @BeforeEach
     public void setUp() {
-        logbackTestAppender.startLogsCapture();
+        logbackTestListAppender.startLogsCapture();
     }
 
     @AfterEach
     public void tearDown() {
-        logbackTestAppender.stopLogsCapture();
+        logbackTestListAppender.stopLogsCapture();
     }
 
 
@@ -71,7 +71,7 @@ public class ThirdPartyPingStatusControllerIT extends BaseIntegrationJdbc {
         assertThat(status.status()).isEqualTo(204);
         assertThat(status.url()).isEqualTo(thirdPartyPingRestUrl);
 
-        assertThat(logbackTestAppender.getLogs())
+        assertThat(logbackTestListAppender.getLogs())
                         .extracting(ILoggingEvent::getFormattedMessage)
                                 .anySatisfy(s -> assertThat(s).matches("REST_CLIENT_ACCESS_LOG .* 204 GET http://localhost:.*/ping"));
     }
