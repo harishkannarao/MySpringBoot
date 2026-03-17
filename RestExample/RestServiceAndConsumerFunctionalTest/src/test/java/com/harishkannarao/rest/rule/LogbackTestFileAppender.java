@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 
-public class LogbackTestAppender {
+public class LogbackTestFileAppender {
     private static final String LOGGING_PATTERN = "%-5level %message%n";
     private static final String LOG_FILE_LOCATION = "target/logs";
     private static final String LOG_FILE_PREFIX = "test_log_";
@@ -33,11 +33,11 @@ public class LogbackTestAppender {
     private FileAppender<ILoggingEvent> testAppender;
     private String logFile;
 
-    public LogbackTestAppender(String loggerName) {
+    public LogbackTestFileAppender(String loggerName) {
         this(loggerName, LOGGING_PATTERN, LOG_FILE_LOCATION, LOG_FILE_PREFIX);
     }
 
-    public LogbackTestAppender(String loggerName, String loggingPattern, String logFileLocation, String logFilePrefix) {
+    public LogbackTestFileAppender(String loggerName, String loggingPattern, String logFileLocation, String logFilePrefix) {
         this.logFileLocation = logFileLocation;
         this.logFilePrefix = logFilePrefix;
 
