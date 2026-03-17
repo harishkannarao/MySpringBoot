@@ -21,6 +21,7 @@
         <springdoc.version>3.0.0</springdoc.version>
         <flyway.version>11.19.0</flyway.version>
         <postgresql.driver.version>42.7.8</postgresql.driver.version>
+        <h2.version>2.3.232</h2.version>
         <selenium.version>4.14.1</selenium.version>
         <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <guava.version>33.5.0-jre</guava.version>
@@ -241,6 +242,12 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.driver.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
             </dependency>
 
             <dependency>

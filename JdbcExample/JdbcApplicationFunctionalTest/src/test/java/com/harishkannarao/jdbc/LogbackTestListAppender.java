@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
-public class LogbackTestAppender {
+public class LogbackTestListAppender {
     private final Logger logger;
     private final ListAppender<ILoggingEvent> testAppender;
     private final Level existingLevel;
     private final Level desiredLevel;
 
-    public LogbackTestAppender(String loggerName, Level desiredLevel) {
+    public LogbackTestListAppender(String loggerName, Level desiredLevel) {
         logger = (Logger) LoggerFactory.getLogger(loggerName);
         this.desiredLevel = desiredLevel;
         testAppender = new ListAppender<>();
@@ -35,6 +35,6 @@ public class LogbackTestAppender {
     }
 
     public List<ILoggingEvent> getLogs() {
-        return testAppender.list;
+        return List.copyOf(testAppender.list);
     }
 }

@@ -3,12 +3,10 @@ package com.harishkannarao.jdbc.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.harishkannarao.jdbc.client.factory.HttpInterfaceFactory;
 import com.harishkannarao.jdbc.client.factory.RestClientFactory;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,27 +19,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 public class SampleHttpInterfaceTest {
-	private final WireMockServer wireMockServer = new WireMockServer(0);
-	private final RestClientFactory restClientFactory = new RestClientFactory(
-		200, 200);
-	private final HttpInterfaceFactory httpInterfaceFactory = new HttpInterfaceFactory(
-		restClientFactory);
-	private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-	private SampleHttpInterface sampleHttpInterface;
-	private WireMock wireMock;
-
-	@BeforeEach
-	public void setUp() {
-		wireMockServer.start();
-		wireMockServer.resetAll();
-		wireMock = new WireMock(wireMockServer.port());
-		sampleHttpInterface = httpInterfaceFactory.createClient(SampleHttpInterface.class, wireMockServer.baseUrl());
-	}
+	private final WireMockServer wireMockServer = createWireMockServer();
+	private final HttpInterfaceFactory httpInterfaceFactory
+		= new HttpInterfaceFactory(new RestClientFactory(200, 200));
+	private final ObjectMapper objectMapper
+		= new ObjectMapper().findAndRegisterModules();
+	private final SampleHttpInterface sampleHttpInterface
+		= httpInterfaceFactory.createClient(SampleHttpInterface.class, wireMockServer.baseUrl());
 
 	@AfterEach
 	public void tearDown() {
@@ -51,7 +39,7 @@ public class SampleHttpInterfaceTest {
 	@Test
 	public void getCustomerDetails() {
 		String customerId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			get(urlPathEqualTo("/customer/" + customerId))
 				.willReturn(
 					aResponse()
@@ -73,7 +61,7 @@ public class SampleHttpInterfaceTest {
 	@Test
 	public void getCustomerDetails_throwsException_withoutRetry_onInternalServerError() {
 		String customerId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			get(urlPathEqualTo("/customer/" + customerId))
 				.willReturn(
 					aResponse()
@@ -83,11 +71,11 @@ public class SampleHttpInterfaceTest {
 		);
 
 		HttpServerErrorException.InternalServerError result = catchThrowableOfType(
-			() -> sampleHttpInterface.getCustomerDetails(customerId),
-			HttpServerErrorException.InternalServerError.class);
+			HttpServerErrorException.InternalServerError.class,
+			() -> sampleHttpInterface.getCustomerDetails(customerId));
 		assertThat(result).isNotNull();
 
-		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
+		List<LoggedRequest> loggedRequests = wireMockServer.findAll(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
 		assertThat(loggedRequests)
 			.hasSize(1);
 	}
@@ -96,7 +84,7 @@ public class SampleHttpInterfaceTest {
 	public void getOptionalOrderDetails_returns_details() {
 		String customerId = UUID.randomUUID().toString();
 		String orderId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
 				.willReturn(
 					aResponse()
@@ -118,7 +106,7 @@ public class SampleHttpInterfaceTest {
 		assertThat(response.isPresent()).isTrue();
 		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
 
-		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+		List<LoggedRequest> requests = wireMockServer.findAll(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
 
 		assertThat(requests)
@@ -137,7 +125,7 @@ public class SampleHttpInterfaceTest {
 	public void getOptionalOrderDetails_returns_empty_for_404() {
 		String customerId = UUID.randomUUID().toString();
 		String orderId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
 				.willReturn(
 					aResponse()
@@ -154,7 +142,7 @@ public class SampleHttpInterfaceTest {
 
 		assertThat(response).isEmpty();
 
-		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+		List<LoggedRequest> requests = wireMockServer.findAll(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
 
 		assertThat(requests)
@@ -173,7 +161,7 @@ public class SampleHttpInterfaceTest {
 	public void getCustomerOrderDetails() {
 		String customerId = UUID.randomUUID().toString();
 		String orderId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			get(urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId))
 				.willReturn(
 					aResponse()
@@ -196,7 +184,7 @@ public class SampleHttpInterfaceTest {
 		JsonNode body = Objects.requireNonNull(response.getBody());
 		assertThat(body.get("orderDescription").asText()).isEqualTo("test-order");
 
-		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
+		List<LoggedRequest> requests = wireMockServer.findAll(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
 
 		assertThat(requests)
@@ -214,7 +202,7 @@ public class SampleHttpInterfaceTest {
 	@Test
 	public void createCustomerOrder() throws Exception {
 		String customerId = UUID.randomUUID().toString();
-		wireMock.register(
+		wireMockServer.stubFor(
 			post(urlPathEqualTo("/customer/" + customerId + "/orders"))
 				.willReturn(
 					aResponse()
@@ -232,7 +220,7 @@ public class SampleHttpInterfaceTest {
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 
-		List<LoggedRequest> requests = wireMock.find(postRequestedFor(
+		List<LoggedRequest> requests = wireMockServer.findAll(postRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders")));
 
 		assertThat(requests)
@@ -247,5 +235,12 @@ public class SampleHttpInterfaceTest {
 					.isEqualTo(requestBody);
 			})
 			.hasSize(1);
+	}
+
+	private static WireMockServer createWireMockServer() {
+		WireMockServer wireMockServer = new WireMockServer(0);
+		wireMockServer.start();
+		wireMockServer.resetAll();
+		return wireMockServer;
 	}
 }
