@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.times;
 
-public class MockingStaticExampleTest {
+public class MockingStaticTryWithResourcesTest {
 
 	@Test
 	public void test_mock_static_without_arguments() {
