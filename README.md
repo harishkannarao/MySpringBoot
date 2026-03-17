@@ -24,7 +24,7 @@ Docker dependencies needs to be started using docker compose before the build
 
 ### Running full build
 
-Start Postgresql database through docker (steps given above) and execute
+Start PostgreSql database through docker (steps given above) and execute
     
     mvn clean install
 

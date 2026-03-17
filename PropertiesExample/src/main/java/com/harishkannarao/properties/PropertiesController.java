@@ -27,17 +27,17 @@ public class PropertiesController {
 		this.customString = customString;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
 	public CustomProperties getCustomProperties() {
 		return customProperties;
 	}
 
-	@RequestMapping(value = "/custom-strings", method = RequestMethod.GET)
+	@RequestMapping(value = "/custom-strings", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
 	public CustomStringsProperties getStringListProperties() {
 		return customStringsProperties;
 	}
 
-	@RequestMapping(value = "/alternate-custom-strings", method = RequestMethod.GET)
+	@RequestMapping(value = "/alternate-custom-strings", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
 	public List<String> getAltStringListProperties() {
 		return customString;
 	}
