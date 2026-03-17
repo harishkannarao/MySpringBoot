@@ -28,7 +28,7 @@
         <common.io.version>2.21.0</common.io.version>
         <wiremock.version>3.13.2</wiremock.version>
         <apache.httpclient.version>5.5.1</apache.httpclient.version>
-        <rest-assured.version>5.5.6</rest-assured.version>
+        <rest-assured.version>6.0.0</rest-assured.version>
     </properties>
 
     <build>
