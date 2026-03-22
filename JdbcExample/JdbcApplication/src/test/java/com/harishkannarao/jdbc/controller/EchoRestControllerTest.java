@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.harishkannarao.jdbc.domain.DeeplyImmutableRecord;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,8 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class EchoRestControllerTest {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-		.findAndRegisterModules();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final EchoRestController echoRestController = new EchoRestController();

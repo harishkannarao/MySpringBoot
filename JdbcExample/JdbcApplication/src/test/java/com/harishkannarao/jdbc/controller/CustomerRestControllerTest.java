@@ -1,6 +1,6 @@
 package com.harishkannarao.jdbc.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.harishkannarao.jdbc.dao.CustomerDao;
 import com.harishkannarao.jdbc.domain.CreateCustomerRequestDto;
 import com.harishkannarao.jdbc.domain.Customer;
@@ -23,8 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class CustomerRestControllerTest {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-		.findAndRegisterModules();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	private final CustomerDao customerDao = mock();
 	private final CustomersRestController customersRestController =

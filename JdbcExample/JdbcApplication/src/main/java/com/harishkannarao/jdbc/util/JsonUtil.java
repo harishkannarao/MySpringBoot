@@ -1,9 +1,8 @@
 package com.harishkannarao.jdbc.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.postgresql.util.PGobject;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.sql.SQLException;
 
@@ -18,20 +17,12 @@ public class JsonUtil {
 	}
 
 	public String toJson(Object input) {
-		try {
-			return objectMapper.writeValueAsString(input);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
+		return objectMapper.writeValueAsString(input);
 	}
 
 
 	public <T> T fromJson(String input, Class<T> type) {
-		try {
-			return objectMapper.readValue(input, type);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
+		return objectMapper.readValue(input, type);
 	}
 
 	public PGobject toPgObject(Object input) {

@@ -29,6 +29,7 @@
         <wiremock.version>3.13.2</wiremock.version>
         <apache.httpclient.version>5.5.1</apache.httpclient.version>
         <rest-assured.version>6.0.0</rest-assured.version>
+        <jackson.version.annotations>2.20</jackson.version.annotations>
     </properties>
 
     <build>
@@ -204,6 +205,12 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version.annotations}</version>
             </dependency>
 
             <dependency>

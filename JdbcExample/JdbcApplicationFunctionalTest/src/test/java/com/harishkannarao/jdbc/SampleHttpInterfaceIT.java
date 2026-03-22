@@ -1,7 +1,5 @@
 package com.harishkannarao.jdbc;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.harishkannarao.jdbc.client.SampleHttpInterface;
 import org.junit.jupiter.api.Test;
@@ -10,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
-		assertThat(body.get("name").asText()).isEqualTo("test-customer");
+		assertThat(body.get("name").asString()).isEqualTo("test-customer");
 	}
 
 	@Test
@@ -61,8 +61,9 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		);
 
 		HttpServerErrorException.InternalServerError result = catchThrowableOfType(
-			() -> sampleHttpInterface.getCustomerDetails(customerId),
-			HttpServerErrorException.InternalServerError.class);
+			HttpServerErrorException.InternalServerError.class,
+			() -> sampleHttpInterface.getCustomerDetails(customerId)
+		);
 		assertThat(result).isNotNull();
 
 		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
@@ -112,8 +113,8 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		headers.add("request-id", UUID.randomUUID().toString());
 		headers.add("correlation-id", UUID.randomUUID().toString());
 
-		ResponseEntity<JsonNode> response = sampleHttpInterface
-			.getOrderDetails(headers, customerId, orderId);
+		ResponseEntity<JsonNode> response = sampleHttpInterface.getOrderDetails(
+			customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -155,7 +156,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		headers.add("correlation-id", UUID.randomUUID().toString());
 
 		Optional<JsonNode> response = sampleHttpInterface
-			.getOptionalOrderDetails(headers, customerId, orderId);
+			.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response.isPresent()).isTrue();
 		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
@@ -192,7 +193,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		headers.add("correlation-id", UUID.randomUUID().toString());
 
 		Optional<JsonNode> response = sampleHttpInterface
-			.getOptionalOrderDetails(headers, customerId, orderId);
+			.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response).isEmpty();
 
@@ -230,7 +231,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		HttpServerErrorException result = catchThrowableOfType(
 			HttpServerErrorException.class,
 			() -> sampleHttpInterface
-				.getOptionalOrderDetails(headers, customerId, orderId));
+				.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id")));
 
 		assertThat(result.getStatusCode().value()).isEqualTo(502);
 

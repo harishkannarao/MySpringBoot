@@ -1,7 +1,5 @@
 package com.harishkannarao.jdbc.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.harishkannarao.jdbc.client.factory.HttpInterfaceFactory;
@@ -12,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,8 +26,7 @@ public class SampleHttpInterfaceTest {
 	private final WireMockServer wireMockServer = createWireMockServer();
 	private final HttpInterfaceFactory httpInterfaceFactory
 		= new HttpInterfaceFactory(new RestClientFactory(200, 200));
-	private final ObjectMapper objectMapper
-		= new ObjectMapper().findAndRegisterModules();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SampleHttpInterface sampleHttpInterface
 		= httpInterfaceFactory.createClient(SampleHttpInterface.class, wireMockServer.baseUrl());
 
@@ -55,7 +54,7 @@ public class SampleHttpInterfaceTest {
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
-		assertThat(body.get("name").asText()).isEqualTo("test-customer");
+		assertThat(body.get("name").asString()).isEqualTo("test-customer");
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class SampleHttpInterfaceTest {
 		headers.add("correlation-id", UUID.randomUUID().toString());
 
 		Optional<JsonNode> response = sampleHttpInterface
-			.getOptionalOrderDetails(headers, customerId, orderId);
+			.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response.isPresent()).isTrue();
 		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
@@ -133,12 +132,11 @@ public class SampleHttpInterfaceTest {
 				)
 		);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("request-id", UUID.randomUUID().toString());
-		headers.add("correlation-id", UUID.randomUUID().toString());
+		String requestId = UUID.randomUUID().toString();
+		String correlationId = UUID.randomUUID().toString();
 
 		Optional<JsonNode> response = sampleHttpInterface
-			.getOptionalOrderDetails(headers, customerId, orderId);
+			.getOptionalOrderDetails(customerId, orderId, requestId, correlationId);
 
 		assertThat(response).isEmpty();
 
@@ -150,10 +148,10 @@ public class SampleHttpInterfaceTest {
 			.anySatisfy(request -> {
 				assertThat(request.getHeader("request-id"))
 					.as("verifying request id")
-					.isEqualTo(headers.getFirst("request-id"));
+					.isEqualTo(requestId);
 				assertThat(request.getHeader("correlation-id"))
 					.as("verifying correlation id")
-					.isEqualTo(headers.getFirst("correlation-id"));
+					.isEqualTo(correlationId);
 			});
 	}
 
@@ -173,12 +171,10 @@ public class SampleHttpInterfaceTest {
 				)
 		);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("request-id", UUID.randomUUID().toString());
-		headers.add("correlation-id", UUID.randomUUID().toString());
-
+		String requestId = UUID.randomUUID().toString();
+		String correlationId = UUID.randomUUID().toString();
 		ResponseEntity<JsonNode> response = sampleHttpInterface
-			.getOrderDetails(headers, customerId, orderId);
+			.getOrderDetails(customerId, orderId, requestId, correlationId);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -192,10 +188,10 @@ public class SampleHttpInterfaceTest {
 			.anySatisfy(request -> {
 				assertThat(request.getHeader("request-id"))
 					.as("verifying request id")
-					.isEqualTo(headers.getFirst("request-id"));
+					.isEqualTo(requestId);
 				assertThat(request.getHeader("correlation-id"))
 					.as("verifying correlation id")
-					.isEqualTo(headers.getFirst("correlation-id"));
+					.isEqualTo(correlationId);
 			});
 	}
 

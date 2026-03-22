@@ -1,7 +1,5 @@
 package com.harishkannarao.rest.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.harishkannarao.rest.exception.MyCustomRuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,9 +1,7 @@
 package com.harishkannarao.jdbc.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
@@ -30,16 +29,18 @@ public interface SampleHttpInterface extends WithRetries {
 
 	@GetExchange(url = "/orders/{orderId}")
 	ResponseEntity<JsonNode> getOrderDetails(
-		@RequestHeader("headers") HttpHeaders headers,
 		@PathVariable("customerId") String customerId,
-		@PathVariable("orderId") String orderId);
+		@PathVariable("orderId") String orderId,
+		@RequestHeader("request-id") String requestId,
+		@RequestHeader("correlation-id") String correlationId);
 
 	default Optional<JsonNode> getOptionalOrderDetails(
-		HttpHeaders headers,
 		String customerId,
-		String orderId) {
+		String orderId,
+		String requestId,
+		String correlationId) {
 		try {
-			ResponseEntity<JsonNode> orderDetails = getOrderDetails(headers, customerId, orderId);
+			ResponseEntity<JsonNode> orderDetails = getOrderDetails(customerId, orderId, requestId, correlationId);
 			return Optional.ofNullable(orderDetails.getBody());
 		} catch (HttpClientErrorException.NotFound notFound) {
 			log.info("Received {}", notFound.getStatusCode().value());
