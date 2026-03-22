@@ -1,6 +1,5 @@
 package com.harishkannarao.jdbc.configuration;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +44,6 @@ public class DataJdbcConfiguration extends AbstractJdbcConfiguration {
 		return new JdbcTransactionManager(dataSource);
 	}
 
-	@NotNull
 	@Override
 	protected List<?> userConverters() {
 		return List.copyOf(converters);

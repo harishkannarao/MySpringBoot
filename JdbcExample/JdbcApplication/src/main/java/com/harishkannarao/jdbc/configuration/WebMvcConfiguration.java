@@ -4,7 +4,6 @@ import com.harishkannarao.jdbc.filter.RequestTracingFilter;
 import com.harishkannarao.jdbc.interceptor.AuthHeaderRequestInterceptor;
 import com.harishkannarao.jdbc.interceptor.CookieRequestInterceptor;
 import com.harishkannarao.jdbc.interceptor.SubjectRoleInterceptor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +25,12 @@ public class WebMvcConfiguration {
 		SubjectRoleInterceptor subjectRoleInterceptor) {
 		return new WebMvcConfigurer() {
 			@Override
-			public void addCorsMappings(@NotNull CorsRegistry registry) {
+			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedOrigins(corsOrigins.split(",")).allowedMethods("*");
 			}
 
 			@Override
-			public void addInterceptors(@NotNull InterceptorRegistry registry) {
+			public void addInterceptors(InterceptorRegistry registry) {
 				// Interceptors are called in the same order it is added to the registry
 				registry.addInterceptor(authHeaderRequestInterceptor);
 				registry.addInterceptor(cookieRequestInterceptor);

@@ -130,10 +130,6 @@
             <artifactId>tomcat-jdbc</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.seijikohara</groupId>
-            <artifactId>logback-access-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>

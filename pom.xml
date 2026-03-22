@@ -180,7 +180,6 @@
                     <generateBackupPoms>false</generateBackupPoms>
                     <excludes>
                         <exclude>org.webjars:*</exclude>
-                        <exclude>dev.akkinoc.spring.boot:logback-access-spring-boot-starter</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -235,12 +234,6 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.github.seijikohara</groupId>
-                <artifactId>logback-access-spring-boot-starter</artifactId>
-                <version>${logback.access.spring.boot.version}</version>
             </dependency>
 
             <dependency>

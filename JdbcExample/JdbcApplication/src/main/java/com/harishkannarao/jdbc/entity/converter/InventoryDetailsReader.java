@@ -2,7 +2,6 @@ package com.harishkannarao.jdbc.entity.converter;
 
 import com.harishkannarao.jdbc.entity.InventoryDetails;
 import com.harishkannarao.jdbc.util.JsonUtil;
-import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -21,7 +20,7 @@ public class InventoryDetailsReader implements Converter<PGobject, InventoryDeta
 	}
 
 	@Override
-	public InventoryDetails convert(@NotNull PGobject source) {
+	public InventoryDetails convert(PGobject source) {
 		return jsonUtil.fromPgObject(source, InventoryDetails.class);
 	}
 }
