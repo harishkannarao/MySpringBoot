@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.util.TestSocketUtils;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -21,9 +21,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                 "quoteService.url=http://localhost:${server.port}/rest-service/thirdparty/quote"
         })
 public abstract class BaseIntegrationWithTestConfiguration {
-    @Autowired
-    @Qualifier("myTestRestTemplate")
-    protected RestTemplate restTemplate;
+	@Autowired
+	@Qualifier("myRestTestClient")
+	protected RestTestClient restTestClient;
 
 	@DynamicPropertySource
 	static void registerTestProperties(DynamicPropertyRegistry registry) {

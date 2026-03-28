@@ -7,7 +7,6 @@ import com.harishkannarao.rest.util.PropertiesBasedFeatureToggler;
 import com.harishkannarao.rest.util.FeatureToggler;
 import com.harishkannarao.rest.util.TestFeatureToggler;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -16,6 +15,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.client.RestTestClient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -45,21 +47,22 @@ public class TestConfigurationRestServiceAndConsumerApplication {
         return mockedThirdPartyPingRestClient;
     }
 
-    @Bean
-    @Qualifier("myTestRestTemplate")
-    public TestRestTemplate getMyTestRestTemplate() {
-        RestTemplateBuilder builder = new RestTemplateBuilder()
-                .additionalInterceptors(new JsonHeaderInterceptor());
-        return new TestRestTemplate(builder);
-    }
+		@Bean
+		@Qualifier("myRestTestClient")
+		public RestTestClient getRestTestClient() {
+			return RestTestClient.bindToServer()
+				.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+		}
 
-    @Bean
-    @Qualifier("myTestRestTemplateForHtml")
-    public TestRestTemplate getMyTestRestTemplateForHtml() {
-        RestTemplateBuilder builder = new RestTemplateBuilder()
-                .additionalInterceptors(new HtmlAcceptHeaderInterceptor());
-        return new TestRestTemplate(builder);
-    }
+		@Bean
+		@Qualifier("myRestTestClientForHtml")
+		public RestTestClient getRestTestClientForHtml() {
+			return RestTestClient.bindToServer()
+				.defaultHeader(HttpHeaders.ACCEPT, MediaType.TEXT_HTML_VALUE)
+				.build();
+		}
 
     @Bean
     @Qualifier("myTestObjectMapper")

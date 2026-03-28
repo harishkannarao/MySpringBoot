@@ -15,21 +15,21 @@
 
     <properties>
         <java.version>21</java.version>
-        <spring.boot.version>4.0.0</spring.boot.version>
+        <spring.boot.version>4.0.5</spring.boot.version>
         <logback.access.spring.boot.version>1.2.2</logback.access.spring.boot.version>
-        <springdoc.version>3.0.0</springdoc.version>
-        <flyway.version>11.19.0</flyway.version>
-        <postgresql.driver.version>42.7.8</postgresql.driver.version>
-        <h2.version>2.3.232</h2.version>
-        <selenium.version>4.14.1</selenium.version>
+        <springdoc.version>3.0.2</springdoc.version>
+        <flyway.version>12.2.0</flyway.version>
+        <postgresql.driver.version>42.7.10</postgresql.driver.version>
+        <h2.version>2.4.240</h2.version>
+        <selenium.version>4.41.0</selenium.version>
         <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <guava.version>33.5.0-jre</guava.version>
         <commons.lang3.version>3.20.0</commons.lang3.version>
         <common.io.version>2.21.0</common.io.version>
-        <wiremock.version>3.13.2</wiremock.version>
-        <apache.httpclient.version>5.5.1</apache.httpclient.version>
+        <wiremock.version>4.0.0-beta.30</wiremock.version>
+        <apache.httpclient.version>5.6</apache.httpclient.version>
         <rest-assured.version>6.0.0</rest-assured.version>
-        <jackson.version.annotations>2.20</jackson.version.annotations>
+        <jackson.version.annotations>3.0-rc5</jackson.version.annotations>
     </properties>
 
     <build>

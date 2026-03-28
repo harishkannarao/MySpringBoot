@@ -12,6 +12,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.util.TestSocketUtils;
+import org.springframework.test.web.servlet.client.RestTestClient;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -28,11 +29,11 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         })
 public abstract class BaseIntegration {
     @Autowired
-    @Qualifier("myTestRestTemplate")
-    protected TestRestTemplate testRestTemplate;
+    @Qualifier("myRestTestClient")
+    protected RestTestClient testRestTemplate;
     @Autowired
-    @Qualifier("myTestRestTemplateForHtml")
-    protected TestRestTemplate testRestTemplateForHtml;
+    @Qualifier("myRestTestClientForHtml")
+    protected RestTestClient testRestTemplateForHtml;
     @Autowired
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
