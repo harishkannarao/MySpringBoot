@@ -1,22 +1,24 @@
 package com.harishkannarao.rest.functional;
 
+import com.harishkannarao.rest.domain.Quote;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class QuoteControllerIT extends BaseIntegrationWithTestConfiguration {
 	@Autowired
-	@org.springframework.beans.factory.annotation.Value("${quoteEndpointUrl}")
+	@Value("${quoteEndpointUrl}")
 	public String quoteEndpointUrl;
 
 	@Test
 	public void getQuote_shouldReturnQuoteDetails_fromThirdPartyRestService() {
-		com.harishkannarao.rest.domain.Quote result = restTestClient.get()
+		Quote result = restTestClient.get()
 			.uri(quoteEndpointUrl)
 			.exchangeSuccessfully()
-			.returnResult(com.harishkannarao.rest.domain.Quote.class)
+			.returnResult(Quote.class)
 			.getResponseBody();
 		assertNotNull(result);
 		assertEquals("success", result.getType());
