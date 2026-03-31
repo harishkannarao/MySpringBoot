@@ -15,6 +15,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.util.TestSocketUtils;
 import org.springframework.web.client.RestClient;
 
+import java.nio.file.Paths;
+
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @SpringBootTest(
@@ -61,9 +63,11 @@ public abstract class BaseIntegrationJdbc {
 
 	@DynamicPropertySource
 	static void registerTestProperties(DynamicPropertyRegistry registry) {
+		String tempDir = Paths.get(System.getProperty("java.io.tmpdir")).toAbsolutePath().toString();
 		final int randomServerPort = TestSocketUtils.findAvailableTcpPort();
 		final int randomManagementPort = TestSocketUtils.findAvailableTcpPort();
 		registry.add("server.port", () -> String.valueOf(randomServerPort));
 		registry.add("management.port", () -> String.valueOf(randomManagementPort));
+		registry.add("app.uploads-dir", () -> tempDir);
 	}
 }
