@@ -67,6 +67,7 @@ public class SampleFormRestController {
 
 	@GetMapping("/files/{name}")
 	public void getArchive(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+		logger.info("Files Location {}", uploadsPath.toAbsolutePath());
 		logger.info("Downloading file {}", name);
 		Path file = uploadsPath.resolve(name);
 

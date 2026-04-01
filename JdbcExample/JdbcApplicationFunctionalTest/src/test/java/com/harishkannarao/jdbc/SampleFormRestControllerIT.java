@@ -5,6 +5,8 @@ import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.client5.http.fluent.Response;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +33,9 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
+	private final String fileName1 = "form_file_upload_1.txt";
+	private final String fileName2 = "form_file_upload_2.txt";
+
 	@Autowired
 	@Value("${formUploadEndpointUrl}")
 	private URI formUploadEndpointUrl;
@@ -45,11 +48,9 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 	@Value("${app.uploads-dir}")
 	private String uploadsDir;
 
-	@Test
-	public void test_file_upload_and_download() throws IOException {
-		String fileName1 = "form_file_upload_1.txt";
-		String fileName2 = "form_file_upload_2.txt";
-
+	@BeforeEach
+	@AfterEach
+	public void cleanUp() throws IOException {
 		Path existingUploadedFile1 = Paths.get(uploadsDir).resolve(fileName1);
 		if (Files.exists(existingUploadedFile1)) {
 			Files.delete(existingUploadedFile1);
@@ -59,7 +60,10 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 		if (Files.exists(existingUploadedFile2)) {
 			Files.delete(existingUploadedFile2);
 		}
+	}
 
+	@Test
+	public void test_file_upload_and_download() throws IOException {
 		Path file1 = Paths.get(new ClassPathResource(fileName1).getFile().getAbsolutePath());
 		Path file2 = Paths.get(new ClassPathResource(fileName2).getFile().getAbsolutePath());
 		String file1Content = Files.readString(file1);
@@ -102,19 +106,6 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void test_file_upload_download_using_streaming_apache_http_client() throws IOException {
-		String fileName1 = "form_file_upload_1.txt";
-		String fileName2 = "form_file_upload_2.txt";
-
-		Path existingUploadedFile1 = Paths.get(uploadsDir).resolve(fileName1);
-		if (Files.exists(existingUploadedFile1)) {
-			Files.delete(existingUploadedFile1);
-		}
-
-		Path existingUploadedFile2 = Paths.get(uploadsDir).resolve(fileName2);
-		if (Files.exists(existingUploadedFile2)) {
-			Files.delete(existingUploadedFile2);
-		}
-
 		Path file1 = Paths.get(new ClassPathResource(fileName1).getFile().getAbsolutePath());
 		Path file2 = Paths.get(new ClassPathResource(fileName2).getFile().getAbsolutePath());
 		String file1Content = Files.readString(file1);
