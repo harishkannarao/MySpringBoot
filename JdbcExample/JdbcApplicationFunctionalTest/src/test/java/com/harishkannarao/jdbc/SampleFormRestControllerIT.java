@@ -83,7 +83,7 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 			.retrieve()
 			.toBodilessEntity();
 
-		assertThat(uploadResult.getStatusCode().value()).isEqualTo(302);
+		assertThat(uploadResult.getStatusCode().value()).isEqualTo(303);
 
 		Path downloadedFile = Files.createTempDirectory("test" + UUID.randomUUID()).resolve("downloaded_form_file_upload_1.txt");
 		nonBufferingRestClient.method(HttpMethod.GET)
@@ -124,7 +124,7 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 					.body(entity)
 					.execute();
 
-				assertThat(response.returnResponse().getCode()).isEqualTo(302);
+				assertThat(response.returnResponse().getCode()).isEqualTo(303);
 			}
 		}
 

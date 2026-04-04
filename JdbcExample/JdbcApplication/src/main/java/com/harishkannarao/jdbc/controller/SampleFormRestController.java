@@ -60,7 +60,7 @@ public class SampleFormRestController {
 				inputStream.transferTo(outputStream);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.FOUND)
+		return ResponseEntity.status(HttpStatus.SEE_OTHER)
 			.header(HttpHeaders.LOCATION, "/sample_form_submit_success.html")
 			.build();
 	}
