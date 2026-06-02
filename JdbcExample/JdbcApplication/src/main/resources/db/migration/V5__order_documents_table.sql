@@ -6,5 +6,7 @@ CREATE TABLE IF NOT EXISTS order_documents(
     PRIMARY KEY (id)
 );
 
+CREATE UNIQUE INDEX unique_index_order_id ON order_documents (order_id);
+
 ALTER TABLE order_documents
     ADD CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(id);

@@ -36,7 +36,7 @@ public class TicketDao {
 	public void create(Ticket ticket) {
 		jdbcClient.sql("""
 				INSERT INTO tickets(id, status, customer_id, updated_time)
-				 VALUES (:id, :status, :customerId, timezone('utc', now()))
+				 VALUES (:id, :status, :customerId, now())
 				""")
 			.paramSource(ticket)
 			.update();
@@ -73,7 +73,7 @@ public class TicketDao {
 						UPDATE tickets
 						 SET customer_id=:customerId,
 						 status='RESERVED',
-						 updated_time=timezone('utc', now())
+						 updated_time=now()
 						 WHERE id=:id AND status='AVAILABLE'
 						""")
 					.param("customerId", customerId)
@@ -107,7 +107,7 @@ public class TicketDao {
 				int rowsUpdated = jdbcClient.sql("""
 						UPDATE tickets
 						 SET status='BOOKED',
-						 updated_time=timezone('utc', now())
+						 updated_time=now()
 						 WHERE id=:ticketId
 						 AND customer_id=:customerId
 						 AND status='RESERVED'
@@ -142,7 +142,7 @@ public class TicketDao {
 		return jdbcClient.sql("""
 				UPDATE tickets
 				 SET status='AVAILABLE',
-				 updated_time=timezone('utc', now())
+				 updated_time=now()
 				 WHERE id IN (:ids) AND status='RESERVED'
 				 RETURNING id
 				""")
