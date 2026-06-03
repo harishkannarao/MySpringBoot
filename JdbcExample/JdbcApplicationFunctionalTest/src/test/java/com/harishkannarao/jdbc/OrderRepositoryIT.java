@@ -95,8 +95,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			.build();
 
 		OptimisticLockingFailureException staleResult = catchThrowableOfType(
-			() -> orderRepository.save(staleUpdate),
-			OptimisticLockingFailureException.class);
+			OptimisticLockingFailureException.class,
+			() -> orderRepository.save(staleUpdate));
 		assertThat(staleResult).isNotNull();
 
 		Order futureUpdate = OrderBuilder.from(updated)
@@ -105,8 +105,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			.build();
 
 		OptimisticLockingFailureException futureResult = catchThrowableOfType(
-			() -> orderRepository.save(futureUpdate),
-			OptimisticLockingFailureException.class);
+			OptimisticLockingFailureException.class,
+			() -> orderRepository.save(futureUpdate));
 		assertThat(futureResult).isNotNull();
 	}
 
