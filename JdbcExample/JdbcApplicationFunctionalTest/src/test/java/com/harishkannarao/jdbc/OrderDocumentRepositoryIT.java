@@ -1,13 +1,13 @@
 package com.harishkannarao.jdbc;
 
+import com.harishkannarao.jdbc.dao.repository.OrderDocumentRepository;
+import com.harishkannarao.jdbc.dao.repository.OrderRepository;
 import com.harishkannarao.jdbc.entity.InventoryDetails;
+import com.harishkannarao.jdbc.entity.JsonContent;
 import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderDocument;
 import com.harishkannarao.jdbc.entity.OrderDocumentBuilder;
-import com.harishkannarao.jdbc.entity.JsonContent;
 import com.harishkannarao.jdbc.entity.Sku;
-import com.harishkannarao.jdbc.dao.repository.OrderDocumentRepository;
-import com.harishkannarao.jdbc.dao.repository.OrderRepository;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -168,7 +168,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_save_inserts_or_updates_existing() {
+	void test_save_inserts_or_updates_existing_with_same_document_id() {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Order created = orderRepository.save(input);
 
@@ -212,6 +212,59 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 			.anySatisfy(orderDocument -> assertThat(orderDocument)
 				.usingRecursiveComparison()
 				.ignoringCollectionOrder()
+				.isEqualTo(document2));
+	}
+
+	@Test
+	void test_upsert_inserts_or_updates_existing_without_document_id() {
+		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created = orderRepository.save(input);
+
+		OrderDocument document1 = new OrderDocument(null, created.id(), null, null);
+		OrderDocument document2 = new OrderDocument(
+			null,
+			created.id(),
+			null,
+			new InventoryDetails(
+				"abc",
+				2,
+				List.of(new Sku("3434"), new Sku("235453")),
+				Set.of("234445", "2234243")
+			)
+		);
+		OrderDocument inserted = orderDocumentRepository.upsert(document1.orderId(), document1.data(), document1.inventory());
+		assertThat(inserted)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.ignoringFields("id")
+			.isEqualTo(document1);
+		assertThat(inserted.id()).isNotNull();
+
+		List<OrderDocument> listByIdAfterInsert = orderDocumentRepository.findAllById(List.of(inserted.id()));
+		assertThat(listByIdAfterInsert)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.ignoringFields("id")
+				.isEqualTo(document1));
+
+		OrderDocument finalUpdate = orderDocumentRepository.upsert(document2.orderId(), document2.data(), document2.inventory());
+
+		assertThat(finalUpdate)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.ignoringFields("id")
+			.isEqualTo(document2);
+		assertThat(finalUpdate.id()).isEqualTo(inserted.id());
+
+		List<OrderDocument> listByIdAfterUpdate = orderDocumentRepository.findAllById(List.of(inserted.id()));
+		assertThat(listByIdAfterUpdate)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.ignoringFields("id")
 				.isEqualTo(document2));
 	}
 
