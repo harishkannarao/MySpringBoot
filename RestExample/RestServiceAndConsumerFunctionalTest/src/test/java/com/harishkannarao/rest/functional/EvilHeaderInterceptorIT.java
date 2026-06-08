@@ -1,16 +1,11 @@
 package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.domain.ErrorResponse;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.harishkannarao.rest.interceptor.request.EvilHeaderRequestInterceptor.EVIL_HEADER_NAME;
@@ -33,7 +28,7 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
 		requestHeaders.add(EVIL_HEADER_NAME, "Something");
 		String requestUrl = UriComponentsBuilder.fromUriString(greetingEndpointUrl).queryParam("name", "Harish").toUriString();
 		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(requestUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -49,7 +44,7 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.add(EVIL_HEADER_NAME, "Something");
 		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(helloPageEndpointUrl)
 			.exchange()
 			.returnResult(String.class);

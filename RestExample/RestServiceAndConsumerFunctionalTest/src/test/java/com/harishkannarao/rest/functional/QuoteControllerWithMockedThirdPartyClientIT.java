@@ -29,7 +29,7 @@ public class QuoteControllerWithMockedThirdPartyClientIT extends BaseIntegration
 			.build();
 		when(mockThirdPartyRestQuoteClient.getQuote()).thenReturn(expectedQuoteFromThirdPartyService);
 
-		Quote result = Objects.requireNonNull(testRestTemplate.method(HttpMethod.GET)
+		Quote result = Objects.requireNonNull(restTestClient.method(HttpMethod.GET)
 			.uri(quoteEndpointUrl)
 			.exchangeSuccessfully()
 			.returnResult(Quote.class)

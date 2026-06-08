@@ -13,7 +13,7 @@ public class StatusControllerWithMockedThirdpartyPingClientIT extends BaseIntegr
 
 	@Test
 	public void getStatus_shouldReturnStatusOfThirdPartApps_capturedDuringStartup() {
-		Status status = Objects.requireNonNull(testRestTemplate.get()
+		Status status = Objects.requireNonNull(restTestClient.get()
 			.uri(statusEndpointUrl)
 			.exchangeSuccessfully()
 			.returnResult(Status.class)

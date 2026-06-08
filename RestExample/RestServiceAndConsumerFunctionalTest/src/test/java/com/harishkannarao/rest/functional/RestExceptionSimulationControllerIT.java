@@ -3,7 +3,6 @@ package com.harishkannarao.rest.functional;
 import com.harishkannarao.rest.domain.ErrorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
 
 import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
@@ -22,7 +21,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet500StatusWithMessageForCheckedException() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplate.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(generateRestCheckedExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -33,7 +32,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet400StatusWithMessageForRuntimeException() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplate.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(generateRestRuntimeExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -44,7 +43,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomRuntimeException() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplate.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(generateRestCustomRuntimeExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -57,7 +56,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet403StatusWithMessageCodeAndDescriptionForCustomCheckedException() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplate.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(generateRestCustomCheckedExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -71,7 +70,7 @@ public class RestExceptionSimulationControllerIT extends BaseIntegration {
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
 		String customHeaderValue = "someValue";
-		EntityExchangeResult<String> response = testRestTemplate.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClient.method(HttpMethod.GET)
 			.uri(generateRestCustomCheckedExceptionUrl)
 			.header(CUSTOM_HEADER_NAME, customHeaderValue)
 			.exchange()

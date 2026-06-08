@@ -3,13 +3,8 @@ package com.harishkannarao.rest.functional;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +29,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 		assertEquals(generateHtmlCheckedExceptionUrl, webDriver.getCurrentUrl());
 		assertEquals("My Sample Checked Exception", errorMessage);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(generateHtmlCheckedExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -49,7 +44,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 		assertEquals(generateHtmlRuntimeExceptionUrl, webDriver.getCurrentUrl());
 		assertEquals("My Sample Runtime Exception", errorMessage);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(generateHtmlRuntimeExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -64,7 +59,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 		assertEquals(generateHtmlCustomRuntimeExceptionUrl, webDriver.getCurrentUrl());
 		assertEquals("CustomRuntime:My Custom Runtime Exception", errorMessage);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(generateHtmlCustomRuntimeExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -79,7 +74,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 		assertEquals(generateHtmlCustomCheckedExceptionUrl, webDriver.getCurrentUrl());
 		assertEquals("CustomChecked:My Custom Checked Exception", errorMessage);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(generateHtmlCustomCheckedExceptionUrl)
 			.exchange()
 			.returnResult(String.class);
@@ -89,7 +84,7 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
 		String customHeaderValue = "someValue";
-		EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(generateHtmlCustomCheckedExceptionUrl)
 			.header(CUSTOM_HEADER_NAME, customHeaderValue)
 			.exchange()

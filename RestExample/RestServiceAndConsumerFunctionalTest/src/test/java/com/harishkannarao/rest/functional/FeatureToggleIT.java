@@ -8,9 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +37,7 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleDefaultStatusAsTrue() throws Exception {
         testFeatureToggler.setCustomFeature(true);
 
-			EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+			EntityExchangeResult<String> response = restTestClientForHtml.get()
 				.uri(featureToggleEndpointUrl)
 				.exchange()
 				.returnResult(String.class);
@@ -53,7 +51,7 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleStatusAsFalse() throws Exception {
         testFeatureToggler.setCustomFeature(false);
 
-			EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+			EntityExchangeResult<String> response = restTestClientForHtml.get()
 				.uri(featureToggleEndpointUrl)
 				.exchange()
 				.returnResult(String.class);

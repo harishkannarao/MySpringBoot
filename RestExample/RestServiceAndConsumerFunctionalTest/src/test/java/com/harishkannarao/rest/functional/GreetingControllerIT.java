@@ -28,7 +28,7 @@ public class GreetingControllerIT extends BaseIntegration {
 
 	@Test
 	public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
-		Greeting result = testRestTemplate.get()
+		Greeting result = restTestClient.get()
 			.uri(greetingEndpointUrl)
 			.exchange()
 			.returnResult(Greeting.class)
@@ -40,7 +40,7 @@ public class GreetingControllerIT extends BaseIntegration {
 	@Test
 	public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
 		Greeting result = Objects.requireNonNull(
-			testRestTemplate
+			restTestClient
 				.get()
 				.uri(UriComponentsBuilder.fromUriString(greetingEndpointUrl)
 					.queryParam("name", "Harish")
@@ -62,7 +62,7 @@ public class GreetingControllerIT extends BaseIntegration {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		EntityExchangeResult<String> response = testRestTemplate.post()
+		EntityExchangeResult<String> response = restTestClient.post()
 			.uri(greetingEndpointUrl)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ public class GreetingControllerIT extends BaseIntegration {
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
 		String customHeaderValue = "someValue";
-		EntityExchangeResult<Greeting> response = testRestTemplate.get()
+		EntityExchangeResult<Greeting> response = restTestClient.get()
 			.uri(UriComponentsBuilder.fromUriString(greetingWithNameEndpointUrl)
 				.queryParam("name", "Harish")
 				.build()

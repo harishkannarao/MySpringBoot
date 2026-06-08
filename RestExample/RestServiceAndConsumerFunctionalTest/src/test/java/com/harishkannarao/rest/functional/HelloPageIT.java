@@ -3,12 +3,8 @@ package com.harishkannarao.rest.functional;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 
@@ -34,7 +30,7 @@ public class HelloPageIT extends BaseIntegration {
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
 		String customHeaderValue = "someValue";
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(helloPageEndpointUrl)
 			.header(CUSTOM_HEADER_NAME, customHeaderValue)
 			.exchange()

@@ -12,7 +12,6 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
 
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class ErrorPageIT extends BaseIntegration {
 		assertEquals(nonExistentPageUrl, webDriver.getCurrentUrl());
 		assertEquals("404 Not Found", errorStatus);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(nonExistentPageUrl)
 			.exchangeSuccessfully()
 			.returnResult(String.class);
@@ -65,7 +64,7 @@ public class ErrorPageIT extends BaseIntegration {
 		assertEquals(simulateFilterErrorUrl, webDriver.getCurrentUrl());
 		assertEquals("500 Internal Server Error", errorStatus);
 
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(simulateFilterErrorUrl)
 			.exchangeSuccessfully()
 			.returnResult(String.class);
@@ -75,7 +74,7 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldGetNotFoundMessageGivenNonExistentPageForHttpClients() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(nonExistentPageUrl)
 			.exchangeSuccessfully()
 			.returnResult(String.class);
@@ -88,7 +87,7 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldGetInternalServerErrorMessageGivenNonExistentPageForHttpClients() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(simulateFilterErrorUrl)
 			.exchangeSuccessfully()
 			.returnResult(String.class);
@@ -101,7 +100,7 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldHandleCustomExceptionTo405Status() throws Exception {
-		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(customErrorSimulationUrl)
 			.exchangeSuccessfully()
 			.returnResult(String.class);

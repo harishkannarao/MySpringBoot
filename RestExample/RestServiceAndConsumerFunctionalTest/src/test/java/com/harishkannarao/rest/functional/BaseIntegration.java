@@ -6,7 +6,6 @@ import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -30,10 +29,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public abstract class BaseIntegration {
     @Autowired
     @Qualifier("myRestTestClient")
-    protected RestTestClient testRestTemplate;
+    protected RestTestClient restTestClient;
     @Autowired
     @Qualifier("myRestTestClientForHtml")
-    protected RestTestClient testRestTemplateForHtml;
+    protected RestTestClient restTestClientForHtml;
     @Autowired
     @Qualifier("myTestObjectMapper")
     protected ObjectMapper objectMapper;
