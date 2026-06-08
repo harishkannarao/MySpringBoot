@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.client.EntityExchangeResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -16,28 +17,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HelloPageIT extends BaseIntegration {
 
-    @org.springframework.beans.factory.annotation.Value("${helloPageEndpointUrl}")
-    public String helloPageEndpointUrl;
+	@org.springframework.beans.factory.annotation.Value("${helloPageEndpointUrl}")
+	public String helloPageEndpointUrl;
 
-    @Test
-    public void shouldGetIndexPage() {
-        WebDriver webDriver = newWebDriver();
-        webDriver.navigate().to(helloPageEndpointUrl);
-        String date = webDriver.findElement(By.id("date")).getText();
-        String message = webDriver.findElement(By.id("message")).getText();
+	@Test
+	public void shouldGetIndexPage() {
+		WebDriver webDriver = newWebDriver();
+		webDriver.navigate().to(helloPageEndpointUrl);
+		String date = webDriver.findElement(By.id("date")).getText();
+		String message = webDriver.findElement(By.id("message")).getText();
 
-        assertEquals(LocalDate.now().toString(), date);
-        assertEquals("Hello Harish", message);
-    }
+		assertEquals(LocalDate.now().toString(), date);
+		assertEquals("Hello Harish", message);
+	}
 
-    @Test
-    public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
-        MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
-        String customHeaderValue = "someValue";
-        requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
-        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-        ResponseEntity<String> response = testRestTemplateForHtml.exchange(helloPageEndpointUrl, HttpMethod.GET, requestEntity, String.class);
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));
-    }
+	@Test
+	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
+		String customHeaderValue = "someValue";
+		EntityExchangeResult<String> response = testRestTemplateForHtml.method(HttpMethod.GET)
+			.uri(helloPageEndpointUrl)
+			.header(CUSTOM_HEADER_NAME, customHeaderValue)
+			.exchange()
+			.returnResult(String.class);
+		assertEquals(200, response.getStatus().value());
+		assertEquals(customHeaderValue, response.getResponseHeaders().getFirst(CUSTOM_HEADER_NAME));
+	}
 }

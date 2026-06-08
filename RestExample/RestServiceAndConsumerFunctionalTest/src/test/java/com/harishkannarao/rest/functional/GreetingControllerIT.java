@@ -2,13 +2,10 @@ package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.domain.Greeting;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.client.EntityExchangeResult;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import tools.jackson.databind.JsonNode;
 
@@ -80,12 +77,7 @@ public class GreetingControllerIT extends BaseIntegration {
 	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
-		MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
 		String customHeaderValue = "someValue";
-		requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
-		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-		Map<String, String> queryParams = new HashMap<>();
-		queryParams.put("name", "Harish");
 		EntityExchangeResult<Greeting> response = testRestTemplate.get()
 			.uri(UriComponentsBuilder.fromUriString(greetingWithNameEndpointUrl)
 				.queryParam("name", "Harish")
