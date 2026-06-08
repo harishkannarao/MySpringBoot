@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.client.EntityExchangeResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,10 +39,13 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleDefaultStatusAsTrue() throws Exception {
         testFeatureToggler.setCustomFeature(true);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(featureToggleEndpointUrl, HttpMethod.GET, null, String.class);
+			EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+				.uri(featureToggleEndpointUrl)
+				.exchange()
+				.returnResult(String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        FeatureToggleResponse featureToggleResponse = objectMapper.readValue(response.getBody(), FeatureToggleResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatus());
+        FeatureToggleResponse featureToggleResponse = objectMapper.readValue(response.getResponseBody(), FeatureToggleResponse.class);
         assertTrue(featureToggleResponse.isEnabled());
     }
 
@@ -49,10 +53,13 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleStatusAsFalse() throws Exception {
         testFeatureToggler.setCustomFeature(false);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(featureToggleEndpointUrl, HttpMethod.GET, null, String.class);
+			EntityExchangeResult<String> response = testRestTemplateForHtml.get()
+				.uri(featureToggleEndpointUrl)
+				.exchange()
+				.returnResult(String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        FeatureToggleResponse featureToggleResponse = objectMapper.readValue(response.getBody(), FeatureToggleResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatus());
+        FeatureToggleResponse featureToggleResponse = objectMapper.readValue(response.getResponseBody(), FeatureToggleResponse.class);
         assertFalse(featureToggleResponse.isEnabled());
 
     }

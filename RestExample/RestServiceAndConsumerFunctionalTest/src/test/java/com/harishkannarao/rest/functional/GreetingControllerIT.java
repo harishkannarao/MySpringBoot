@@ -2,72 +2,104 @@ package com.harishkannarao.rest.functional;
 
 import com.harishkannarao.rest.domain.Greeting;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.client.EntityExchangeResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import tools.jackson.databind.JsonNode;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.harishkannarao.rest.filter.ResponseHeaderFilter.CUSTOM_HEADER_NAME;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class GreetingControllerIT extends BaseIntegration {
 
-    @org.springframework.beans.factory.annotation.Value("${greetingEndpointUrl}")
-    public String greetingEndpointUrl;
-    @org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointUrl}")
-    public String greetingWithNameEndpointUrl;
+	@org.springframework.beans.factory.annotation.Value("${greetingEndpointUrl}")
+	public String greetingEndpointUrl;
+	@org.springframework.beans.factory.annotation.Value("${greetingWithNameEndpointUrl}")
+	public String greetingWithNameEndpointUrl;
 
-    @Test
-    public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
-        Greeting result = testRestTemplate.getForObject(greetingEndpointUrl, Greeting.class);
-        assertNotNull(result.getId());
-        assertEquals("Hello, World!", result.getContent());
-    }
+	@Test
+	public void greeting_shouldReturnDefaultGreeting_givenNameIsNotInQueryParam() {
+		Greeting result = testRestTemplate.get()
+			.uri(greetingEndpointUrl)
+			.exchange()
+			.returnResult(Greeting.class)
+			.getResponseBody();
+		assertNotNull(result.getId());
+		assertEquals("Hello, World!", result.getContent());
+	}
 
-    @Test
-    public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("name", "Harish");
-        Greeting result = testRestTemplate.getForObject(greetingWithNameEndpointUrl, Greeting.class, queryParams);
-        assertNotNull(result.getId());
-        assertEquals("Hello, Harish!", result.getContent());
-    }
+	@Test
+	public void greeting_shouldReturnGreetingWithName_givenNameInQueryParam() {
+		Greeting result = Objects.requireNonNull(
+			testRestTemplate
+				.get()
+				.uri(UriComponentsBuilder.fromUriString(greetingEndpointUrl)
+					.queryParam("name", "Harish")
+					.build()
+					.toUri())
+				.exchange()
+				.returnResult(Greeting.class)
+				.getResponseBody()
+		);
 
-    @Test
-    public void greeting_shouldReturnGreetingWithName_givenPostWithNameAsJson() throws Exception {
-        Map<String, String> body = new HashMap<>();
-        body.put("name", "Harish");
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Map> requestEntity = new HttpEntity<>(body, requestHeaders);
-        ResponseEntity<String> response = testRestTemplate.exchange(greetingEndpointUrl, HttpMethod.POST, requestEntity, String.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        JsonNode jsonResponse = objectMapper.readTree(response.getBody());
-        assertEquals("Hello, Harish!", jsonResponse.get("greeting").asText());
-    }
+		assertThat(result.getId()).isGreaterThan(0);
+		assertEquals("Hello, Harish!", result.getContent());
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    @Test
-    public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
-        MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
-        String customHeaderValue = "someValue";
-        requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
-        HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("name", "Harish");
-        ResponseEntity<Greeting> response = testRestTemplate.exchange(greetingWithNameEndpointUrl, HttpMethod.GET, requestEntity, Greeting.class, queryParams);
-        Greeting result = response.getBody();
+	@Test
+	public void greeting_shouldReturnGreetingWithName_givenPostWithNameAsJson() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("name", "Harish");
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		EntityExchangeResult<String> response = testRestTemplate.post()
+			.uri(greetingEndpointUrl)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON)
+			.body(body)
+			.exchangeSuccessfully()
+			.returnResult(String.class);
+		assertEquals(HttpStatus.OK, response.getStatus());
+		JsonNode jsonResponse = objectMapper.readTree(response.getResponseBody());
+		assertEquals("Hello, Harish!", jsonResponse.get("greeting").asString());
+	}
 
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Hello, Harish!", result.getContent());
-        assertEquals(customHeaderValue, response.getHeaders().getFirst(CUSTOM_HEADER_NAME));
+	@SuppressWarnings("ConstantConditions")
+	@Test
+	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
+		MultiValueMap<String, String> requestHeaders = new LinkedMultiValueMap<>();
+		String customHeaderValue = "someValue";
+		requestHeaders.add(CUSTOM_HEADER_NAME, customHeaderValue);
+		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
+		Map<String, String> queryParams = new HashMap<>();
+		queryParams.put("name", "Harish");
+		EntityExchangeResult<Greeting> response = testRestTemplate.get()
+			.uri(UriComponentsBuilder.fromUriString(greetingWithNameEndpointUrl)
+				.queryParam("name", "Harish")
+				.build()
+				.toUri())
+			.header(CUSTOM_HEADER_NAME, customHeaderValue)
+			.exchangeSuccessfully()
+			.returnResult(Greeting.class);
+		Greeting result = response.getResponseBody();
 
-    }
+		assertEquals(200, response.getStatus().value());
+		assertEquals("Hello, Harish!", result.getContent());
+		assertEquals(customHeaderValue, response.getResponseHeaders().getFirst(CUSTOM_HEADER_NAME));
+
+	}
 
 }
