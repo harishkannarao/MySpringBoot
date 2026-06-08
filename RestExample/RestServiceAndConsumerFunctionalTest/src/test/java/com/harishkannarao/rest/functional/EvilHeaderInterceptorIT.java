@@ -24,15 +24,12 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet400StatusWithDescriptionForHttpClients() throws Exception {
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.add(EVIL_HEADER_NAME, "Something");
 		String requestUrl = UriComponentsBuilder.fromUriString(greetingEndpointUrl).queryParam("name", "Harish").toUriString();
-		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
-		EntityExchangeResult<String> response = restTestClientForHtml.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(requestUrl)
+			.header(EVIL_HEADER_NAME, "Something")
 			.exchange()
 			.returnResult(String.class);
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
 		assertEquals(400, response.getStatus().value());
 		ErrorResponse errorResponse = objectMapper.readValue(response.getResponseBody(), ErrorResponse.class);
 		assertEquals("You are an evil request::/rest-service/greeting/get?name=Harish", errorResponse.getDescription());
@@ -41,11 +38,9 @@ public class EvilHeaderInterceptorIT extends BaseIntegration {
 
 	@Test
 	public void shouldGet400StatusWithDescriptionForHtmlClients() {
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.add(EVIL_HEADER_NAME, "Something");
-		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
 		EntityExchangeResult<String> response = restTestClientForHtml.get()
 			.uri(helloPageEndpointUrl)
+			.header(EVIL_HEADER_NAME, "Something")
 			.exchange()
 			.returnResult(String.class);
 		assertEquals(400, response.getStatus().value());

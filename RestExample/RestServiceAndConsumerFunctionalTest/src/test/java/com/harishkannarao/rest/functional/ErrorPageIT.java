@@ -50,7 +50,7 @@ public class ErrorPageIT extends BaseIntegration {
 
 		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(nonExistentPageUrl)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(String.class);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
 		logbackTestFileAppender.assertLogEntry("DEBUG Not Found");
@@ -66,7 +66,7 @@ public class ErrorPageIT extends BaseIntegration {
 
 		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
 			.uri(simulateFilterErrorUrl)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(String.class);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
 		logbackTestFileAppender.assertLogEntry("ERROR Internal Server Error");
@@ -74,9 +74,9 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldGetNotFoundMessageGivenNonExistentPageForHttpClients() throws Exception {
-		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClient.method(HttpMethod.GET)
 			.uri(nonExistentPageUrl)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(String.class);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
 		ErrorDetails errorDetails = objectMapper.readValue(response.getResponseBody(), ErrorDetails.class);
@@ -87,9 +87,9 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldGetInternalServerErrorMessageGivenNonExistentPageForHttpClients() throws Exception {
-		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClient.method(HttpMethod.GET)
 			.uri(simulateFilterErrorUrl)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(String.class);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
 		ErrorDetails errorDetails = objectMapper.readValue(response.getResponseBody(), ErrorDetails.class);
@@ -100,9 +100,9 @@ public class ErrorPageIT extends BaseIntegration {
 
 	@Test
 	public void shouldHandleCustomExceptionTo405Status() throws Exception {
-		EntityExchangeResult<String> response = restTestClientForHtml.method(HttpMethod.GET)
+		EntityExchangeResult<String> response = restTestClient.method(HttpMethod.GET)
 			.uri(customErrorSimulationUrl)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(String.class);
 		assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatus());
 		ErrorDetails errorDetails = objectMapper.readValue(response.getResponseBody(), ErrorDetails.class);

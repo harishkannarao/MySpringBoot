@@ -21,8 +21,7 @@
         <flyway.version>12.8.1</flyway.version>
         <postgresql.driver.version>42.7.11</postgresql.driver.version>
         <h2.version>2.4.240</h2.version>
-        <selenium.version>4.44.0</selenium.version>
-        <webdrivermanager.version>6.3.4</webdrivermanager.version>
+        <selenium.version>4.13.0</selenium.version>
         <guava.version>33.6.0-jre</guava.version>
         <commons.lang3.version>3.20.0</commons.lang3.version>
         <common.io.version>2.22.0</common.io.version>
@@ -285,11 +284,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>io.github.bonigarcia</groupId>
-                <artifactId>webdrivermanager</artifactId>
-                <version>${webdrivermanager.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>

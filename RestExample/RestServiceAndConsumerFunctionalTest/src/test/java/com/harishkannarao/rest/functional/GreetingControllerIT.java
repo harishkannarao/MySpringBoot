@@ -84,7 +84,7 @@ public class GreetingControllerIT extends BaseIntegration {
 				.build()
 				.toUri())
 			.header(CUSTOM_HEADER_NAME, customHeaderValue)
-			.exchangeSuccessfully()
+			.exchange()
 			.returnResult(Greeting.class);
 		Greeting result = response.getResponseBody();
 

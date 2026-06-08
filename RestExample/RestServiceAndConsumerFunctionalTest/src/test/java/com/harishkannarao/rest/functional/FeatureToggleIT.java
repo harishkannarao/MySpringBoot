@@ -37,7 +37,7 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleDefaultStatusAsTrue() throws Exception {
         testFeatureToggler.setCustomFeature(true);
 
-			EntityExchangeResult<String> response = restTestClientForHtml.get()
+			EntityExchangeResult<String> response = restTestClient.get()
 				.uri(featureToggleEndpointUrl)
 				.exchange()
 				.returnResult(String.class);
@@ -51,7 +51,7 @@ public class FeatureToggleIT extends BaseIntegration {
     public void shouldReturnFeatureToggleStatusAsFalse() throws Exception {
         testFeatureToggler.setCustomFeature(false);
 
-			EntityExchangeResult<String> response = restTestClientForHtml.get()
+			EntityExchangeResult<String> response = restTestClient.get()
 				.uri(featureToggleEndpointUrl)
 				.exchange()
 				.returnResult(String.class);

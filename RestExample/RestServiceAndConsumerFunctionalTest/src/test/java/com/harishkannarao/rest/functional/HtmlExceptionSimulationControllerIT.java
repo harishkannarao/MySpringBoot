@@ -84,12 +84,11 @@ public class HtmlExceptionSimulationControllerIT extends BaseIntegration {
 	@Test
 	public void shouldGetCustomHeaderInResponseGivenACustomHeaderIsPassedInTheRequest() throws Exception {
 		String customHeaderValue = "someValue";
-		EntityExchangeResult<String> response = restTestClientForHtml.get()
+		EntityExchangeResult<String> response = restTestClient.get()
 			.uri(generateHtmlCustomCheckedExceptionUrl)
 			.header(CUSTOM_HEADER_NAME, customHeaderValue)
 			.exchange()
 			.returnResult(String.class);
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
 
 		assertEquals(403, response.getStatus().value());
 		assertEquals(customHeaderValue, response.getResponseHeaders().getFirst(CUSTOM_HEADER_NAME));
