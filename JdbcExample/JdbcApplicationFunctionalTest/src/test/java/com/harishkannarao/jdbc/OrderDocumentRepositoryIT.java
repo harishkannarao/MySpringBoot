@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_order_with_documents() throws SQLException {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created = orderRepository.save(input);
 
 		OrderDocument document = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
@@ -93,7 +94,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_query_by_json_key() throws SQLException {
-		Order order1 = new Order(UUID.randomUUID());
+		Order order1 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created1 = orderRepository.save(order1);
 
 		Order order2 = new Order(null, UUID.randomUUID(), null, null, null);
@@ -149,7 +150,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_insert_returns_duplicate_key_exception() {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created = orderRepository.save(input);
 
 		UUID documentId = UUID.randomUUID();
@@ -166,7 +167,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_save_inserts_or_updates_existing_with_same_document_id() {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created = orderRepository.save(input);
 
 		UUID documentId = UUID.randomUUID();
@@ -214,7 +215,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_upsert_inserts_or_updates_existing_without_document_id() {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created = orderRepository.save(input);
 
 		OrderDocument document1 = new OrderDocument(null, created.id(), null, null);

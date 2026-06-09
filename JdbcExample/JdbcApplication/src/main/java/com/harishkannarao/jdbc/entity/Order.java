@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.InsertOnlyProperty;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
@@ -13,11 +14,9 @@ import java.util.UUID;
 public record Order(
 	@Id Long id,
 	UUID customerId,
-	@CreatedDate Instant createdTime,
-	@LastModifiedDate Instant updatedTime,
+	@InsertOnlyProperty
+	Instant createdTime,
+	Instant updatedTime,
 	@Version Integer version
 ) {
-	public Order(UUID customerId) {
-		this(null, customerId, Instant.now(), Instant.now(), null);
-	}
 }

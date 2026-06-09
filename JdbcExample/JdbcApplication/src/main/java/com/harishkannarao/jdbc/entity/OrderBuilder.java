@@ -1,5 +1,6 @@
 package com.harishkannarao.jdbc.entity;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public record OrderBuilder(
@@ -30,6 +31,30 @@ public record OrderBuilder(
 				build.createdTime(),
 				build.updatedTime(),
 				value
+			)
+		);
+	}
+
+	public OrderBuilder createdTime(Instant value) {
+		return new OrderBuilder(
+			new Order(
+				build().id(),
+				build.customerId(),
+				value,
+				build.updatedTime(),
+				build.version()
+			)
+		);
+	}
+
+	public OrderBuilder updatedTime(Instant value) {
+		return new OrderBuilder(
+			new Order(
+				build().id(),
+				build.customerId(),
+				build.createdTime(),
+				value,
+				build.version()
 			)
 		);
 	}

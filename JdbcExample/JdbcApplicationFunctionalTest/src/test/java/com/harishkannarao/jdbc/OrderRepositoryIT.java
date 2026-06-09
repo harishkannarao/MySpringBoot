@@ -35,7 +35,7 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void test_create_read_update_delete_order() throws InterruptedException {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Long id = orderRepository.save(input).id();
 		Order created = orderRepository.findById(id).orElseThrow();
 
@@ -53,6 +53,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 
 		Order toUpdate = OrderBuilder.from(created)
 			.customerId(UUID.randomUUID())
+			.createdTime(null)
+			.updatedTime(Instant.now())
 			.build();
 
 		orderRepository.save(toUpdate);
@@ -85,7 +87,7 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	public void test_optimistic_error_on_version_mismatch() {
-		Order input = new Order(UUID.randomUUID());
+		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 
 		Order created = orderRepository.save(input);
 		assertThat(created.version()).isEqualTo(0);
@@ -118,15 +120,15 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		UUID customerId = UUID.randomUUID();
 
 		Long orderId1 = orderRepository.save(
-				new Order(customerId))
+				new Order(null, customerId, Instant.now(), Instant.now(), null))
 			.id();
 		Order order1 = orderRepository.findById(orderId1).orElseThrow();
 		Long orderId2 = orderRepository.save(
-				new Order(customerId))
+				new Order(null, customerId, Instant.now(), Instant.now(), null))
 			.id();
 		Order order2 = orderRepository.findById(orderId2).orElseThrow();
 		orderRepository.save(
-			new Order(UUID.randomUUID()));
+			new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null));
 
 		List<Order> result = orderRepository.findByCustomerId(customerId);
 
@@ -142,19 +144,19 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		UUID customerId2 = UUID.randomUUID();
 
 		Long orderId1 = orderRepository.save(
-				new Order(customerId1))
+				new Order(null, customerId1, Instant.now(), Instant.now(), null))
 			.id();
 		Order order1 = orderRepository.findById(orderId1).orElseThrow();
 		Long orderId2 = orderRepository.save(
-				new Order(customerId1))
+				new Order(null, customerId1, Instant.now(), Instant.now(), null))
 			.id();
 		Order order2 = orderRepository.findById(orderId2).orElseThrow();
 		Long orderId3 = orderRepository.save(
-				new Order(customerId2))
+				new Order(null, customerId2, Instant.now(), Instant.now(), null))
 			.id();
 		Order order3 = orderRepository.findById(orderId3).orElseThrow();
 		orderRepository.save(
-			new Order(UUID.randomUUID()));
+			new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null));
 
 		List<Order> result = orderRepository.findAllByCustomerIds(List.of(customerId1, customerId2));
 
@@ -171,13 +173,13 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		UUID customerId3 = UUID.randomUUID();
 
 		Order order1 = orderRepository.save(
-			new Order(customerId1));
+			new Order(null, customerId1, Instant.now(), Instant.now(), null));
 		Order order2 = orderRepository.save(
-			new Order(customerId1));
+			new Order(null, customerId1, Instant.now(), Instant.now(), null));
 		Order order3 = orderRepository.save(
-			new Order(customerId2));
+			new Order(null, customerId2, Instant.now(), Instant.now(), null));
 		Order order4 = orderRepository.save(
-			new Order(customerId3));
+			new Order(null, customerId3, Instant.now(), Instant.now(), null));
 
 		orderRepository.deleteAllByCustomerIdIn(
 			List.of(customerId1, customerId2));
