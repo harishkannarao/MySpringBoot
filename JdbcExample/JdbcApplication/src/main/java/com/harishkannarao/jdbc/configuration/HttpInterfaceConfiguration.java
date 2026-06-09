@@ -6,8 +6,10 @@ import com.harishkannarao.jdbc.client.factory.HttpInterfaceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.resilience.annotation.EnableResilientMethods;
 
 @Configuration
+@EnableResilientMethods
 public class HttpInterfaceConfiguration {
 
 	@Bean

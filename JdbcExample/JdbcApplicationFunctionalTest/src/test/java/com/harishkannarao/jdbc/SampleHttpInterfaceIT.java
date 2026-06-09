@@ -90,7 +90,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 
 		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
 		assertThat(loggedRequests)
-			.hasSize(4);
+			.hasSize(5);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
 
 		assertThat(requests)
-			.hasSize(4);
+			.hasSize(25);
 	}
 
 	@Test
