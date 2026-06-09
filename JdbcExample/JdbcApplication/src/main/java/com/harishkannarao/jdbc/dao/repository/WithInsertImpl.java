@@ -3,7 +3,6 @@ package com.harishkannarao.jdbc.dao.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
-import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -39,11 +38,8 @@ public class WithInsertImpl<T> implements WithInsert<T> {
 		S insertedEntity = transactionTemplate.execute(transactionStatus -> {
 			try {
 				return jdbcAggregateTemplate.insert(entity);
-			} catch (DbActionExecutionException e) {
-				if (e.getCause() instanceof DuplicateKeyException) {
-					return null;
-				}
-				throw e;
+			} catch (DuplicateKeyException e) {
+				return null;
 			}
 		});
 		if (Objects.nonNull(insertedEntity)) {

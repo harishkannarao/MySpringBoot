@@ -1,20 +1,19 @@
 package com.harishkannarao.jdbc;
 
+import com.harishkannarao.jdbc.dao.repository.OrderDocumentRepository;
+import com.harishkannarao.jdbc.dao.repository.OrderRepository;
 import com.harishkannarao.jdbc.entity.InventoryDetails;
+import com.harishkannarao.jdbc.entity.JsonContent;
 import com.harishkannarao.jdbc.entity.Order;
 import com.harishkannarao.jdbc.entity.OrderDocument;
 import com.harishkannarao.jdbc.entity.OrderDocumentBuilder;
-import com.harishkannarao.jdbc.entity.JsonContent;
 import com.harishkannarao.jdbc.entity.Sku;
-import com.harishkannarao.jdbc.dao.repository.OrderDocumentRepository;
-import com.harishkannarao.jdbc.dao.repository.OrderRepository;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -46,7 +45,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_order_with_documents() throws SQLException {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
 		OrderDocument document = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
@@ -94,7 +93,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_query_by_json_key() throws SQLException {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
 		String json1 = """
@@ -147,7 +146,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_insert_returns_duplicate_key_exception() {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
 		UUID documentId = UUID.randomUUID();
@@ -155,18 +154,16 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		OrderDocument document2 = new OrderDocument(documentId, created.id(), null, null);
 		orderDocumentRepository.insert(document1);
 
-		DbActionExecutionException result = catchThrowableOfType(
+		DuplicateKeyException result = catchThrowableOfType(
 			() -> orderDocumentRepository.insert(document2),
-			DbActionExecutionException.class);
+			DuplicateKeyException.class);
 
 		assertThat(result).isNotNull();
-		assertThat(result.getCause())
-			.isInstanceOf(DuplicateKeyException.class);
 	}
 
 	@Test
 	void test_save_inserts_or_updates_existing() {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
 		UUID documentId = UUID.randomUUID();
@@ -214,7 +211,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_insert_multiple_entities() {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
 		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
