@@ -93,8 +93,11 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_query_by_json_key() throws SQLException {
-		Order input = new Order(UUID.randomUUID());
-		Order created = orderRepository.save(input);
+		Order order1 = new Order(UUID.randomUUID());
+		Order created1 = orderRepository.save(order1);
+
+		Order order2 = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created2 = orderRepository.save(order2);
 
 		String json1 = """
 			{"name": "test1", "department": "finance"}
@@ -102,7 +105,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		InventoryDetails inventoryDetails1 = new InventoryDetails("abc", 2, null, null);
 		OrderDocument document1 = new OrderDocument(
 			UUID.randomUUID(),
-			created.id(),
+			created1.id(),
 			new JsonContent(json1),
 			inventoryDetails1);
 		orderDocumentRepository.insert(document1);
@@ -113,7 +116,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		InventoryDetails inventoryDetails2 = new InventoryDetails("xyz", 3, null, null);
 		OrderDocument document2 = new OrderDocument(
 			UUID.randomUUID(),
-			created.id(),
+			created2.id(),
 			new JsonContent(json2),
 			inventoryDetails2);
 		orderDocumentRepository.insert(document2);
@@ -162,7 +165,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_save_inserts_or_updates_existing() {
+	void test_save_inserts_or_updates_existing_with_same_document_id() {
 		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
@@ -210,12 +213,67 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_insert_multiple_entities() {
+	void test_upsert_inserts_or_updates_existing_without_document_id() {
 		Order input = new Order(UUID.randomUUID());
 		Order created = orderRepository.save(input);
 
-		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
-		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created.id(), null, null);
+		OrderDocument document1 = new OrderDocument(null, created.id(), null, null);
+		OrderDocument document2 = new OrderDocument(
+			null,
+			created.id(),
+			null,
+			new InventoryDetails(
+				"abc",
+				2,
+				List.of(new Sku("3434"), new Sku("235453")),
+				Set.of("234445", "2234243")
+			)
+		);
+		OrderDocument inserted = orderDocumentRepository.upsert(document1.orderId(), document1.data(), document1.inventory());
+		assertThat(inserted)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.ignoringFields("id")
+			.isEqualTo(document1);
+		assertThat(inserted.id()).isNotNull();
+
+		List<OrderDocument> listByIdAfterInsert = orderDocumentRepository.findAllById(List.of(inserted.id()));
+		assertThat(listByIdAfterInsert)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.ignoringFields("id")
+				.isEqualTo(document1));
+
+		OrderDocument finalUpdate = orderDocumentRepository.upsert(document2.orderId(), document2.data(), document2.inventory());
+
+		assertThat(finalUpdate)
+			.usingRecursiveComparison()
+			.ignoringCollectionOrder()
+			.ignoringFields("id")
+			.isEqualTo(document2);
+		assertThat(finalUpdate.id()).isEqualTo(inserted.id());
+
+		List<OrderDocument> listByIdAfterUpdate = orderDocumentRepository.findAllById(List.of(inserted.id()));
+		assertThat(listByIdAfterUpdate)
+			.hasSize(1)
+			.anySatisfy(orderDocument -> assertThat(orderDocument)
+				.usingRecursiveComparison()
+				.ignoringCollectionOrder()
+				.ignoringFields("id")
+				.isEqualTo(document2));
+	}
+
+	@Test
+	void test_insert_multiple_entities() {
+		Order order1 = new Order(null, UUID.randomUUID(), null, null, null);
+		Order order2 = new Order(null, UUID.randomUUID(), null, null, null);
+		Order created1 = orderRepository.save(order1);
+		Order created2 = orderRepository.save(order2);
+
+		OrderDocument document1 = new OrderDocument(UUID.randomUUID(), created1.id(), null, null);
+		OrderDocument document2 = new OrderDocument(UUID.randomUUID(), created2.id(), null, null);
 
 		List<OrderDocument> insertResult = orderDocumentRepository.insertAll(List.of(document1, document2));
 

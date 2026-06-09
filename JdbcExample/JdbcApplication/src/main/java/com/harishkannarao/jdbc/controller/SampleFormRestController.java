@@ -60,13 +60,14 @@ public class SampleFormRestController {
 				inputStream.transferTo(outputStream);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.FOUND)
+		return ResponseEntity.status(HttpStatus.SEE_OTHER)
 			.header(HttpHeaders.LOCATION, "/sample_form_submit_success.html")
 			.build();
 	}
 
 	@GetMapping("/files/{name}")
 	public void getArchive(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+		logger.info("Files Location {}", uploadsPath.toAbsolutePath());
 		logger.info("Downloading file {}", name);
 		Path file = uploadsPath.resolve(name);
 
