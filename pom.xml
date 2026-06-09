@@ -14,7 +14,7 @@
     </modules>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <spring.boot.version>4.0.6</spring.boot.version>
         <logback.access.spring.boot.version>1.2.2</logback.access.spring.boot.version>
         <springdoc.version>3.0.3</springdoc.version>
