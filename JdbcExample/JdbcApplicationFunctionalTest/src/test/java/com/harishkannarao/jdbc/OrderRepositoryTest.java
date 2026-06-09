@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class OrderRepositoryTest {
 	}
 
 	@Test
-	public void test_create_read_update_delete_order() {
+	public void test_create_read_update_delete_order() throws InterruptedException {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Long id = orderRepository.save(input).id();
 		Order created = orderRepository.findById(id).orElseThrow();
@@ -56,6 +57,8 @@ public class OrderRepositoryTest {
 			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 		assertThat(created.version()).isEqualTo(0);
 
+		Thread.sleep(Duration.ofSeconds(1));
+
 		Order toUpdate = OrderBuilder.from(created)
 			.customerId(UUID.randomUUID())
 			.build();
@@ -68,7 +71,7 @@ public class OrderRepositoryTest {
 		assertThat(updated.createdTime())
 			.isEqualTo(created.createdTime());
 		assertThat(updated.updatedTime())
-			.isAfterOrEqualTo(created.updatedTime())
+			.isAfter(created.updatedTime())
 			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 		assertThat(updated.version()).isEqualTo(1);
 

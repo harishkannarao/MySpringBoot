@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	public void test_create_read_update_delete_order() {
+	public void test_create_read_update_delete_order() throws InterruptedException {
 		Order input = new Order(null, UUID.randomUUID(), null, null, null);
 		Long id = orderRepository.save(input).id();
 		Order created = orderRepository.findById(id).orElseThrow();
@@ -48,6 +49,8 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 		assertThat(created.version()).isEqualTo(0);
 
+		Thread.sleep(Duration.ofSeconds(1));
+
 		Order toUpdate = OrderBuilder.from(created)
 			.customerId(UUID.randomUUID())
 			.build();
@@ -60,7 +63,7 @@ public class OrderRepositoryIT extends BaseIntegrationJdbc {
 		assertThat(updated.createdTime())
 			.isEqualTo(created.createdTime());
 		assertThat(updated.updatedTime())
-			.isAfterOrEqualTo(created.updatedTime())
+			.isAfter(created.updatedTime())
 			.isBeforeOrEqualTo(Instant.now().plusSeconds(2));
 		assertThat(updated.version()).isEqualTo(1);
 
