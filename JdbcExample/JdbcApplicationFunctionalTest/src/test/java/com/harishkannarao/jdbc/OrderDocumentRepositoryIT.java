@@ -97,7 +97,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		Order order1 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created1 = orderRepository.save(order1);
 
-		Order order2 = new Order(null, UUID.randomUUID(), null, null, null);
+		Order order2 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created2 = orderRepository.save(order2);
 
 		String json1 = """
@@ -268,8 +268,8 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 
 	@Test
 	void test_insert_multiple_entities() {
-		Order order1 = new Order(null, UUID.randomUUID(), null, null, null);
-		Order order2 = new Order(null, UUID.randomUUID(), null, null, null);
+		Order order1 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
+		Order order2 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created1 = orderRepository.save(order1);
 		Order created2 = orderRepository.save(order2);
 
