@@ -42,7 +42,7 @@ public class OrderRepositoryTest {
 
 	@Test
 	public void test_create_read_update_delete_order() {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 		Long id = orderRepository.save(input).id();
 		Order created = orderRepository.findById(id).orElseThrow();
 
@@ -90,7 +90,7 @@ public class OrderRepositoryTest {
 
 	@Test
 	public void test_optimistic_error_on_version_mismatch() {
-		Order input = new Order(null, UUID.randomUUID(), null, null, null);
+		Order input = new Order(UUID.randomUUID());
 
 		Order created = orderRepository.save(input);
 		assertThat(created.version()).isEqualTo(0);
@@ -123,15 +123,15 @@ public class OrderRepositoryTest {
 		UUID customerId = UUID.randomUUID();
 
 		Long orderId1 = orderRepository.save(
-				new Order(null, customerId, null, null, null))
+				new Order(customerId))
 			.id();
 		Order order1 = orderRepository.findById(orderId1).orElseThrow();
 		Long orderId2 = orderRepository.save(
-				new Order(null, customerId, null, null, null))
+				new Order(customerId))
 			.id();
 		Order order2 = orderRepository.findById(orderId2).orElseThrow();
 		orderRepository.save(
-			new Order(null, UUID.randomUUID(), null, null, null));
+			new Order(UUID.randomUUID()));
 
 		List<Order> result = orderRepository.findByCustomerId(customerId);
 
@@ -147,19 +147,19 @@ public class OrderRepositoryTest {
 		UUID customerId2 = UUID.randomUUID();
 
 		Long orderId1 = orderRepository.save(
-				new Order(null, customerId1, null, null, null))
+				new Order(customerId1))
 			.id();
 		Order order1 = orderRepository.findById(orderId1).orElseThrow();
 		Long orderId2 = orderRepository.save(
-				new Order(null, customerId1, null, null, null))
+				new Order(customerId1))
 			.id();
 		Order order2 = orderRepository.findById(orderId2).orElseThrow();
 		Long orderId3 = orderRepository.save(
-				new Order(null, customerId2, null, null, null))
+				new Order(customerId2))
 			.id();
 		Order order3 = orderRepository.findById(orderId3).orElseThrow();
 		orderRepository.save(
-			new Order(null, UUID.randomUUID(), null, null, null));
+			new Order(UUID.randomUUID()));
 
 		List<Order> result = orderRepository.findAllByCustomerIds(List.of(customerId1, customerId2));
 
@@ -176,13 +176,13 @@ public class OrderRepositoryTest {
 		UUID customerId3 = UUID.randomUUID();
 
 		Order order1 = orderRepository.save(
-			new Order(null, customerId1, null, null, null));
+			new Order(customerId1));
 		Order order2 = orderRepository.save(
-			new Order(null, customerId1, null, null, null));
+			new Order(customerId1));
 		Order order3 = orderRepository.save(
-			new Order(null, customerId2, null, null, null));
+			new Order(customerId2));
 		Order order4 = orderRepository.save(
-			new Order(null, customerId3, null, null, null));
+			new Order(customerId3));
 
 		orderRepository.deleteAllByCustomerIdIn(
 			List.of(customerId1, customerId2));

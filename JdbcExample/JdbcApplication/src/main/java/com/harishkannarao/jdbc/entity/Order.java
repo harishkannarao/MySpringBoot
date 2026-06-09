@@ -17,4 +17,7 @@ public record Order(
 	@LastModifiedDate Instant updatedTime,
 	@Version Integer version
 ) {
+	public Order(UUID customerId) {
+		this(null, customerId, Instant.now(), Instant.now(), null);
+	}
 }
