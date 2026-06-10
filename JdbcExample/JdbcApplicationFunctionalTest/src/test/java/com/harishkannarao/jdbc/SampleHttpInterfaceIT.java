@@ -84,8 +84,9 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 		);
 
 		HttpServerErrorException.ServiceUnavailable result = catchThrowableOfType(
-			() -> sampleHttpInterface.getCustomerDetails(customerId),
-			HttpServerErrorException.ServiceUnavailable.class);
+			HttpServerErrorException.ServiceUnavailable.class,
+			() -> sampleHttpInterface.getCustomerDetails(customerId)
+		);
 		assertThat(result).isNotNull();
 
 		List<LoggedRequest> loggedRequests = wireMock.find(getRequestedFor(urlPathEqualTo("/customer/" + customerId)));
@@ -118,7 +119,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
-		assertThat(body.get("orderDescription").asText()).isEqualTo("test-order");
+		assertThat(body.get("orderDescription").asString()).isEqualTo("test-order");
 
 		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
@@ -159,7 +160,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 			.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response.isPresent()).isTrue();
-		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
+		assertThat(response.get().get("orderDescription").asString()).isEqualTo("test-order");
 
 		List<LoggedRequest> requests = wireMock.find(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
@@ -243,7 +244,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	public void createCustomerOrder() throws Exception {
+	public void createCustomerOrder() {
 		String customerId = UUID.randomUUID().toString();
 		wireMock.register(
 			post(urlPathEqualTo("/customer/" + customerId + "/orders"))

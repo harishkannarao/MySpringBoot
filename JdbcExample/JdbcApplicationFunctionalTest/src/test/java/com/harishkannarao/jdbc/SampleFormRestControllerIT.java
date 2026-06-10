@@ -112,7 +112,7 @@ public class SampleFormRestControllerIT extends BaseIntegrationJdbc {
 
 		try (
 			BufferedInputStream file1BufStream = new BufferedInputStream(Files.newInputStream(file1), 16 * 1024);
-			BufferedInputStream file2BufStream = new BufferedInputStream(Files.newInputStream(file2), 16 * 1024);
+			BufferedInputStream file2BufStream = new BufferedInputStream(Files.newInputStream(file2), 16 * 1024)
 		) {
 			final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.addTextBody("firstName", "first");

@@ -80,7 +80,7 @@ public class CustomerRestControllerTest {
 	}
 
 	@Test
-	public void test_createCustomer_throwsError() throws Exception {
+	public void test_createCustomer_throwsError() {
 		CreateCustomerRequestDto input = new CreateCustomerRequestDto(
 			"first-name-" + UUID.randomUUID(),
 			"last-name-" + UUID.randomUUID()
@@ -97,14 +97,16 @@ public class CustomerRestControllerTest {
 		when(customerDao.createCustomer(any(CreateCustomerRequestDto.class)))
 			.thenThrow(new RuntimeException("Artificial Error"));
 
-		ServletException result = catchThrowableOfType(() ->
+		ServletException result = catchThrowableOfType(
+			ServletException.class,
+			() ->
 				mockMvc.perform(MockMvcRequestBuilders
 					.post("/customers")
 					.content(inputJson)
 					.contentType(MediaType.APPLICATION_JSON_VALUE)
 					.accept(MediaType.APPLICATION_JSON_VALUE)
-				),
-			ServletException.class);
+				)
+			);
 
 		assertThat(result.getRootCause())
 			.isInstanceOf(RuntimeException.class);

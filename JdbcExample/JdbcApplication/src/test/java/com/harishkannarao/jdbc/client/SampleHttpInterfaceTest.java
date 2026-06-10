@@ -103,7 +103,7 @@ public class SampleHttpInterfaceTest {
 			.getOptionalOrderDetails(customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
 
 		assertThat(response.isPresent()).isTrue();
-		assertThat(response.get().get("orderDescription").asText()).isEqualTo("test-order");
+		assertThat(response.get().get("orderDescription").asString()).isEqualTo("test-order");
 
 		List<LoggedRequest> requests = wireMockServer.findAll(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
@@ -178,7 +178,7 @@ public class SampleHttpInterfaceTest {
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
-		assertThat(body.get("orderDescription").asText()).isEqualTo("test-order");
+		assertThat(body.get("orderDescription").asString()).isEqualTo("test-order");
 
 		List<LoggedRequest> requests = wireMockServer.findAll(getRequestedFor(
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));

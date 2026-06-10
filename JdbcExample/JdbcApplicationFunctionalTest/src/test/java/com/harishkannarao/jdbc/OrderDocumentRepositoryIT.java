@@ -45,7 +45,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_order_with_documents() throws SQLException {
+	void test_order_with_documents() {
 		Order input = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created = orderRepository.save(input);
 
@@ -93,7 +93,7 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 	}
 
 	@Test
-	void test_query_by_json_key() throws SQLException {
+	void test_query_by_json_key() {
 		Order order1 = new Order(null, UUID.randomUUID(), Instant.now(), Instant.now(), null);
 		Order created1 = orderRepository.save(order1);
 
@@ -159,8 +159,9 @@ public class OrderDocumentRepositoryIT extends BaseIntegrationJdbc {
 		orderDocumentRepository.insert(document1);
 
 		DuplicateKeyException result = catchThrowableOfType(
-			() -> orderDocumentRepository.insert(document2),
-			DuplicateKeyException.class);
+			DuplicateKeyException.class,
+			() -> orderDocumentRepository.insert(document2)
+		);
 
 		assertThat(result).isNotNull();
 	}

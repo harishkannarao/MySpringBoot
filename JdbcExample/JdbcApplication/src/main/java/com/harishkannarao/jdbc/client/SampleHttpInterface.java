@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
@@ -37,7 +36,7 @@ public interface SampleHttpInterface extends WithRetries {
 		@RequestHeader("correlation-id") String correlationId);
 
 	// Exclude this method from retry as the called method is already retried
-	@Retryable(maxRetries=0L)
+	@Retryable(maxRetries = 0L)
 	default Optional<JsonNode> getOptionalOrderDetails(
 		String customerId,
 		String orderId,

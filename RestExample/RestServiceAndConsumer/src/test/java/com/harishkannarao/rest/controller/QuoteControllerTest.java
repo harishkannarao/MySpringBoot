@@ -58,8 +58,8 @@ public class QuoteControllerTest {
 
 		JsonNode json = objectMapper.readTree(response.getContentAsString());
 		assertThat(json.getNodeType()).isEqualTo(JsonNodeType.OBJECT);
-		assertThat(json.get("type").asText()).isEqualTo("test");
+		assertThat(json.get("type").asString()).isEqualTo("test");
 		assertThat(json.get("value").get("id").asLong()).isEqualTo(2L);
-		assertThat(json.get("value").get("quote").asText()).isEqualTo("test-quote");
+		assertThat(json.get("value").get("quote").asString()).isEqualTo("test-quote");
 	}
 }

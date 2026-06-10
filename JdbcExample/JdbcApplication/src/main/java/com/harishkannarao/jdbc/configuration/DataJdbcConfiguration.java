@@ -20,7 +20,6 @@ import java.util.List;
 @EnableJdbcAuditing
 @EnableJdbcRepositories(
 	basePackages = "com.harishkannarao.jdbc.dao.repository",
-	jdbcOperationsRef = "myJdbcOperations",
 	transactionManagerRef = "myTransactionManager"
 )
 public class DataJdbcConfiguration extends AbstractJdbcConfiguration {
@@ -32,7 +31,7 @@ public class DataJdbcConfiguration extends AbstractJdbcConfiguration {
 		this.converters = converters;
 	}
 
-	@Bean(name = "myJdbcOperations")
+	@Bean
 	public NamedParameterJdbcOperations createNamedParameterJdbcOperations(
 		@Qualifier("myDataSource") DataSource dataSource) {
 		return new NamedParameterJdbcTemplate(dataSource);

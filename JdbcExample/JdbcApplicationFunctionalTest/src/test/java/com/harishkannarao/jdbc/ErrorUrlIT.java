@@ -17,12 +17,13 @@ public class ErrorUrlIT extends BaseIntegrationJdbc {
 	@Test
 	public void test404_forNonExistentEndpoint() {
 		final var exception = catchThrowableOfType(
+			HttpClientErrorException.class,
 			() -> restClient
 				.get()
 				.uri(nonExistentEndpointUrl)
 				.retrieve()
-				.toBodilessEntity(),
-			HttpClientErrorException.class);
+				.toBodilessEntity()
+			);
 		assertThat(exception.getStatusCode().value()).isEqualTo(404);
 	}
 
