@@ -239,7 +239,7 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 			urlPathEqualTo("/customer/" + customerId + "/orders/" + orderId)));
 
 		assertThat(requests)
-			.hasSize(25);
+			.hasSize(5);
 	}
 
 	@Test
