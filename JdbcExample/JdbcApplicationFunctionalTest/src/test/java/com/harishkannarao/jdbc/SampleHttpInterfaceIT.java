@@ -12,6 +12,7 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -110,12 +111,11 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 				)
 		);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("request-id", UUID.randomUUID().toString());
-		headers.add("correlation-id", UUID.randomUUID().toString());
-
-		ResponseEntity<JsonNode> response = sampleHttpInterface.getOrderDetails(
-			customerId, orderId, headers.getFirst("request-id"), headers.getFirst("correlation-id"));
+		Map<String, String> requestHeaders = Map.ofEntries(
+			Map.entry("request-id", UUID.randomUUID().toString()),
+			Map.entry("correlation-id", UUID.randomUUID().toString())
+		);
+		ResponseEntity<JsonNode> response = sampleHttpInterface.getOrderDetails(customerId, orderId, requestHeaders);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -129,10 +129,16 @@ public class SampleHttpInterfaceIT extends BaseIntegrationJdbc {
 			.anySatisfy(request -> {
 				assertThat(request.getHeader("request-id"))
 					.as("verifying request id")
-					.isEqualTo(headers.getFirst("request-id"));
+					.isEqualTo(requestHeaders.get("request-id"));
 				assertThat(request.getHeader("correlation-id"))
 					.as("verifying correlation id")
-					.isEqualTo(headers.getFirst("correlation-id"));
+					.isEqualTo(requestHeaders.get("correlation-id"));
+				assertThat(request.getHeader("Content-Type"))
+					.as("verifying content type")
+					.isEqualTo("application/json");
+				assertThat(request.getHeader("Accept"))
+					.as("verifying accept")
+					.isEqualTo("application/json");
 			});
 	}
 

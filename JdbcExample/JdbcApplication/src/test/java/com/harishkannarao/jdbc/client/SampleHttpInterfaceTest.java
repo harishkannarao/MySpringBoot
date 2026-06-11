@@ -14,6 +14,7 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -173,8 +174,11 @@ public class SampleHttpInterfaceTest {
 
 		String requestId = UUID.randomUUID().toString();
 		String correlationId = UUID.randomUUID().toString();
-		ResponseEntity<JsonNode> response = sampleHttpInterface
-			.getOrderDetails(customerId, orderId, requestId, correlationId);
+		Map<String, String> requestHeaders = Map.ofEntries(
+			Map.entry("request-id", requestId),
+			Map.entry("correlation-id", correlationId)
+		);
+		ResponseEntity<JsonNode> response = sampleHttpInterface.getOrderDetails(customerId, orderId, requestHeaders);
 
 		assertThat(response.getStatusCode().value()).isEqualTo(200);
 		JsonNode body = Objects.requireNonNull(response.getBody());
@@ -192,6 +196,12 @@ public class SampleHttpInterfaceTest {
 				assertThat(request.getHeader("correlation-id"))
 					.as("verifying correlation id")
 					.isEqualTo(correlationId);
+				assertThat(request.getHeader("Content-Type"))
+					.as("verifying content type")
+					.isEqualTo("application/json");
+				assertThat(request.getHeader("Accept"))
+					.as("verifying accept")
+					.isEqualTo("application/json");
 			});
 	}
 

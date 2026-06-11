@@ -14,6 +14,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 import tools.jackson.databind.JsonNode;
 
+import java.util.Map;
 import java.util.Optional;
 
 @HttpExchange(
@@ -32,8 +33,7 @@ public interface SampleHttpInterface extends WithRetries {
 	ResponseEntity<JsonNode> getOrderDetails(
 		@PathVariable("customerId") String customerId,
 		@PathVariable("orderId") String orderId,
-		@RequestHeader("request-id") String requestId,
-		@RequestHeader("correlation-id") String correlationId);
+		@RequestHeader("headers") Map<String, String> headers);
 
 	// Exclude this method from retry as the called method is already retried
 	@Retryable(maxRetries = 0L)
@@ -43,7 +43,11 @@ public interface SampleHttpInterface extends WithRetries {
 		String requestId,
 		String correlationId) {
 		try {
-			ResponseEntity<JsonNode> orderDetails = getOrderDetails(customerId, orderId, requestId, correlationId);
+			Map<String, String> requestHeaders = Map.ofEntries(
+				Map.entry("request-id", requestId),
+				Map.entry("correlation-id", correlationId)
+			);
+			ResponseEntity<JsonNode> orderDetails = getOrderDetails(customerId, orderId, requestHeaders);
 			return Optional.ofNullable(orderDetails.getBody());
 		} catch (HttpClientErrorException.NotFound notFound) {
 			log.info("Received {}", notFound.getStatusCode().value());
