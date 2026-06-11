@@ -224,6 +224,12 @@ public class SampleHttpInterfaceTest {
 				assertThat(request.getHeader("request-id"))
 					.as("verifying request id")
 					.isEqualTo(requestId);
+				assertThat(request.getHeader("Content-Type"))
+					.as("verifying content type")
+					.isEqualTo("application/json");
+				assertThat(request.getHeader("Accept"))
+					.as("verifying accept")
+					.isEqualTo("application/json");
 				JsonNode sentBody = objectMapper.readTree(request.getBodyAsString());
 				assertThat(sentBody)
 					.usingRecursiveComparison()
