@@ -8,6 +8,8 @@ services:
     image: "public.ecr.aws/docker/library/postgres:16"
     ports:
       - "15432:5432"
+    extra_hosts:
+      - host.docker.internal:host-gateway
     environment:
       - "POSTGRES_USER=myuser"
       - "POSTGRES_PASSWORD=superpassword"
