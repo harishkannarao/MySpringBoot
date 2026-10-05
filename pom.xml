@@ -16,7 +16,8 @@
     <properties>
         <java.version>25</java.version>
         <spring.boot.version>4.1.0</spring.boot.version>
-        <logback.access.spring.boot.version>1.2.2</logback.access.spring.boot.version>
+        <logback.access.version>1.6.5</logback.access.version>
+        <logback.access.tomcat.version>2.0.15</logback.access.tomcat.version>
         <springdoc.version>3.0.3</springdoc.version>
         <flyway.version>12.8.1</flyway.version>
         <postgresql.driver.version>42.7.11</postgresql.driver.version>
@@ -233,6 +234,18 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${logback.access.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback.access</groupId>
+                <artifactId>logback-access-tomcat</artifactId>
+                <version>${logback.access.tomcat.version}</version>
             </dependency>
 
             <dependency>
