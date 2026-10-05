@@ -1,7 +1,3 @@
-networks:
-  main:
-    name: my-spring-boot-network
-
 services:
   springboot-jdbc-postgres:
     container_name: springboot-jdbc-postgres
@@ -13,7 +9,3 @@ services:
     environment:
       - "POSTGRES_USER=myuser"
       - "POSTGRES_PASSWORD=superpassword"
-    networks:
-      main:
-        aliases:
-          - springboot-jdbc-postgres
